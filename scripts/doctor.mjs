@@ -53,8 +53,8 @@ export const COMMANDS = {
   statusLine: 'npm run install-status-line',
   uninstall: 'npm run uninstall-hooks',
   uninstallHooks: 'npm run uninstall-hooks -- --no-status-line',
-  plugin:    'claude plugin marketplace add carissadarmafissaleha/nara-studio-virtual && claude plugin install nara-studio@nara-studio',
-  unplugin:  'claude plugin uninstall nara-studio@nara-studio',
+  plugin:    'npm run install-hooks',
+  unplugin:  'npm run uninstall-hooks -- --no-status-line',
   start:     'npm run build && npm run server',
   startAlt:  'bash scripts/start-office.sh',
   dev:       'npm run dev',
@@ -487,8 +487,8 @@ export function formatReport({ results, ok, context }, { color = false } = {}) {
     ['hooks only', COMMANDS.hooksOnly],
     ['status line only (next to the plugin)', COMMANDS.statusLine],
     ['uninstall what the installer added', COMMANDS.uninstall],
-    ['plugin instead of the installer', COMMANDS.plugin],
-    ['uninstall the plugin', COMMANDS.unplugin],
+    ['plugin instead of the installer', COMMANDS.install],
+    ['uninstall the plugin', COMMANDS.uninstallHooks],
     ['start the office', `${COMMANDS.start}    # or: ${COMMANDS.startAlt}`],
   ]
   const width = Math.max(...rows.map(([k]) => k.length))
