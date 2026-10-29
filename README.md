@@ -7,6 +7,12 @@ NARA Studio menggabungkan kantor virtual pixel-art isometrik dengan mesin produk
 
 **Repo:** <https://github.com/carissadarmafissaleha/nara-studio-virtual>
 
+<p align="center">
+  <img src="screenshots-app/desktop/1.webp" alt="Kantor virtual isometrik NARA Studio dengan chat tim AI di sisi kanan" width="100%" />
+  <br />
+  <sub><b>Kantor virtual isometrik NARA Studio</b> — kru AI bekerja di meja masing-masing, chat tim berjalan real-time, status <code>LISTENER</code> &amp; <code>WAKE</code> tampil di footer.</sub>
+</p>
+
 ---
 
 ## 📚 Tutorial Lengkap per Mesin
@@ -130,6 +136,58 @@ npm run dev:office-agy     # server menulis registry dari komposisi yang ada
 
 Clone tidak membawa video lama — itu memang tujuannya. Kalau mau mengarsipkan
 hasil produksi, simpan di luar repo atau di `.tmp/` (sudah di-ignore).
+
+---
+
+## 📸 Tangkapan Layar
+
+Semua gambar tersimpan di [`screenshots-app/`](screenshots-app) (desktop & mobile).
+
+### 🖥️ Desktop
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="screenshots-app/desktop/1.webp" alt="Kantor virtual isometrik dengan panel chat tim AI" />
+      <br />
+      <sub><b>Ruang kerja isometrik + chat tim</b><br />Kru studio mengobrol dengan sapaan <i>Kak Caca</i>, lengkap dengan jam dunia real-time dan <code>AI ON</code>.</sub>
+    </td>
+    <td width="50%" valign="top">
+      <img src="screenshots-app/desktop/2.webp" alt="Papan Tugas dan Review Studio dengan kolom Rencana, Proses, Selesai" />
+      <br />
+      <sub><b>Papan Tugas &amp; Review Studio</b><br />Kanban <i>Rencana → Proses → Selesai</i> dengan tombol <code>Review</code>, <code>Approve</code>, dan <code>Render</code> per tugas kru.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="screenshots-app/desktop/3.webp" alt="Pengaturan Studio untuk mengganti karakter dan sprite kru" />
+      <br />
+      <sub><b>Pengaturan Studio</b><br />Ganti karakter, pilih sprite kasual (9 opsi), kelola Agent Skills, dan rekut kru tamu.</sub>
+    </td>
+    <td width="50%" valign="top">
+      <img src="screenshots-app/desktop/4.webp" alt="Screening Room live draft player dengan tombol render video MP4" />
+      <br />
+      <sub><b>Screening Room</b><br />Putar draf Remotion sebelum render, lihat durasi &amp; FPS, lalu kirim render MP4 ke Papan ToDo.</sub>
+    </td>
+  </tr>
+</table>
+
+### 📱 Mobile
+
+<table>
+  <tr>
+    <td width="25%" valign="top"><img src="screenshots-app/mobile/1.webp" alt="Mode split kantor dan chat di ponsel" /></td>
+    <td width="25%" valign="top"><img src="screenshots-app/mobile/2.webp" alt="Papan Tugas di ponsel" /></td>
+    <td width="25%" valign="top"><img src="screenshots-app/mobile/3.webp" alt="Pengaturan Agent Skills di ponsel" /></td>
+    <td width="25%" valign="top"><img src="screenshots-app/mobile/4.webp" alt="Screening Room di ponsel" /></td>
+  </tr>
+  <tr>
+    <td valign="top"><sub><b>Kantor / Split / Chat</b><br />Tiga mode tampilan untuk layar kecil.</sub></td>
+    <td valign="top"><sub><b>Papan Tugas</b><br />Review &amp; setujui render dari ponsel.</sub></td>
+    <td valign="top"><sub><b>Agent Skills</b><br />Skill terpasang beserta versinya.</sub></td>
+    <td valign="top"><sub><b>Screening Room</b><br />Draf 9:16 tampil penuh, siap diputar.</sub></td>
+  </tr>
+</table>
 
 ---
 
