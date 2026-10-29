@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="104" height="22" viewBox="0 0 104 22" role="img" aria-label="ultracode">
+  <defs>
+    <linearGradient id="rainbow" x1="0" y1="0" x2="104" y2="0" gradientUnits="userSpaceOnUse" spreadMethod="repeat">
+      <stop offset="0" stop-color="#ff5f6d"/>
+      <stop offset="0.17" stop-color="#ffa53b"/>
+      <stop offset="0.33" stop-color="#ffe14d"/>
+      <stop offset="0.5" stop-color="#4ade80"/>
+      <stop offset="0.67" stop-color="#38bdf8"/>
+      <stop offset="0.83" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#ff5f6d"/>
+      <animateTransform attributeName="gradientTransform" type="translate" from="0 0" to="104 0" dur="3s" repeatCount="indefinite"/>
+    </linearGradient>
+  </defs>
+  <text x="2" y="16" textLength="100" lengthAdjust="spacingAndGlyphs" fill="url(#rainbow)" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="16" font-weight="700">ultracode</text>
+</svg>

@@ -1,0 +1,117 @@
+# Dependencies & Build Outputs
+node_modules/
+dist/
+release/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.cache/
+.tmp/
+tmp/
+temp/
+*.tmp
+# Repo memakai package-lock.json; pnpm-lock hanya artefak lokal.
+pnpm-lock.yaml
+
+# Environment, Secrets & Local Personal Data
+.env
+.env.*
+.env*.local
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+id_rsa*
+id_ed25519*
+credentials.json
+token.json
+*.db
+*.sqlite
+*.sqlite3
+auth-token
+office.config.json
+office-inbox.jsonl
+*.jsonl
+*.log
+desktop-state.json
+.DS_Store
+
+# Runtime state (Claude hooks, MCP, agent-office)
+.agents/
+dsh-session-*/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/worktrees/
+.playwright-mcp/
+
+# Only track NARA Studio Video Production Skills in skills/
+skills/*
+!skills/audio-sync/
+!skills/bang-motion/
+!skills/nara-director/
+!skills/nara-motion/
+!skills/remotion/
+!skills/remotion-coder/
+!skills/render-qa/
+!skills/skill-repair/
+!skills/skill-repair/**
+!skills/.nara-skills.lock.json
+
+# Studio Production Outputs (Jangan upload hasil produksi video, audio, naskah, & upload user)
+out/
+naskah/
+public/audio/*.mp3
+public/audio/*.wav
+public/audio/*/
+public/audio/vo/
+public/audio/tukangcukur/
+public/audio/sfx/
+public/uploads/
+public/assets/
+
+public/active_tasks.json
+*.mp4
+*.webm
+*.mov
+*.avi
+*.mkv
+.remotion/
+coverage/
+.nyc_output/
+
+# Semua hasil order /buat-video tidak masuk repo: komposisi, aset, dan registry.
+# Registry di-generate ulang oleh scripts/regen-registry.mjs saat server start,
+# `npm run build`, dan `npm run remotion:render`.
+src/remotion/compositions/*
+src/remotion/registry.ts
+public/assets/*
+
+# One-off scratch / patch scripts
+scripts/patch-*
+scripts/add-quick-execute.py
+scripts/fix-server-imports.py
+scripts/move-agent-card.py
+scripts/seed-agents.py
+scripts/generate-audio.py
+scripts/generate-sfx.py
+
+# Skrip produksi sekali pakai (dibuat per order, bukan bagian pipeline).
+# File tetap ada di disk; hanya tidak ikut repo.
+scripts/make-*.mjs
+scripts/make-*-assets.py
+scripts/*-cv-audio.mjs
+scripts/generate-*-vo.mjs
+
+# Rumah untuk skrip & artefak per order /buat-video (generator, storyboard,
+# catatan produksi). scripts/ hanya untuk pipeline bersama.
+productions/
+
+# graphify
+graphify-out/cache/
+graphify-out/.graphify_*
+graphify-out/graph.html
+server/render_status.json
+server/draft_status.json

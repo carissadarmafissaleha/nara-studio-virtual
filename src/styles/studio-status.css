@@ -1,0 +1,183 @@
+/* ===== STUDIO STATUS BAR — live draft / render log above the status strip =====
+   src/components/StudioStatusBar.tsx. Same chrome as strip.css: the title
+   bar's traffic-light colours, JetBrains Mono, 8px, no rounded corners.
+   Two accents so the job kind is readable at a glance: amber for a render,
+   violet for a draft being assembled. */
+
+:root {
+  --studio-draft: #a78bfa;
+}
+
+.studio-bar {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--strip-bg, #151210);
+  border-top: 1px solid var(--strip-border, #2a2520);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.5px;
+  color: var(--strip-fg, #8a7a58);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.studio-bar-row {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 20px;
+}
+
+.studio-bar-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: 100%;
+  padding: 0 10px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.studio-bar-main:hover .studio-bar-msg { color: var(--strip-fg, #8a7a58); }
+
+.studio-bar-label {
+  flex-shrink: 0;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--strip-warn, #febc2e);
+}
+.studio-bar.kind-draft .studio-bar-label { color: var(--studio-draft, #a78bfa); }
+.studio-bar.state-done .studio-bar-label { color: var(--strip-ok, #28c840); }
+.studio-bar.state-failed .studio-bar-label { color: var(--strip-danger, #ff5f57); }
+
+.studio-bar-comp {
+  flex-shrink: 0;
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--strip-fg, #8a7a58);
+  font-weight: 700;
+}
+
+.studio-bar-track {
+  flex: 0 0 120px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.studio-bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--strip-warn, #febc2e);
+  transition: width 0.4s linear;
+}
+.studio-bar.kind-draft .studio-bar-fill { background: var(--studio-draft, #a78bfa); }
+.studio-bar.state-done .studio-bar-fill { background: var(--strip-ok, #28c840); }
+.studio-bar.state-failed .studio-bar-fill { background: var(--strip-danger, #ff5f57); }
+.studio-bar.state-starting .studio-bar-fill,
+.studio-bar.state-bundling .studio-bar-fill {
+  width: 100% !important;
+  opacity: 0.35;
+  animation: studioBarPulse 1.2s ease-in-out infinite;
+}
+
+.studio-bar-stat {
+  flex-shrink: 0;
+  color: var(--strip-fg, #8a7a58);
+}
+
+.studio-bar-msg {
+  flex: 1;
+  min-width: 0;
+  color: var(--strip-dim, #5a4a38);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-bar-caret {
+  flex-shrink: 0;
+  color: var(--strip-dim, #5a4a38);
+}
+
+.studio-bar-action {
+  flex-shrink: 0;
+  margin-right: 8px;
+  padding: 2px 8px;
+  border: none;
+  border-radius: 3px;
+  background: var(--strip-ok, #28c840);
+  color: #120f0c;
+  font-family: inherit;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.studio-bar.kind-draft .studio-bar-action { background: var(--studio-draft, #a78bfa); }
+.studio-bar-action:hover { filter: brightness(1.08); }
+
+/* Dismiss a finished job: the server forgets it, so it cannot come back. */
+.studio-bar-close {
+  flex-shrink: 0;
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--strip-border, #2a2520);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--strip-dim, #5a4a38);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+.studio-bar-close:hover {
+  color: var(--strip-fg, #8a7a58);
+  border-color: var(--strip-fg, #8a7a58);
+}
+
+.studio-bar-log {
+  max-height: 132px;
+  overflow-y: auto;
+  padding: 4px 10px 6px;
+  border-top: 1px dashed var(--strip-border, #2a2520);
+  background: rgba(0, 0, 0, 0.25);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.studio-bar-log-line {
+  font-size: 7.5px;
+  line-height: 1.5;
+  color: var(--strip-fg, #8a7a58);
+}
+.studio-bar-log-line.dim { color: var(--strip-dim, #5a4a38); }
+.studio-bar.state-failed .studio-bar-log-line:last-child { color: var(--strip-danger, #ff5f57); }
+
+@keyframes studioBarPulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 0.7; }
+}
+
+/* Mobile: keep the row readable, drop the free-text message */
+@media (max-width: 720px) {
+  .studio-bar-main { height: auto; min-height: 22px; padding: 3px 12px; gap: 6px; }
+  .studio-bar-track { flex: 1 1 auto; }
+  .studio-bar-msg { display: none; }
+}

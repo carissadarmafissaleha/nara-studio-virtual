@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+        env:
+          # The Electron binary is not needed for type-checking or tests
+          ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+
+      - name: Type-check
+        # src/config.ts imports office.config.json, which is gitignored
+        run: |
+          cp office.config.example.json office.config.json
+          npx tsc --noEmit -p .
+
+      - name: Install Claude Code
+        # The npm package installs the same native binary as the standalone
+        # installer. `claude plugin validate` only reads files, so no login
+        # or network access is needed once it is installed.
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate plugin manifests
+        # The repository root is the nara-studio plugin and its own
+        # marketplace (.claude-plugin/). --strict fails on warnings too, so an
+        # unknown field or a missing description stops here, not on install.
+        run: claude plugin validate . --strict
+        env:
+          DISABLE_AUTOUPDATER: 1
+
+      - name: Test
+        # tests/plugin.test.ts runs `claude plugin validate` again from vitest
+        # now that the CLI is on PATH (it skips with a note when it is not)
+        run: npm test
+
+      - name: Build
+        run: npx vite build
+
+      - name: Check assets
+        # Every sprite and room the code can ask for exists in public/, and
+        # public/ stays under its size budget (scripts/check-assets.mjs)
+        run: npm run check-assets

@@ -1,0 +1,145 @@
+{
+  "name": "office-nara",
+  "productName": "NARA Virtual Video Production Studio",
+  "version": "1.1.2",
+  "description": "NARA Virtual Video Production Studio — Isometric Pixel Art Virtual Office for DeepSeek AI Agents & Remotion Video Production",
+  "author": "NARA Studio",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carissadarmafissaleha/nara-office-ds"
+  },
+  "homepage": "https://github.com/carissadarmafissaleha/nara-office-ds#readme",
+  "bugs": {
+    "url": "https://github.com/carissadarmafissaleha/nara-office-ds/issues"
+  },
+  "keywords": [
+    "remotion",
+    "deepseek",
+    "video-production",
+    "edge-tts",
+    "pixel-art",
+    "virtual-office"
+  ],
+  "type": "module",
+  "main": "electron/main.cjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "postinstall": "node scripts/setup.mjs --quiet",
+    "setup": "node scripts/setup.mjs",
+    "setup:check": "node scripts/setup.mjs --check",
+    "setup:update": "node scripts/setup.mjs --update-skills",
+    "setup:full": "node scripts/setup.mjs --full",
+    "dev": "vite",
+    "predev": "node scripts/regen-registry.mjs",
+    "dev:electron": "concurrently \"vite\" \"sleep 2 && electron .\"",
+    "dev:all": "concurrently \"node server/index.js\" \"vite\"",
+    "bridge": "node scripts/studio-bridge.mjs",
+    "compose": "node scripts/studio-compose.mjs",
+    "dev:office-ds": "concurrently \"node server/index.js\" \"vite\" \"node scripts/studio-bridge.mjs\" \"node scripts/deepseek-inbox-listener.mjs --daemon\"",
+    "dev:office-agy": "concurrently \"node server/index.js\" \"vite\" \"node scripts/studio-bridge.mjs\" \"node scripts/agy-inbox-listener.mjs --daemon\"",
+    "dev:office-opencode": "concurrently \"node server/index.js\" \"vite\" \"node scripts/studio-bridge.mjs\" \"node scripts/engine-inbox-daemon.mjs --engine opencode\"",
+    "listen:ds": "node scripts/order-wake.mjs --engine deepseek",
+    "listen:agy": "node scripts/agy-inbox-listener.mjs",
+    "listen:opencode": "node scripts/order-wake.mjs --engine opencode",
+    "wake:ds": "node scripts/order-wake.mjs --engine deepseek",
+    "wake:agy": "node scripts/agy-inbox-listener.mjs",
+    "wake:opencode": "node scripts/order-wake.mjs --engine opencode",
+    "build": "node scripts/regen-registry.mjs && tsc && vite build",
+    "build:electron": "vite build && electron-builder",
+    "pack": "vite build && electron-builder --dir",
+    "electron": "electron .",
+    "start": "npm run dev:electron",
+    "server": "node server/index.js",
+    "open": "node scripts/open-office.mjs",
+    "rotate-token": "node scripts/rotate-token.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check-assets": "node scripts/check-assets.mjs",
+    "install-hooks": "bash hooks/install-hooks.sh",
+    "install-status-line": "bash hooks/install-hooks.sh --status-line-only",
+    "uninstall-hooks": "bash hooks/install-hooks.sh --uninstall",
+    "doctor": "node scripts/doctor.mjs",
+    "remotion:render": "node scripts/regen-registry.mjs && remotion render src/remotion/index.ts MainVideo out/video.mp4"
+  },
+  "dependencies": {
+    "@remotion/player": "^4.0.539",
+    "better-sqlite3": "^12.8.0",
+    "concurrently": "^8.2.2",
+    "express": "^4.19.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.539",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@remotion/cli": "^4.0.539",
+    "@types/express": "^4.17.21",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/ws": "^8.5.12",
+    "@vitejs/plugin-react": "^4.3.1",
+    "electron": "^33.0.0",
+    "electron-builder": "^24.13.3",
+    "supertest": "^7.3.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.0",
+    "vitest": "^3.2.7"
+  },
+  "build": {
+    "appId": "com.agentoffice.app",
+    "productName": "Agent Office",
+    "artifactName": "Agent-Office-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "asar": false,
+    "files": [
+      "dist/**",
+      "electron/**",
+      "!electron/after-pack.cjs",
+      "server/**",
+      "scripts/notify.sh"
+    ],
+    "npmRebuild": false,
+    "afterPack": "electron/after-pack.cjs",
+    "publish": {
+      "provider": "github",
+      "releaseType": "draft"
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "differentialPackage": false
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Development",
+      "target": [
+        "AppImage"
+      ]
+    }
+  }
+}

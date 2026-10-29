@@ -1,0 +1,1382 @@
+/* ===== NARA STUDIO VIRTUAL OFFICE — RESPONSIVE STYLES (MOBILE, TABLET, DESKTOP) ===== */
+
+/* Base Fluid App Wrapper for all screens */
+.app-wrapper {
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* Title Bar Container: Desktop (single row, sleek & aligned) */
+.title-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  height: 38px !important;
+  padding: 0 14px !important;
+  background: transparent !important;
+  border-bottom: 1px solid #2a2536 !important;
+  gap: 16px !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  user-select: none !important;
+}
+.title-bar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Desktop: Row 1 (Left brand area: Dots & Title) */
+.title-bar-row.title-bar-top {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+.title-bar-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+.title-bar-dot {
+  width: 11px !important;
+  height: 11px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+  cursor: pointer;
+}
+
+.title-bar-text {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  color: #fb923c !important;
+  text-transform: uppercase !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  flex-shrink: 0 !important;
+  margin-left: 4px !important;
+}
+
+/* Mobile Segmented View Control - strictly hidden on desktop */
+.mobile-view-toggle {
+  display: none !important;
+}
+
+/* Desktop: Row 2 (Right Area: Mode, Phase, Tools, Sessions) */
+.title-bar-row.title-bar-bottom {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+}
+
+.title-bar-row-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+.title-bar-row-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-shrink: 0 !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding-left: 10px !important;
+}
+
+/* Desktop Button Styling */
+.title-bar-btn, .title-bar-daynight {
+  height: 25px !important;
+  padding: 0 10px !important;
+  font-size: 8.5px !important;
+  font-weight: 700 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  border-radius: 4px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #e2e8f0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
+
+.title-bar-btn:hover, .title-bar-daynight:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-1px) !important;
+}
+
+.title-bar-btn:active, .title-bar-daynight:active {
+  transform: translateY(0) !important;
+}
+
+/* Icon-only header button (page refresh): same chrome, square, no label */
+.title-bar-icon-btn {
+  width: 25px !important;
+  min-width: 25px !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  letter-spacing: 0 !important;
+}
+
+/* Desktop Phase Label (Without Box) */
+.title-bar-phase {
+  font-size: 8.5px !important;
+  color: #94a3b8 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  padding: 0 4px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 25px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Main app body layout */
+.app-body {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.office-view {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  overflow: hidden !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  position: relative !important;
+}
+
+.chat-column {
+  width: 440px !important;
+  min-width: 380px !important;
+  max-width: 520px !important;
+  height: 100% !important;
+  background: transparent !important;
+  border-left: 1px solid #2e2c3d !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+
+.slack-panel {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+}
+
+/* ===== DESKTOP: COLLAPSIBLE CHAT =====
+   A 20px rail sits between the office and the chat. Collapsing frees the whole
+   width for the room; the rail stays put at the right edge so the chat can be
+   pulled back without hunting for a button. */
+@media (min-width: 768px) {
+  .chat-rail {
+    appearance: none;
+    position: relative;
+    flex: 0 0 22px;
+    width: 22px;
+    padding: 0;
+    border: none;
+    border-left: 1px solid #2e2c3d;
+    background: transparent !important;
+    color: #8d87a8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  /* Pegangan kecil: penanda bahwa garis ini bisa ditarik, bukan sekadar border. */
+  .chat-rail::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4px;
+    height: 46px;
+    margin: -23px 0 0 -2px;
+    border-radius: 2px;
+    background: currentColor;
+    opacity: 0.18;
+    transition: opacity 160ms ease;
+  }
+  .chat-rail:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #e8e4f6;
+  }
+  .chat-rail:hover::before {
+    opacity: 0.3;
+  }
+  .chat-rail:focus-visible {
+    outline: 2px solid #8b7cf6;
+    outline-offset: -2px;
+  }
+  .chat-rail-chevron {
+    position: relative;
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 700;
+    transform: translateX(2px);
+  }
+
+  .chat-column {
+    transition: width 280ms cubic-bezier(0.4, 0, 0.2, 1),
+      min-width 280ms cubic-bezier(0.4, 0, 0.2, 1), opacity 180ms ease,
+      visibility 0s linear 200ms;
+  }
+
+  .app-body.chat-collapsed .chat-column {
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    opacity: 0;
+    /* tersembunyi dari keyboard & pembaca layar setelah animasi selesai */
+    visibility: hidden;
+    border-left: none !important;
+    overflow: hidden;
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .chat-rail {
+    display: none !important;
+  }
+  /* If the chat was collapsed on desktop, a phone must still show it. */
+  .app-body.chat-collapsed .chat-column {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    opacity: 1;
+    pointer-events: auto;
+    overflow: visible;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-rail,
+  .chat-column {
+    transition: none !important;
+  }
+}
+
+/* ===== TABLET LANDSCAPE BREAKPOINT (768px - 1024px in landscape) ===== */
+@media (max-width: 1024px) and (min-width: 768px) and (orientation: landscape) {
+  .chat-column {
+    width: 360px !important;
+    min-width: 320px !important;
+  }
+  .session-strip {
+    max-width: 35% !important;
+  }
+}
+
+/* ===== MOBILE, TABLET PORTRAIT, & FOLDABLE SCREEN BREAKPOINT =====
+   - Handphone (semua orientasi <= 767px)
+   - Layar Fold / Unfolded Foldable (portrait / near-square aspect-ratio <= 920px)
+   - Tablet dalam orientasi PORTRAIT (iPad, Android Tablet <= 1024px)
+*/
+@media (max-width: 767px),
+       (orientation: portrait) and (max-width: 1024px),
+       (max-aspect-ratio: 11/10) and (max-width: 920px) {
+  /* Header 2 Baris Khusus Mobile — Ultra Slim & Compact */
+  .title-bar {
+    height: auto !important;
+    min-height: 42px !important;
+    max-height: 46px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    padding: 2px 6px !important;
+    gap: 2px !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Baris 1: Judul Studio & Toggle Tampilan Mobile */
+  .title-bar-row.title-bar-top {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    height: 19px !important;
+    gap: 4px !important;
+  }
+
+  .title-bar-dot {
+    display: none !important;
+  }
+  
+  .title-bar-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+    text-align: left !important;
+  }
+
+  .title-bar-text {
+    display: inline-block !important;
+    font-size: 7.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.2px !important;
+    color: #fb923c !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1 !important;
+    text-align: left !important;
+  }
+
+  .mobile-view-toggle {
+    display: inline-flex !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+    padding: 1px !important;
+    gap: 2px !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    border-radius: 3px !important;
+  }
+
+  .mobile-view-btn {
+    font-size: 7px !important;
+    padding: 1px 4px !important;
+    height: 17px !important;
+    line-height: 1 !important;
+  }
+
+  /* Baris 2: Fase paling kiri, AUTO sebelah kiri SCREEN, Menu Aksi RATA KANAN */
+  .title-bar-row.title-bar-bottom {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 3px !important;
+    width: 100% !important;
+    height: 19px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .title-bar-row.title-bar-bottom::-webkit-scrollbar {
+    display: none;
+  }
+
+  .title-bar-row-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .title-bar-row-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  .title-bar-btn {
+    padding: 1px 5px !important;
+    font-size: 7.5px !important;
+    font-weight: 700 !important;
+    border-radius: 3px !important;
+    flex-shrink: 0 !important;
+    height: 17px !important;
+    line-height: 1 !important;
+  }
+
+  .title-bar-icon-btn {
+    width: 17px !important;
+    min-width: 17px !important;
+    padding: 0 !important;
+    font-size: 10px !important;
+  }
+
+    .title-bar-phase {
+    font-size: 7.5px !important;
+    padding: 0 4px !important;
+    height: auto !important;
+    line-height: 17px !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #cbd5e1 !important;
+    white-space: nowrap !important;
+  }
+
+  .session-strip {
+    display: none !important;
+  }
+
+  /* Mode: SPLIT (Default Mobile) - 100% Edge-to-Edge, ZERO black bars left/right */
+  .app-body.mode-split {
+    flex-direction: column !important;
+  }
+  .app-body.mode-split .office-view {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 4800 / 3584 !important;
+    flex: none !important;
+    border-bottom: 2px solid #2e2c3d;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  .app-body.mode-split .room-container {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    aspect-ratio: 4800 / 3584 !important;
+  }
+  .app-body.mode-split .chat-column {
+    height: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 !important;
+    border-left: none !important;
+    min-height: 0 !important;
+  }
+
+  /* Mode: OFFICE ONLY */
+  .app-body.mode-office {
+    flex-direction: column !important;
+  }
+  .app-body.mode-office .office-view {
+    height: 100% !important;
+    width: 100% !important;
+    flex: 1 !important;
+  }
+  .app-body.mode-office .chat-column {
+    display: none !important;
+  }
+
+  /* Mode: CHAT ONLY */
+  .app-body.mode-chat {
+    flex-direction: column !important;
+  }
+  .app-body.mode-chat .office-view {
+    display: none !important;
+  }
+  .app-body.mode-chat .chat-column {
+    height: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 !important;
+    border-left: none !important;
+  }
+
+  /* Status strip on mobile: 2 baris rapi dengan padding tepi */
+  .status-strip {
+    height: auto !important;
+    min-height: 40px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    padding: 5px 12px !important;
+    font-size: 8px !important;
+    background: #0d0c15 !important;
+    border-top: 1px solid rgba(249, 115, 22, 0.25) !important;
+    white-space: normal !important;
+  }
+
+  .status-strip .status-strip-row {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  .status-strip .status-strip-row-1 {
+    justify-content: flex-start !important;
+    font-weight: 700 !important;
+  }
+
+  .status-strip .status-strip-row-2 {
+    justify-content: space-between !important;
+    color: #94a3b8 !important;
+    font-size: 7.5px !important;
+  }
+  
+  /* Agent Card Inspector: inside office-view, diletakkan di bagian atas saat dibuka */
+  .agent-card-backdrop {
+    position: absolute !important;
+    inset: 0 !important;
+    background: rgba(0, 0, 0, 0.45) !important;
+    backdrop-filter: blur(2px) !important;
+    z-index: 850 !important;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
+  }
+
+  .agent-card {
+    position: absolute !important;
+    top: 8px !important;
+    bottom: auto !important;
+    left: 8px !important;
+    right: 8px !important;
+    width: auto !important;
+    max-width: calc(100% - 16px) !important;
+    max-height: 80% !important;
+    z-index: 900 !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.95) !important;
+    font-size: 10px !important;
+  }
+
+  .app-body.mode-office .agent-card {
+    top: 10px !important;
+    bottom: auto !important;
+  }
+}
+
+/* Modals Responsive Rules */
+.remotion-screening-card,
+.wardrobe-modal-container {
+  max-width: min(94vw, 820px) !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+/* ===== GLOBAL UNIVERSAL FONT (JETBRAINS MONO) ===== */
+*, *::before, *::after, html, body, button, input, textarea, select {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+}
+
+/* ===== FLUID ROOM & PROPORTIONAL SPRITE SCALING (MOBILE & DESKTOP) ===== */
+.office-view {
+  container-type: size;
+  container-name: office;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+.room-container {
+  container-type: size;
+  container-name: room;
+  aspect-ratio: 4800 / 3584 !important;
+  width: min(100cqw, calc(100cqh * (4800 / 3584))) !important;
+  height: min(100cqh, calc(100cqw * (3584 / 4800))) !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  position: relative !important;
+  margin: auto !important;
+}
+
+/* Character & Furniture Proportions:
+   Base Room Height = 600px.
+   Character base = 78px (~13% of room height).
+   Boss base = 85px (~14.17% of room height).
+   Desk base = 64px-106px (~10.6% - 17.6% of room height).
+*/
+
+.char-sprite {
+  height: clamp(38px, calc(102 * 1cqh / 6), 210px) !important;
+  width: auto !important;
+  image-rendering: pixelated;
+  display: block;
+}
+
+.character-wrapper[data-agent-id^="boss-"] .char-sprite,
+.char-body-group[data-agent-id^="boss-"] .char-sprite {
+  height: clamp(42px, calc(112 * 1cqh / 6), 230px) !important;
+  width: auto !important;
+}
+
+.furniture-item img {
+  width: auto !important;
+  image-rendering: pixelated;
+  display: block;
+}
+
+/* Fluid Foot Shadows & Rings */
+.char-shadow {
+  width: clamp(16px, calc(32 * 1cqh / 6), 58px) !important;
+  height: clamp(4px, calc(8 * 1cqh / 6), 15px) !important;
+}
+
+.character-wrapper.clickable .char-body-group::after {
+  width: clamp(22px, calc(46 * 1cqh / 6), 84px) !important;
+  height: clamp(7px, calc(16 * 1cqh / 6), 28px) !important;
+}
+
+/* Proportional Badges & Bubbles */
+.effect-bubble-img {
+  height: clamp(14px, calc(24 * 1cqh / 6), 38px) !important;
+  width: auto !important;
+}
+
+.effect-bubble.effect-emoji {
+  font-size: clamp(10px, calc(16 * 1cqh / 6), 26px) !important;
+  line-height: 1.2 !important;
+}
+
+.speech-bubble {
+  font-size: clamp(8px, calc(10 * 1cqh / 6), 13px) !important;
+  padding: clamp(3px, calc(4 * 1cqh / 6), 7px) clamp(5px, calc(7 * 1cqh / 6), 11px) !important;
+  max-width: clamp(130px, calc(190 * 1cqh / 6), 320px) !important;
+}
+
+.char-project,
+.char-needs-you,
+.char-error,
+.char-scene,
+.char-waiting {
+  font-size: clamp(6px, calc(7.5 * 1cqh / 6), 11px) !important;
+  line-height: clamp(9px, calc(11 * 1cqh / 6), 15px) !important;
+  max-width: clamp(65px, calc(95 * 1cqh / 6), 160px) !important;
+}
+
+.char-unread {
+  font-size: clamp(7px, calc(9 * 1cqh / 6), 12px) !important;
+  padding: 1px clamp(3px, calc(4 * 1cqh / 6), 6px) !important;
+}
+
+/* ===== INTERACTIVE CHAT QUICK-ACTION PILLS & SLASH COMMANDS ===== */
+.slack-quick-chips {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 5px 8px !important;
+  background: #110f1a !important;
+  border-top: 1px solid rgba(249, 115, 22, 0.2) !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch;
+}
+.slack-quick-chips::-webkit-scrollbar { display: none; }
+
+.slack-chip-btn {
+  background: rgba(249, 115, 22, 0.15) !important;
+  border: 1px solid rgba(249, 115, 22, 0.35) !important;
+  color: #fdba74 !important;
+  border-radius: 6px !important;
+  padding: 3px 8px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: all 0.15s ease !important;
+  font-family: inherit !important;
+}
+.slack-chip-btn:hover {
+  background: rgba(249, 115, 22, 0.35) !important;
+  color: #ffffff !important;
+  border-color: #f97316 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3) !important;
+}
+.slack-chip-btn:active {
+  transform: translateY(0) !important;
+}
+
+.slack-slash-hint {
+  position: absolute !important;
+  bottom: calc(100% + 5px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  gap: 3px !important;
+  padding: 4px 6px !important;
+  background: #141122 !important;
+  border: 1px solid rgba(249, 115, 22, 0.45) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.8) !important;
+  max-height: 180px !important;
+  height: 180px !important;
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  overscroll-behavior-y: contain !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #f97316 #141122 !important;
+  z-index: 9999 !important;
+}
+
+.slack-slash-hint::-webkit-scrollbar {
+  width: 5px !important;
+}
+.slack-slash-hint::-webkit-scrollbar-track {
+  background: #141122 !important;
+}
+.slack-slash-hint::-webkit-scrollbar-thumb {
+  background: #f97316 !important;
+  border-radius: 4px !important;
+}
+
+.slack-slash-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 6px !important;
+  padding: 0 10px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  width: 100% !important;
+  font-family: inherit !important;
+  transition: all 0.12s ease !important;
+  flex-shrink: 0 !important;
+  touch-action: pan-y !important;
+}
+.slack-slash-item:hover,
+.slack-slash-item:active {
+  background: rgba(249, 115, 22, 0.25) !important;
+  border-color: rgba(249, 115, 22, 0.6) !important;
+}
+
+.slack-slash-cmd {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #fdba74 !important;
+}
+
+.slack-slash-desc {
+  font-size: 10px !important;
+  color: #94a3b8 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  max-width: 60% !important;
+  text-align: right !important;
+}
+
+
+/* ==========================================================================
+   AGENT CHAT RICH FORMATTING & TYPOGRAPHY
+   ========================================================================== */
+
+/* Agent reply card styling: gentle backdrop, soft border & studio orange accent */
+.slack-msg.slack-msg-agent-reply {
+  background: rgba(255, 255, 255, 0.035) !important;
+  border: 1px solid rgba(249, 115, 22, 0.22) !important;
+  border-left: 3px solid #f97316 !important;
+  border-radius: 8px !important;
+  padding: 8px 11px !important;
+  margin: 6px 0 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.slack-msg-text {
+  font-size: 12.5px !important;
+  color: #e2e8f0 !important;
+  line-height: 1.6 !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  letter-spacing: 0.15px !important;
+}
+
+.chat-formatted-body {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+  line-height: 1.6 !important;
+}
+
+.chat-paragraph {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.6 !important;
+  color: #e2e8f0 !important;
+  font-size: 12px !important;
+}
+
+/* Headings */
+.chat-heading {
+  margin: 8px 0 2px 0 !important;
+  color: #fb923c !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.2px !important;
+}
+
+.chat-heading-1 {
+  font-size: 13.5px !important;
+  color: #f97316 !important;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.3) !important;
+  padding-bottom: 4px !important;
+  margin-top: 10px !important;
+}
+
+.chat-heading-2 {
+  font-size: 13px !important;
+  color: #fb923c !important;
+  border-bottom: 1px dashed rgba(249, 115, 22, 0.2) !important;
+  padding-bottom: 3px !important;
+}
+
+.chat-heading-3 {
+  font-size: 12.5px !important;
+  color: #fdba74 !important;
+}
+
+/* Ordered Numbered Lists */
+.chat-list-ordered {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+  margin: 4px 0 !important;
+  background: rgba(0, 0, 0, 0.18) !important;
+  border-radius: 6px !important;
+  padding: 6px 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.chat-list-item-num {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+}
+
+.chat-num-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 19px !important;
+  height: 19px !important;
+  padding: 0 4px !important;
+  border-radius: 5px !important;
+  background: rgba(249, 115, 22, 0.22) !important;
+  color: #fed7aa !important;
+  font-weight: 700 !important;
+  font-size: 10.5px !important;
+  border: 1px solid rgba(249, 115, 22, 0.45) !important;
+  flex-shrink: 0 !important;
+  margin-top: 1px !important;
+}
+
+/* Unordered Bullet Lists */
+.chat-list-unordered {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  margin: 4px 0 !important;
+  padding-left: 2px !important;
+}
+
+.chat-list-item-bullet {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+}
+
+.chat-bullet-dot {
+  color: #f97316 !important;
+  font-size: 11px !important;
+  margin-top: 1px !important;
+  flex-shrink: 0 !important;
+}
+
+.chat-list-content {
+  flex: 1 !important;
+  color: #e2e8f0 !important;
+  line-height: 1.55 !important;
+}
+
+/* Inline Elements */
+.chat-bold {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.chat-italic {
+  font-style: italic !important;
+  color: #cbd5e1 !important;
+}
+
+.chat-inline-code {
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: #fdba74 !important;
+  padding: 1px 5px !important;
+  border-radius: 4px !important;
+  font-size: 11px !important;
+  border: 1px solid rgba(249, 115, 22, 0.28) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.chat-link {
+  color: #fb923c !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+  transition: color 0.15s ease !important;
+}
+.chat-link:hover {
+  color: #fdba74 !important;
+}
+
+/* Interactive Action & Option Chips in Chat */
+.chat-action-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  background: rgba(249, 115, 22, 0.14) !important;
+  border: 1px solid rgba(249, 115, 22, 0.45) !important;
+  color: #fdba74 !important;
+  padding: 4px 10px !important;
+  margin: 3px 4px 3px 0 !important;
+  border-radius: 14px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+  transition: all 0.15s ease-in-out !important;
+  user-select: none !important;
+  line-height: 1.3 !important;
+  text-decoration: none !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+}
+.chat-action-chip:hover {
+  background: rgba(249, 115, 22, 0.3) !important;
+  border-color: #fb923c !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 10px rgba(249, 115, 22, 0.35) !important;
+}
+.chat-action-chip:active {
+  transform: translateY(0) !important;
+  background: #ea580c !important;
+  color: #ffffff !important;
+}
+
+/* Character Working Sparkle Indicator (✨) */
+.effect-bubble.effect-emoji.working-sparkle {
+  font-size: 19px !important;
+  animation: sparkleFloat 1s ease-in-out infinite alternate !important;
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.95)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.8)) !important;
+  user-select: none !important;
+  pointer-events: none !important;
+}
+@keyframes sparkleFloat {
+  0%   { transform: translateX(-50%) translateY(0) scale(0.95) rotate(-8deg); opacity: 0.88; }
+  50%  { transform: translateX(-50%) translateY(-5px) scale(1.22) rotate(8deg); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-2px) scale(1.05) rotate(-4deg); opacity: 0.92; }
+}
+
+/* Code Blocks */
+.chat-code-block-wrap {
+  background: #101216 !important;
+  border: 1px solid rgba(249, 115, 22, 0.2) !important;
+  border-radius: 6px !important;
+  margin: 6px 0 !important;
+  overflow: hidden !important;
+}
+
+.chat-code-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 3px 8px !important;
+  background: #191c22 !important;
+  border-bottom: 1px solid #232730 !important;
+}
+
+.chat-code-lang {
+  font-size: 9.5px !important;
+  color: #94a3b8 !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+}
+
+.chat-code-copy {
+  background: rgba(249, 115, 22, 0.15) !important;
+  border: 1px solid rgba(249, 115, 22, 0.35) !important;
+  color: #fb923c !important;
+  border-radius: 4px !important;
+  padding: 2px 7px !important;
+  cursor: pointer !important;
+  font-size: 9.5px !important;
+  font-weight: 600 !important;
+  font-family: inherit !important;
+  transition: all 0.15s ease !important;
+}
+.chat-code-copy:hover {
+  background: rgba(249, 115, 22, 0.3) !important;
+  color: #ffffff !important;
+}
+
+.chat-code-pre {
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  overflow-x: auto !important;
+  font-size: 11px !important;
+  color: #f1f5f9 !important;
+  line-height: 1.45 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* Blockquotes */
+.chat-blockquote {
+  border-left: 3px solid #f97316 !important;
+  background: rgba(249, 115, 22, 0.08) !important;
+  padding: 5px 10px !important;
+  margin: 5px 0 !important;
+  border-radius: 0 4px 4px 0 !important;
+  color: #cbd5e1 !important;
+  font-style: italic !important;
+  font-size: 11.5px !important;
+}
+
+/* ===== DESKTOP & TABLET LANDSCAPE VIEWPORT =====
+   - Layar Desktop & Laptop monitor (> 1024px)
+   - Tablet & Layar Lebar dalam mode LANDSCAPE (>= 768px)
+*/
+@media (min-width: 1025px),
+       (min-width: 768px) and (orientation: landscape) {
+  .app-body .office-view {
+    display: flex !important;
+  }
+  .app-body .chat-column {
+    display: flex !important;
+  }
+}
+
+/* ===== SLEEK & CLEAN SLACK HEADER LAYOUT ===== */
+.slack-header {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 10px !important;
+  background: transparent !important;
+  border-bottom: 1px solid #2a2538 !important;
+  gap: 8px !important;
+  user-select: none !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+}
+
+.slack-header-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  flex-shrink: 1 !important;
+}
+
+.slack-channel-icon {
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  color: #71717a !important;
+  line-height: 1 !important;
+  flex-shrink: 0 !important;
+}
+
+.slack-channel-name {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #f1f5f9 !important;
+  letter-spacing: 0.3px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1 !important;
+}
+
+.slack-online-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  background: rgba(34, 197, 94, 0.12) !important;
+  border: 1px solid rgba(34, 197, 94, 0.3) !important;
+  border-radius: 10px !important;
+  padding: 1px 6px !important;
+  margin-left: 2px !important;
+  flex-shrink: 0 !important;
+  height: 16px !important;
+}
+
+.slack-online-dot {
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: #22c55e !important;
+  box-shadow: 0 0 5px #22c55e !important;
+  flex-shrink: 0 !important;
+}
+
+.slack-online-count {
+  font-size: 8px !important;
+  font-weight: 700 !important;
+  color: #86efac !important;
+  line-height: 1 !important;
+}
+
+.slack-header-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+}
+
+/* AI On/Off Switch Badge */
+.slack-cron-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 2px 7px !important;
+  border-radius: 12px !important;
+  font-size: 8.5px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  border: 1px solid transparent !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  transition: all 0.2s ease !important;
+  height: 20px !important;
+  box-sizing: border-box !important;
+  font-family: inherit !important;
+  line-height: 1 !important;
+}
+
+.slack-cron-badge.active {
+  background: rgba(34, 197, 94, 0.15) !important;
+  border-color: rgba(34, 197, 94, 0.4) !important;
+  color: #4ade80 !important;
+}
+
+.slack-cron-badge.active .slack-cron-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+  flex-shrink: 0;
+}
+
+.slack-cron-badge.paused {
+  background: rgba(148, 163, 184, 0.1) !important;
+  border-color: rgba(148, 163, 184, 0.25) !important;
+  color: #94a3b8 !important;
+}
+
+.slack-cron-badge.paused .slack-cron-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #64748b;
+  flex-shrink: 0;
+}
+
+/* Audio Control Group */
+.slack-audio-box {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px !important;
+  padding: 1px 5px !important;
+  height: 20px !important;
+  box-sizing: border-box !important;
+}
+
+.slack-mute-btn {
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  font-size: 11px !important;
+  padding: 0 2px !important;
+  display: flex !important;
+  align-items: center !important;
+  line-height: 1 !important;
+}
+
+.slack-volume-slider {
+  width: 36px !important;
+  height: 3px !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: #334155 !important;
+  border-radius: 2px !important;
+  outline: none !important;
+  cursor: pointer !important;
+}
+
+.slack-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: #f97316 !important;
+  box-shadow: 0 0 4px rgba(249, 115, 22, 0.6) !important;
+  cursor: pointer !important;
+}
+
+.slack-answer-toggle {
+  font-size: 8px !important;
+  font-weight: 700 !important;
+  padding: 1px 6px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  cursor: pointer !important;
+  height: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1 !important;
+  font-family: inherit !important;
+}
+
+.slack-answer-toggle.on {
+  color: #fbbf24 !important;
+  border-color: rgba(251, 191, 36, 0.45) !important;
+  background: rgba(251, 191, 36, 0.12) !important;
+}
+
+.slack-answer-toggle.off {
+  color: #64748b !important;
+  border-color: rgba(100, 116, 139, 0.3) !important;
+}
+
+.room-container { background: transparent !important; }
+
+
+/* ===== TRANSPARENT HEADER, CHAT & RAIL STYLES ===== */
+.title-bar {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.chat-column {
+  background: transparent !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.chat-rail {
+  background: transparent !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.chat-rail:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+.slack-panel {
+  background: transparent !important;
+  border-left: none !important;
+}
+.slack-header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.slack-body {
+  background: transparent !important;
+}
+.slack-input-bar {
+  background: rgba(20, 20, 30, 0.5) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+.meters-panel {
+  background: rgba(15, 15, 25, 0.45) !important;
+  border-left: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+
+/* Reload button: Desktop shows icon ⟳, Mobile shows text RELOAD */
+.title-bar-reload-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 25px !important;
+  min-width: 25px !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+}
+.title-bar-reload-btn .reload-text {
+  display: none !important;
+}
+.title-bar-reload-btn .reload-icon {
+  display: inline-block !important;
+}
+
+@media (max-width: 767px) {
+  .title-bar-reload-btn {
+    width: auto !important;
+    min-width: unset !important;
+    padding: 1px 5px !important;
+    font-size: 7.5px !important;
+    font-weight: 700 !important;
+  }
+  .title-bar-reload-btn .reload-icon {
+    display: none !important;
+  }
+  .title-bar-reload-btn .reload-text {
+    display: inline-block !important;
+  }
+}
+
+
+/* ===== HOTSPOT TOUCH & HOVER ACCURACY (Desktop & Mobile) ===== */
+.furniture-item.hotspot {
+  border-radius: 8px;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.furniture-item.hotspot:hover,
+.furniture-item.hotspot:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+.furniture-item.hotspot-bell:hover,
+.furniture-item.hotspot-bell:active {
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.65);
+}
+.furniture-item.hotspot-water-cooler:hover,
+.furniture-item.hotspot-water-cooler:active {
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.65);
+}
