@@ -1,11 +1,4 @@
 {
-  "packs": {
-    "google-data-agent-kit": {
-      "repo": "https://github.com/GoogleCloudPlatform/data-agent-kit-plugin",
-      "via": "git",
-      "commit": "9a49a83",
-      "installedAt": "2026-10-28T04:13:49.311Z"
-    }
-  },
-  "updatedAt": "2026-10-28T04:13:49.314Z"
+  "packs": {},
+  "updatedAt": "2026-10-29T03:03:52.548Z"
 }

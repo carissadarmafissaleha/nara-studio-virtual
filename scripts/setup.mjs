@@ -170,7 +170,7 @@ const SKILL_PACKS = [
     repo: 'https://github.com/nextlevelbuilder/ui-ux-pro-max-skill',
     // skill-nya berada di .claude/skills/* di dalam repo
     from: '.claude/skills',
-    members: ['ui-ux-pro-max', 'ui-styling', 'design', 'design-system', 'brand', 'banner-design', 'slides'],
+    members: ['ui-ux-pro-max'],
     drop: ['assets/showcase'],
   },
   {
@@ -180,34 +180,6 @@ const SKILL_PACKS = [
     from: '.',
     members: ['.'],
     drop: ['.git', 'assets/showcase', 'scripts/engine/lib'],
-  },
-  {
-    id: 'google-data-agent-kit',
-    repo: 'https://github.com/GoogleCloudPlatform/data-agent-kit-plugin',
-    from: 'skills',
-    members: [
-      'accidental-data-loss-prevention',
-      'bigquery-data-transfer-service',
-      'bigquery-sql',
-      'building-data-apps',
-      'data-autocleaning',
-      'dataform-bigquery',
-      'dbt-bigquery',
-      'discovering-gcp-data-assets',
-      'enforcing-resource-attribution',
-      'gcp-data-pipelines',
-      'gcp-dataflow',
-      'gcp-pipeline-orchestration',
-      'gcp-pipeline-resource-provisioning',
-      'gcp-spark',
-      'gcp-spark-troubleshooting',
-      'google-cloud-auth-verification',
-      'managing-python-dependencies',
-      'ml-best-practices',
-      'notebook-guidance',
-      'schema-mapping',
-    ],
-    drop: [],
   },
 ]
 
