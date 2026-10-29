@@ -28,57 +28,115 @@ Wake order hanya bekerja kalau listener berjalan sebagai **background job di dal
 
 ## 1. Stack Skill Wajib (Mandatory Skills)
 
-Setiap video yang diproduksi WAJIB menggabungkan 4 pilar skill utama:
+Setiap video yang diproduksi **wajib** menggabungkan keenam komponen berikut.
 
-1. **`bang-motion` (`.agents/skills/bang-motion/`)**
-   - **Hukum Anti-PPT:** dilarang membuat slide yang digerakkan (`section fade` / `slide deck`).
-   - **Living Background:** latar wajib hidup (partikel, gradien bernapas, tekstur bergerak, kamera bernapas).
-   - **Kinetic Typography:** teks muncul kata per kata (_staggered spring_), rotasi halus, skala tegas.
-   - **Ritme & Spring Physics:** setiap elemen masuk dengan _anticipation, overshoot, settle_.
-2. **`remotion` (`.agents/skills/remotion/`)**
-   - Komposisi React Remotion 4.x murni di `src/remotion/compositions/<CompName>.tsx`.
-   - Durasi dan frame terukur presisi dari panjang audio narasi riil, bukan tebakan.
-   - Audio narasi disinkronkan per scene dengan `<Sequence>`, didukung SFX (`impact`, `whoosh`, `tick`, `riser`, `pop`, `boing`).
-   - Didaftarkan ke `src/remotion/registry.ts` agar langsung tampil di **Screening Room**.
-3. **`ui-ux-pro-max` (`.agents/skills/ui-ux-pro-max/`)**
-   - **Tipografi & Font Pairing:** Pasangan font harmonis (Headline tegas + Body berlegibilitas tinggi), rasio kontras visual minimal 4.5:1 (WCAG AA).
-   - **Palet Warna & Reasoning:** Gunakan aturan proporsi warna 60-30-10 (60% background/latar, 30% kontainer/kartu, 10% aksen _punchy_).
-   - **Spacing Modular & Safe Areas:** Spacing berbasis kelipatan 4px/8px, safe-zone vertikal 180px atas & 240px bawah pada 9:16 untuk bebas gangguan UI mobile/player.
-   - **Desain Kartu & Komponen:** Desain lencana kicker, kartu metrik, diagram HUD, dan teks pendukung dengan visual modern dan presisi tinggi.
-4. **Hukum Anti-Overlap & Tata Letak 3-Zona (Mandatori)**
-   - **Dilarang keras teks menabrak aset visual:** Elemen teks tidak boleh bertumpuk atau overlap dengan karakter, maskot, diagram, atau badge.
-   - **Sistem 3-Zona Vertikal:**
-     - **Zona Atas (Top 26-28%):** Badge kicker & Judul headline terpusat dengan Auto-Scale font.
-     - **Zona Tengah (Middle 46-50%):** Panggung visual khusus maskot/karakter/diagram animasi (bebas gangguan teks).
-     - **Zona Bawah (Bottom 22-26%):** Bar narasi/subtitle & badge CTA pendukung.
-   - **Auto-Scale Tipografi & Line-Clamp:**
-     - Judul 1–4 kata: font size normal (72–88px di 1080p).
-     - Judul 5–8 kata: font size otomatis turun (52–64px).
-     - Judul > 8 kata: font size turun (42–48px), line-height 1.15–1.2, batasi maksimal 2 baris.
-   - **Gunakan Flexbox Stack Terisolasi:** Utamakan tata letak flex column (`display: 'flex', flexDirection: 'column', justifyContent: 'space-between'`) atau container safe-zone dibanding koordinat absolute acak.
-5. **Karakter Tematik & Alur Cerita Terstruktur (Storytelling Arc)**
-   - **Karakter Kontekstual & Hidup:** Setiap video WAJIB menampilkan karakter/maskot yang sesuai dengan tema (misal: maskot koin/kartun ATM untuk perbankan, koki untuk kuliner, dokter/sel untuk sains, anak ceria untuk edukasi). Karakter harus memiliki rig ekspresi (mata berkedip, reaksi emosional kaget/senang, animasi bernapas/idle).
-   - **Struktur Alur Cerita 4 Babak:** Dilarang membuat video seperti daftar poin kaku. Naskah wajib memiliki alur cerita:
-     1. _Hook & Konflik (0–20% durasi):_ Karakter menghadapi rasa penasaran, masalah, atau kebutuhan mendesak.
-     2. _Perjalanan & Tantangan (20–60% durasi):_ Karakter mengeksplorasi langkah atau fakta penting.
-     3. _Pencerahan & Solusi (60–85% durasi):_ Masalah terselesaikan dengan bukti atau demonstrasi nyata.
-     4. _Konklusi & CTA (85–100% durasi):_ Pesan moral/tips utama dan ajakan aksi penutup yang bersahabat.
-6. **Dinamika Nuansa Background Antar-Scene (Mandatori)**
-   - **Wajib Ganti Nuansa Tiap Scene:** Setiap pergantian scene WAJIB mengubah nuansa visual latar belakang (pergeseran gradien warna, pencahayaan/lighting, arah partikel ambient, suasana panggung) agar perpindahan babak terasa hidup dan tidak monoton. Dilarang memakai satu warna background statis sepanjang video.
+### 1.1 `bang-motion` · `.agents/skills/bang-motion/`
+
+| Aturan                     | Penjelasan                                                                                   |
+| -------------------------- | -------------------------------------------------------------------------------------------- |
+| **Hukum Anti-PPT**         | Dilarang membuat slide yang digerakkan (`section fade` / slide deck)                         |
+| **Living Background**      | Latar wajib hidup: partikel, gradien yang "bernapas", tekstur bergerak, kamera yang bernapas |
+| **Kinetic Typography**     | Teks muncul kata per kata (_staggered spring_), rotasi halus, skala tegas                    |
+| **Ritme & Spring Physics** | Setiap elemen masuk dengan _anticipation → overshoot → settle_                               |
+
+### 1.2 `remotion` · `.agents/skills/remotion/`
+
+- Komposisi React **Remotion 4.x** murni di `src/remotion/compositions/<CompName>.tsx`.
+- Durasi dan jumlah frame dihitung presisi dari **panjang audio narasi yang sebenarnya**, bukan tebakan.
+- Audio narasi disinkronkan per scene dengan `<Sequence>`.
+- SFX yang tersedia: `impact`, `whoosh`, `tick`, `riser`, `pop`, `boing`.
+- Daftarkan komposisi ke `src/remotion/registry.ts` agar langsung tampil di **Screening Room**.
+
+### 1.3 `ui-ux-pro-max` · `.agents/skills/ui-ux-pro-max/`
+
+| Aspek                | Standar                                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Font pairing**     | Headline tegas + body berlegibilitas tinggi, harmonis                                                 |
+| **Kontras**          | Minimal **4,5:1** (WCAG AA)                                                                           |
+| **Palet 60-30-10**   | 60% latar, 30% kontainer/kartu, 10% aksen _punchy_                                                    |
+| **Spacing**          | Modular, kelipatan **4px / 8px**                                                                      |
+| **Safe area (9:16)** | **180px atas** dan **240px bawah** bebas dari konten penting (UI mobile/player)                       |
+| **Komponen**         | Lencana kicker, kartu metrik, diagram HUD, dan teks pendukung dengan visual modern dan presisi tinggi |
+
+### 1.4 Anti-Overlap & Tata Letak 3 Zona (Mandatori)
+
+Teks **tidak boleh** bertumpuk atau menabrak karakter, maskot, diagram, atau badge. Layar dibagi menjadi tiga zona vertikal yang terisolasi:
+
+| Zona       | Tinggi  | Isi                                                                          |
+| ---------- | ------- | ---------------------------------------------------------------------------- |
+| **Atas**   | **26%** | Badge kicker + judul headline, terpusat, auto-scale                          |
+| **Tengah** | **50%** | Panggung visual khusus maskot, karakter, dan diagram animasi. **Bebas teks** |
+| **Bawah**  | **24%** | Bar narasi/subtitle + badge CTA pendukung                                    |
+
+> Total tepat 100%. Safe area 180px/240px dihitung sebagai padding **di dalam** zona atas dan bawah.
+
+**Auto-scale tipografi & line-clamp (1080p):**
+
+| Panjang judul | Ukuran font | Aturan lain                          |
+| ------------- | ----------- | ------------------------------------ |
+| 1–4 kata      | 72–88px     |                                      |
+| 5–8 kata      | 52–64px     | maks 2 baris                         |
+| > 8 kata      | 42–48px     | maks 2 baris, `line-height` 1,15–1,2 |
+
+**Implementasi:** gunakan flex column terisolasi atau container safe-zone, bukan koordinat absolut acak.
+
+```tsx
+<AbsoluteFill
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  }}
+>
+  <div style={{ flex: "0 0 26%", paddingTop: 180 }}>
+    {/* kicker + headline */}
+  </div>
+  <div style={{ flex: "1 1 50%" }}>{/* karakter / diagram */}</div>
+  <div style={{ flex: "0 0 24%", paddingBottom: 240 }}>
+    {/* subtitle + CTA */}
+  </div>
+</AbsoluteFill>
+```
+
+### 1.5 Karakter Tematik & Alur Cerita (Storytelling Arc)
+
+**Karakter kontekstual & hidup.** Setiap video wajib punya karakter atau maskot yang sesuai tema:
+
+| Tema      | Contoh                      |
+| --------- | --------------------------- |
+| Perbankan | Maskot koin atau kartun ATM |
+| Kuliner   | Koki                        |
+| Sains     | Dokter atau sel             |
+| Edukasi   | Anak ceria                  |
+
+Rig ekspresi wajib: mata berkedip, reaksi emosional (kaget, senang), dan animasi bernapas/idle.
+
+**Alur 4 babak.** Dilarang membuat video seperti daftar poin kaku.
+
+| Babak                         | Porsi durasi | Isi                                                                   |
+| ----------------------------- | ------------ | --------------------------------------------------------------------- |
+| **1. Hook & Konflik**         | 0–20%        | Karakter menghadapi rasa penasaran, masalah, atau kebutuhan mendesak  |
+| **2. Perjalanan & Tantangan** | 20–60%       | Karakter mengeksplorasi langkah atau fakta penting                    |
+| **3. Pencerahan & Solusi**    | 60–85%       | Masalah selesai lewat bukti atau demonstrasi nyata                    |
+| **4. Konklusi & CTA**         | 85–100%      | Pesan moral atau tips utama, lalu ajakan aksi penutup yang bersahabat |
+
+### 1.6 Dinamika Nuansa Background Antar-Scene (Mandatori)
+
+- Setiap pergantian scene **wajib** mengubah nuansa latar: pergeseran gradien warna, pencahayaan, arah partikel ambient, atau suasana panggung.
+- Tujuannya agar perpindahan babak terasa hidup dan tidak monoton.
+- Dilarang memakai satu warna latar statis sepanjang video.
 
 ---
 
 ## 2. Eksplorasi Referensi & Riset Internet (Diizinkan Penuh)
 
-- **Izin Penuh Cari Data di Internet:** Bebas menggunakan `search_web` untuk mencari data faktual, statistik industri, jurnal sains, rujukan BMKG/NASA, dan referensi visual terkini agar konten akurat dan berbobot.
-- Boleh membuka dan mengadopsi dokumen referensi di `.agents/skills/*/references/`.
+- **Izin penuh** memakai `search_web` untuk data faktual, statistik industri, jurnal sains, rujukan BMKG/NASA, dan referensi visual terkini, agar konten akurat dan berbobot.
+- Wajib membuka dan mengadopsi dokumen referensi di `.agents/skills/*/references/`.
 - Klaim medis/sains wajib dilunakkan ("membantu", bukan "menyembuhkan") dan diberi catatan bila perlu.
-
----
 
 ## 3. Delegasi Sub-Agen, Aset Visual & Audio Generatif (Diizinkan Penuh)
 
-- **Wajib Generate Gambar PNG Pendukung (Minimal 8, Maksimal 20):** Setiap produksi video WAJIB menghasilkan dan menyematkan aset gambar `.png` atau '.svg' pendukung minimal 8 dan maksimal 20 buah (ilustrasi karakter/objek, ikon props tematik, atau tekstur dengan latar transparan/alpha) via sub-agen `image-generator` atau generator visual untuk memperkaya panggung visual.
+- **Wajib Generate Gambar PNG Pendukung (Minimal 15, Maksimal 30):** Setiap produksi video WAJIB menghasilkan dan menyematkan aset gambar `.png` atau '.svg' pendukung minimal 15 dan maksimal 30 buah (ilustrasi karakter/objek, ikon props tematik, atau tekstur dengan latar transparan/alpha) via sub-agen `image-generator` atau generator visual untuk memperkaya panggung visual.
 - **Sub-Agen Voiceover (VO) & Audio Sync:** Diizinkan penuh memanggil sub-agen/modul VO (`audio-sync`, script TTS `scripts/tts-cli.py`) untuk memproduksi rekaman narasi suara per adegan, mengukur panjang durasi audio secara riil, dan menyinkronkannya dengan SFX ke timeline.
 - **Aset Vektor & Semantik:** Maskot/karakter berbasis SVG semantik murni, flat cartoon, skematik teknis, blueprint, grafik HUD, kartu data, badge, partikel.
 - **Font wajib dimuat sungguhan**: unduh woff2 ke `public/fonts/`, deklarasikan `@font-face` di dalam komposisi, tahan render dengan `delayRender()` sampai `document.fonts.load()` selesai.
