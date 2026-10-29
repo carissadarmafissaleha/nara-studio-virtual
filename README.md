@@ -8,6 +8,15 @@ NARA Studio menggabungkan kantor virtual pixel-art isometrik dengan mesin produk
 **Repo:** <https://github.com/carissadarmafissaleha/nara-studio-virtual>
 
 <p align="center">
+  <a href="https://sociabuzz.com/narra_dev">
+    <img src="https://img.shields.io/badge/☕_Traktir_Kopi-Sociabuzz-FF5E5B?style=for-the-badge&labelColor=15100C" alt="Dukung NARA Studio lewat Sociabuzz" />
+  </a>
+  <a href="https://sociabuzz.com/narra_dev">
+    <img src="https://img.shields.io/badge/Support-narra__dev-EFB43C?style=for-the-badge&labelColor=15100C" alt="Support narra_dev" />
+  </a>
+</p>
+
+<p align="center">
   <img src="screenshots-app/desktop/1.webp" alt="Kantor virtual isometrik NARA Studio dengan chat tim AI di sisi kanan" width="100%" />
   <br />
   <sub><b>Kantor virtual isometrik NARA Studio</b> — kru AI bekerja di meja masing-masing, chat tim berjalan real-time, status <code>LISTENER</code> &amp; <code>WAKE</code> tampil di footer.</sub>
@@ -188,6 +197,47 @@ Semua gambar tersimpan di [`screenshots-app/`](screenshots-app) (desktop & mobil
     <td valign="top"><sub><b>Screening Room</b><br />Draf 9:16 tampil penuh, siap diputar.</sub></td>
   </tr>
 </table>
+
+---
+
+## ☕ Dukung NARA Studio
+
+NARA Studio dikembangkan dan dibagikan gratis di bawah MIT License — tanpa paywall, tanpa fitur yang dikunci. Kalau proyek ini kepakai untuk produksi video kamu, kamu bisa traktir kopi lewat **Sociabuzz**:
+
+<p align="center">
+  <a href="https://sociabuzz.com/narra_dev">
+    <img src="https://img.shields.io/badge/☕_Dukung_di_Sociabuzz-narra__dev-FF5E5B?style=for-the-badge&labelColor=15100C" alt="Dukung di Sociabuzz" />
+  </a>
+</p>
+
+<table>
+  <tr>
+    <td width="33%" valign="top" align="center">
+      <h3>🎬</h3>
+      <b>Waktu produksi</b><br />
+      <sub>Riset, storyboard, dan komposisi Remotion tiap order ditulis satu per satu — bukan template yang dipakai ulang.</sub>
+    </td>
+    <td width="33%" valign="top" align="center">
+      <h3>⚙️</h3>
+      <b>Uji render</b><br />
+      <sub>Render 1080×1920 dan 4K butuh CPU/GPU berjam-jam. Dukunganmu mengganti biaya listrik dan mesin uji.</sub>
+    </td>
+    <td width="33%" valign="top" align="center">
+      <h3>🧩</h3>
+      <b>Aset &amp; lisensi</b><br />
+      <sub>Font, paket suara, dan aset karakter yang dipakai di draf butuh lisensi yang benar.</sub>
+    </td>
+  </tr>
+</table>
+
+**Cara lain membantu — gratis dan tetap berguna:**
+
+- ⭐ Beri bintang repo ini supaya lebih mudah ditemukan.
+- 🐛 Laporkan bug atau usulkan fitur lewat [Issues](https://github.com/carissadarmafissaleha/nara-studio-virtual/issues).
+- 📣 Bagikan hasil produksimu dan sebut repo ini.
+- 🎥 Kirim order lewat kantor virtual — setiap order jadi bahan uji nyata untuk pipeline.
+
+> Dukungan sepenuhnya opsional. Repo tetap terbuka penuh, dan semua yang ada di sini bisa kamu pakai tanpa membayar apa pun.
 
 ---
 
