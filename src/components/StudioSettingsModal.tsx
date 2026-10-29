@@ -74,7 +74,6 @@ export const StudioSettingsModal: React.FC<Props> = ({ onClose, onRefreshWorkspa
       setSkillsList([
         { id: 'remotion', name: 'remotion', description: 'Framework video React terprogram', author: 'NARA Studio', version: '2.0.0' },
         { id: 'bang-motion', name: 'bang-motion', description: 'Animasi motion graphic sinematik Anti-PPT', author: 'NARA Studio', version: '1.0.0' },
-        { id: 'nara-director', name: 'nara-director', description: 'Penyusunan naskah & storyboard video', author: 'NARA Studio', version: '1.0.0' },
         { id: 'remotion-coder', name: 'remotion-coder', description: 'Implementasi komponen kode Remotion 4.x', author: 'NARA Studio', version: '1.0.0' },
         { id: 'audio-sync', name: 'audio-sync', description: 'Sinkronisasi suara Edge-TTS, VO & SFX', author: 'NARA Studio', version: '1.0.0' },
         { id: 'render-qa', name: 'render-qa', description: 'Audit kualitas render video MP4 60 FPS', author: 'NARA Studio', version: '1.0.0' },

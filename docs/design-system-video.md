@@ -1,14 +1,14 @@
 # Kontrak Desain Video — pakai `ui-ux-pro-max` di alur `/buat-video`
 
 Berlaku untuk setiap order `/buat-video` yang menghasilkan komposisi Remotion.
-Tujuan: keputusan visual (gaya, palet, font, ritme) diambil dari data, bukan selera mendadak, **tanpa** melanggar hukum motion di `bang-motion` dan `huashu-art-motion`.
+Tujuan: keputusan visual (gaya, palet, font, ritme) diambil dari data, bukan selera mendadak, **tanpa** melanggar hukum motion di `bang-motion`.
 
 ## 1. Kapan skill ini dipakai
 
 | Tahap | Pakai `ui-ux-pro-max`? | Alasan |
 | :--- | :--- | :--- |
 | Sebelum menulis komposisi | **Ya** — ambil gaya, palet, pasangan font, preset motion | Ini keputusan visual |
-| Menyusun staging/adegan | Tidak | Itu wilayah `huashu-art-motion` (镜头表, komposisi per adegan) |
+| Menyusun staging/adegan | Tidak | Itu wilayah sutradara/standar produksi (storyboard, komposisi per adegan) |
 | Menyinkronkan VO/SFX | Tidak | Wilayah `audio-sync` |
 | Audit hasil MP4 | Tidak | Wilayah `render-qa` |
 
@@ -43,7 +43,7 @@ Jalankan dari root proyek (butuh Python 3 stdlib saja):
 
 ## 4. Konflik yang sudah diputuskan
 
-Skill ini rutin menawarkan palet indigo/ungu (`#4F46E5`, `#818CF8`). `huashu-art-motion` **melarang** latar biru-ungu dan gradien neon sebagai *AI slop*.
+Skill ini rutin menawarkan palet indigo/ungu (`#4F46E5`, `#818CF8`). Standar studio **melarang** latar biru-ungu dan gradien neon sebagai *AI slop*.
 
 **Aturan:** palet dari `ui-ux-pro-max` dipakai untuk **peran** (primary, accent, background, ink), lalu nilai hex-nya diganti ke palet tema yang lolos hukum motion. Contoh nyata: order "Manfaat Telur Omega" — skill menyarankan indigo + oranye; yang dipakai krem `#fff8ec`, kuning telur `#f0b429`, mint `#58b98a`, koral `#e8635a`, ink `#2b2140`.
 

@@ -108,7 +108,7 @@ node scripts/order.mjs release <id>    # lepas klaim sebelum pindah mesin
 
 ## 📐 Standar Produksi Video (`/buat-video`)
 
-1. **4 Pilar Skill Wajib:** `bang-motion` + `remotion` + `huashu-art-motion` + `ui-ux-pro-max`.
+1. **Skill Wajib:** `bang-motion` + `remotion` + `ui-ux-pro-max` (skill seni/motion lain sedang ditinjau ulang untuk standar baru).
 2. **Anti-PPT & Dinamika Background:** Latar hidup (partikel/gradien bernapas) dan **wajib ganti nuansa background di setiap scene**.
 3. **Aset Gambar PNG (2–10 File):** Wajib men-generate dan menyematkan minimal 2 hingga 10 gambar `.png` pendukung ke dalam adegan.
 4. **Karakter Tematik & Alur 4 Babak:** Maskot kontekstual dengan rig ekspresi hidup dalam alur *Hook → Eksplorasi → Solusi → Konklusi/CTA*.

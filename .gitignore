@@ -51,8 +51,6 @@ dsh-session-*/
 skills/*
 !skills/audio-sync/
 !skills/bang-motion/
-!skills/nara-director/
-!skills/nara-motion/
 !skills/remotion/
 !skills/remotion-coder/
 !skills/render-qa/

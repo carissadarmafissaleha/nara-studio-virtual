@@ -10,9 +10,7 @@
  *   2. Buat .venv bila belum ada, lalu pasang dependensi Python (Edge-TTS, g4f).
  *   3. Unduh paket skill pihak ketiga HANYA bila belum ada, supaya clone repo
  *      tetap ringan:
- *        - ui-ux-pro-max      -> 7 skill desain
- *        - huashu-art-motion  -> 1 skill tata bahasa visual
- *        - google-data-agent-kit -> 20 skill data/GCP
+ *        - ui-ux-pro-max      -> 1 skill desain
  *      Unduhan memakai `git clone` bila Git ada, kalau tidak jatuh ke unduhan
  *      tarball GitHub + `tar` (tanpa Git pun tetap jalan).
  *   4. Cerminkan skills/ ke .agents/skills/ (dua root yang dibaca agen & kantor).
@@ -173,22 +171,12 @@ const SKILL_PACKS = [
     members: ['ui-ux-pro-max'],
     drop: ['assets/showcase'],
   },
-  {
-    id: 'huashu-art-motion',
-    repo: 'https://github.com/alchaincyf/huashu-art-motion',
-    // repo ini sendiri adalah skill-nya
-    from: '.',
-    members: ['.'],
-    drop: ['.git', 'assets/showcase', 'scripts/engine/lib'],
-  },
 ]
 
 // Skill yang disimpan langsung di repo (di-commit) — harus selalu ada.
 const BUNDLED_SKILLS = [
   'audio-sync',
   'bang-motion',
-  'nara-director',
-  'nara-motion',
   'remotion',
   'remotion-coder',
   'render-qa',
@@ -196,7 +184,7 @@ const BUNDLED_SKILLS = [
 ]
 
 // Wajib ada supaya studio bisa produksi video.
-const MANDATORY_SKILLS = ['bang-motion', 'remotion', 'huashu-art-motion', 'nara-director', 'audio-sync', 'render-qa']
+const MANDATORY_SKILLS = ['bang-motion', 'remotion', 'audio-sync', 'render-qa']
 
 const LOCK_PATH = path.join(ROOT, 'skills', '.nara-skills.lock.json')
 

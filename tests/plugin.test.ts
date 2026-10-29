@@ -89,7 +89,7 @@ describe('.claude-plugin/plugin.json', () => {
     // The repo root IS the plugin root: any of these would silently become
     // part of every session the plugin is enabled in (standard layout table).
     // `skills/` is deliberately absent from this list: NARA ships its agent
-    // skills (bang-motion, remotion, huashu-art-motion, ...) in that folder.
+    // skills (bang-motion, remotion, ...) in that folder.
     for (const extra of ['settings.json', '.mcp.json', '.lsp.json', 'SKILL.md', 'CLAUDE.md', 'agents', 'bin', 'output-styles', 'workflows', 'themes', 'monitors']) {
       expect(existsSync(join(ROOT, extra)), `${extra} at the plugin root`).toBe(false)
     }

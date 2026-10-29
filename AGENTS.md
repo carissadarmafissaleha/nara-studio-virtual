@@ -40,10 +40,9 @@ Setiap video yang diproduksi WAJIB menggabungkan 4 pilar skill utama:
    - Durasi dan frame terukur presisi dari panjang audio narasi riil, bukan tebakan.
    - Audio narasi disinkronkan per scene dengan `<Sequence>`, didukung SFX (`impact`, `whoosh`, `tick`, `riser`, `pop`, `boing`).
    - Didaftarkan ke `src/remotion/registry.ts` agar langsung tampil di **Screening Room**.
-3. **`huashu-art-motion` (`.agents/skills/huashu-art-motion/`)**
-   - Tata bahasa visual, 36 resep gaya seni, dan 9 tata bahasa animasi explainer.
-   - **Palet disiplin:** 3–5 warna konsisten dari awal sampai akhir; hindari gradien neon biru-ungu (*AI slop*).
-   - **Karakter berjiwa:** rig ekspresi (kedip, napas, gestur), objek konkret, bukan ikon generik.
+3. **Standar seni & motion sedang ditinjau ulang.**
+   - Skill `huashu-art-motion`, `nara-director`, dan `nara-motion` sudah dihapus.
+   - Sampai standar baru ditulis, patuhi Prinsip Visual di bawah: palet disiplin 3–5 warna, hindari gradien neon biru-ungu, dan objek konkret (bukan ikon generik).
 4. **`ui-ux-pro-max` (`.agents/skills/ui-ux-pro-max/`)**
    - **Tipografi & Font Pairing:** Pasangan font harmonis (Headline tegas + Body berlegibilitas tinggi), rasio kontras visual minimal 4.5:1 (WCAG AA).
    - **Palet Warna & Reasoning:** Gunakan aturan proporsi warna 60-30-10 (60% background/latar, 30% kontainer/kartu, 10% aksen *punchy*).
