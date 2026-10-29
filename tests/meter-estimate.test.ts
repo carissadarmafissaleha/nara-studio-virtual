@@ -458,8 +458,8 @@ describe('the page: est. marker and the needs-the-status-line tooltips', () => {
     expect(isEstimated(session())).toBe(true)
     expect(estimateMarker(session())).toBe('est.')
     expect(formatMemory(session())).toBe('4%')
-    expect(formatMemory(session({ context: { used: 37.5, size: 200_000, input: 75_000, output: 0 }, estimate: { tokens: 75_000, basis: 'unknown', approximate: true } }))).toBe('≈38%')
-    expect(formatMemory(session({ context: { used: null, size: 1_000_000, input: 0, output: 0 }, estimate: { tokens: null, basis: 'model', approximate: false, compacted: true } }))).toBe('–')
+    expect(formatMemory(session({ context: { used: 37.5, size: 200_000, input: 75_000, output: 0 }, estimate: { tokens: 75_000, basis: 'unknown', approximate: true } }))).toBe('â‰ˆ38%')
+    expect(formatMemory(session({ context: { used: null, size: 1_000_000, input: 0, output: 0 }, estimate: { tokens: null, basis: 'model', approximate: false, compacted: true } }))).toBe('â€“')
     // Status-line numbers get no marker, and an older record without `source` is not an estimate
     expect(estimateMarker(session({ source: 'statusline', estimate: undefined }))).toBe('')
     expect(estimateMarker(session({ source: undefined, estimate: undefined }))).toBe('')
@@ -468,14 +468,14 @@ describe('the page: est. marker and the needs-the-status-line tooltips', () => {
 
   it('the MEMORY tooltip says it comes from the transcript because no status line is registered', () => {
     const tip = estimateTip(session())
-    expect(tip[0]).toBe('MEMORY — Claude-Office: 4% of the context window (44,051 / 1,000,000 tokens) · est.')
+    expect(tip[0]).toBe('MEMORY â€” Claude-Office: 4% of the context window (44,051 / 1,000,000 tokens) Â· est.')
     expect(tip[1]).toContain('estimated from the session transcript')
     expect(tip[1]).toContain('no status line is registered')
     expect(tip[2]).toContain("1,000,000 tokens for claude-haiku-5-5 (Claude Code's model table)")
     expect(tip[3]).toBe(`payroll and electricity need the status line: ${STATUS_LINE_INSTALL}`)
 
     const unknown = estimateTip(session({ modelId: 'claude-next', context: { used: 10, size: 200_000, input: 20_000, output: 0 }, estimate: { tokens: 20_000, basis: 'unknown', approximate: true } }))
-    expect(unknown[0]).toContain('≈10%')
+    expect(unknown[0]).toContain('â‰ˆ10%')
     expect(unknown[2]).toContain('200,000 tokens assumed')
     expect(unknown[2]).toContain('approximate')
     expect(estimateTip(session({ estimate: { tokens: 44051, basis: '1m-tag', approximate: false } }))[2]).toContain('[1m]')
@@ -487,8 +487,8 @@ describe('the page: est. marker and the needs-the-status-line tooltips', () => {
     // The status line alone: next to the plugin, npm run install-hooks would register every hook a second time
     expect(STATUS_LINE_INSTALL).toBe('npm run install-status-line')
     const payroll = needsStatusLineTip('PAYROLL', [session()])
-    expect(payroll[0]).toBe('PAYROLL needs the status line — Claude Code reports cost only to its statusLine command')
-    expect(payroll).toContain('register it with: npm run install-status-line (from the nara-office-ds checkout)')
+    expect(payroll[0]).toBe('PAYROLL needs the status line â€” Claude Code reports cost only to its statusLine command')
+    expect(payroll).toContain('register it with: npm run install-status-line (from the nara-studio-virtual checkout)')
     expect(payroll).toContain('Claude-Office: needs the status line')
     const electricity = needsStatusLineTip('ELECTRICITY', [session(), session({ sessionId: 'b', project: 'other' })])
     expect(electricity[0]).toContain('tokens per minute')

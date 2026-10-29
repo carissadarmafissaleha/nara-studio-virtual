@@ -1,13 +1,13 @@
 /**
- * meters.ts — "Payroll, electricity and memory": the live cost, token-burn
+ * meters.ts â€” "Payroll, electricity and memory": the live cost, token-burn
  * and context-window meters fed by the Claude Code status line through the
- * server (server/status.js: POST /status → session_status / agent_status
+ * server (server/status.js: POST /status â†’ session_status / agent_status
  * broadcasts, plus `statuses` in the WS snapshot). A session with hooks but
  * no status line arrives the same way with `source: 'transcript'`: MEMORY
  * estimated from its transcript, nothing else (see the estimate helpers).
  *
- * A tiny external store in the theme.ts / incident.ts style — module state,
- * listeners, useSyncExternalStore — so App.tsx only forwards the two event
+ * A tiny external store in the theme.ts / incident.ts style â€” module state,
+ * listeners, useSyncExternalStore â€” so App.tsx only forwards the two event
  * types and the Meters panel subscribes on its own. `reduceMeters` is pure
  * and unit-tested in plain Node.
  */
@@ -53,8 +53,8 @@ export interface AgentStatus {
 }
 
 /**
- * Where a session's numbers come from: Claude Code's status line, or — for a
- * session that runs none (the plugin install, `claude -p`) — its transcript,
+ * Where a session's numbers come from: Claude Code's status line, or â€” for a
+ * session that runs none (the plugin install, `claude -p`) â€” its transcript,
  * which gives MEMORY only (server/meterEstimate.js)
  */
 export type MeterSource = 'statusline' | 'transcript'
@@ -266,7 +266,7 @@ export function electricityLevel(tokensPerMin: number): number {
   return Math.max(0, Math.min(100, (Math.log10(1 + tokensPerMin) / 6) * 100))
 }
 
-/** Seconds per stripe cycle on the gauge: busier is faster (3 s idle → 0.4 s) */
+/** Seconds per stripe cycle on the gauge: busier is faster (3 s idle â†’ 0.4 s) */
 export function electricityPeriod(tokensPerMin: number): number {
   if (!Number.isFinite(tokensPerMin) || tokensPerMin <= 0) return 3
   return Math.max(0.4, 3 - Math.log10(1 + tokensPerMin) / 2)
@@ -285,7 +285,7 @@ export function modelLabel(s: SessionStatus): string {
 // ---------------------------------------------------------------------------
 
 /**
- * What registers the status line — the only source of PAYROLL and
+ * What registers the status line â€” the only source of PAYROLL and
  * ELECTRICITY. The status line alone: these sessions are plugin installs or
  * claude -p runs whose hooks already report, and the full installer next to
  * the plugin would deliver every event twice.
@@ -302,11 +302,11 @@ export function estimateMarker(s: SessionStatus): string {
   return isEstimated(s) ? 'est.' : ''
 }
 
-/** A MEMORY reading as shown: '44%', '≈44%' when the window size is a guess, '–' when unknown */
+/** A MEMORY reading as shown: '44%', 'â‰ˆ44%' when the window size is a guess, 'â€“' when unknown */
 export function formatMemory(s: SessionStatus): string {
   const used = s.context.used
-  if (used == null) return '–'
-  return `${isEstimated(s) && s.estimate?.approximate ? '≈' : ''}${Math.round(used)}%`
+  if (used == null) return 'â€“'
+  return `${isEstimated(s) && s.estimate?.approximate ? 'â‰ˆ' : ''}${Math.round(used)}%`
 }
 
 function windowLine(s: SessionStatus): string {
@@ -328,8 +328,8 @@ export function estimateTip(s: SessionStatus): string[] {
   const size = s.context.size
   const tokens = s.estimate?.tokens
   return [
-    `MEMORY — ${sessionLabel(s)}: ${formatMemory(s)} of the context window` +
-      (tokens != null && size ? ` (${formatTokensExact(tokens)} / ${formatTokensExact(size)} tokens)` : '') + ' · est.',
+    `MEMORY â€” ${sessionLabel(s)}: ${formatMemory(s)} of the context window` +
+      (tokens != null && size ? ` (${formatTokensExact(tokens)} / ${formatTokensExact(size)} tokens)` : '') + ' Â· est.',
     s.estimate?.compacted
       ? 'compacted: the window was just emptied; the next reply in the transcript refills the meter'
       : 'estimated from the session transcript (the last reply\'s usage) because no status line is registered for this session',
@@ -346,9 +346,9 @@ export function estimateTip(s: SessionStatus): string[] {
 export function needsStatusLineTip(meter: 'PAYROLL' | 'ELECTRICITY', estimated: SessionStatus[]): string[] {
   const what = meter === 'PAYROLL' ? 'cost' : 'tokens per minute'
   return [
-    `${meter} needs the status line — Claude Code reports ${what} only to its statusLine command`,
+    `${meter} needs the status line â€” Claude Code reports ${what} only to its statusLine command`,
     `no status line is registered for ${estimated.length === 1 ? 'this session' : `these ${estimated.length} sessions`} (a plugin install or claude -p); MEMORY is estimated from the transcript`,
-    `register it with: ${STATUS_LINE_INSTALL} (from the nara-office-ds checkout)`,
+    `register it with: ${STATUS_LINE_INSTALL} (from the nara-studio-virtual checkout)`,
     ...estimated.slice(0, 4).map(s => `${sessionLabel(s)}: needs the status line`),
   ]
 }

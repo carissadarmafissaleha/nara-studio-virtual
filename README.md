@@ -5,17 +5,19 @@
 
 NARA Studio menggabungkan kantor virtual pixel-art isometrik dengan mesin produksi video React (Remotion) yang dilengkapi naskah otomatis, voiceover Bahasa Indonesia (Edge-TTS), sound effects (SFX), dan chat tim AI yang terhubung ke internet & jam dunia real-time.
 
+**Repo:** <https://github.com/carissadarmafissaleha/nara-studio-virtual>
+
 ---
 
 ## 📚 Tutorial Lengkap per Mesin
 
 Panduan langkah-demi-langkah untuk tiap mesin, dari clone sampai MP4:
 
-| Mesin | Tutorial | Stack | Ganti mesin | Wake (di sesi mesin) |
-| :--- | :--- | :--- | :--- | :--- |
-| **Antigravity (AGY)** | [tutorial-agy.md](docs/tutorial-agy.md) | `npm run dev:office-agy` | `/engine agy` | `npm run wake:agy` |
-| **DeepSeek (DS)** | [tutorial-deepseek.md](docs/tutorial-deepseek.md) | `npm run dev:office-ds` | `/engine deepseek` | `npm run wake:ds` |
-| **OpenCode** | [tutorial-opencode.md](docs/tutorial-opencode.md) | `npm run dev:office-opencode` | `/engine opencode` (`oc`) | `npm run wake:opencode` |
+| Mesin                 | Tutorial                                          | Stack                         | Ganti mesin               | Wake (di sesi mesin)    |
+| :-------------------- | :------------------------------------------------ | :---------------------------- | :------------------------ | :---------------------- |
+| **Antigravity (AGY)** | [tutorial-agy.md](docs/tutorial-agy.md)           | `npm run dev:office-agy`      | `/engine agy`             | `npm run wake:agy`      |
+| **DeepSeek (DS)**     | [tutorial-deepseek.md](docs/tutorial-deepseek.md) | `npm run dev:office-ds`       | `/engine deepseek`        | `npm run wake:ds`       |
+| **OpenCode**          | [tutorial-opencode.md](docs/tutorial-opencode.md) | `npm run dev:office-opencode` | `/engine opencode` (`oc`) | `npm run wake:opencode` |
 
 Setiap tutorial berisi: prasyarat, clone & install, menyalakan stack, membuka
 kantor dengan token, mengganti mesin, memasang wake (termasuk opsi foreground
@@ -81,12 +83,12 @@ node scripts/order.mjs release <id>    # lepas klaim sebelum pindah mesin
 
 ## 👥 Tim Studio
 
-| Karakter | Peran | Tugas Utama |
-| :--- | :--- | :--- |
-| 👑 **Caca** | `boss` | Pemimpin & Pengarah Studio (Meja `spot-1`) |
-| ✨ **Nara** | `assistant` | Koordinator Studio, Status Proyek & Pengiriman Order |
-| ✍️ **Lumi** | `scriptwriter` | Penulis Naskah, Riset Fakta & Storyboard (`/script`) |
-| 🎙️ **Ardi** | `voiceover` | Talent Suara Edge-TTS & Sound Designer (`/vo`) |
+| Karakter    | Peran          | Tugas Utama                                            |
+| :---------- | :------------- | :----------------------------------------------------- |
+| 👑 **Caca** | `boss`         | Pemimpin & Pengarah Studio (Meja `spot-1`)             |
+| ✨ **Nara** | `assistant`    | Koordinator Studio, Status Proyek & Pengiriman Order   |
+| ✍️ **Lumi** | `scriptwriter` | Penulis Naskah, Riset Fakta & Storyboard (`/script`)   |
+| 🎙️ **Ardi** | `voiceover`    | Talent Suara Edge-TTS & Sound Designer (`/vo`)         |
 | 🎬 **Jeje** | `video-editor` | Remotion Motion Developer & Video Renderer (`/render`) |
 
 > Kru studio mengobrol secara alami dengan sapaan **Kak Caca**, dilengkapi akses **Jam Dunia Real-Time** dan **Live Web Search**.
@@ -111,33 +113,17 @@ node scripts/order.mjs release <id>    # lepas klaim sebelum pindah mesin
 1. **Skill Wajib:** `bang-motion` + `remotion` + `ui-ux-pro-max` (skill seni/motion lain sedang ditinjau ulang untuk standar baru).
 2. **Anti-PPT & Dinamika Background:** Latar hidup (partikel/gradien bernapas) dan **wajib ganti nuansa background di setiap scene**.
 3. **Aset Gambar PNG (2–10 File):** Wajib men-generate dan menyematkan minimal 2 hingga 10 gambar `.png` pendukung ke dalam adegan.
-4. **Karakter Tematik & Alur 4 Babak:** Maskot kontekstual dengan rig ekspresi hidup dalam alur *Hook → Eksplorasi → Solusi → Konklusi/CTA*.
+4. **Karakter Tematik & Alur 4 Babak:** Maskot kontekstual dengan rig ekspresi hidup dalam alur _Hook → Eksplorasi → Solusi → Konklusi/CTA_.
 5. **Tata Letak 3-Zona Anti-Overlap:** Zona Atas (Headline auto-scale), Zona Tengah (Visual/Maskot bebas teks), Zona Bawah (Subtitle/CTA).
 
 ---
-
-## 🗂️ Apa yang tidak masuk git
-
-Repo ini hanya menyimpan **kode**, bukan hasil produksi. Semua berkas yang lahir
-dari order `/buat-video` diabaikan:
-
-| Diabaikan | Contoh |
-| :--- | :--- |
-| Komposisi Remotion | `src/remotion/compositions/*.tsx` |
-| Registry (di-generate) | `src/remotion/registry.ts` |
-| Aset PNG per order | `public/assets/<topik>/` |
-| Voiceover & SFX | `public/audio/**` |
-| Naskah | `naskah/` |
-| Render & screenshot | `out/`, `dist/` |
-| Skrip generator sekali pakai | `scripts/make-*.mjs`, `scripts/*-cv-audio.mjs` |
-| Skrip & artefak per order | `productions/<orderId>/` (storyboard, generator, skrip aset) |
 
 `registry.ts` ditulis ulang otomatis oleh `scripts/regen-registry.mjs` setiap
 server kantor start, `npm run build`, `npm run dev`, dan `npm run remotion:render`.
 Jadi di clone baru:
 
 ```bash
-git clone … && cd nara-office-ds
+git clone https://github.com/carissadarmafissaleha/nara-studio-virtual.git && cd nara-studio-virtual
 npm install
 npm run dev:office-agy     # server menulis registry dari komposisi yang ada
 ```

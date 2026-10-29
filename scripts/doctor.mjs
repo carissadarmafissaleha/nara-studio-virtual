@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * doctor.mjs — `npm run doctor`: why does nothing appear in the office?
+ * doctor.mjs â€” `npm run doctor`: why does nothing appear in the office?
  *
  * One PASS / WARN / FAIL line per check, the install / uninstall / start
  * commands at the end, exit 1 when anything FAILed. Nothing here writes.
  *
  *   node         a version the server and better-sqlite3 run on (20+)
- *   hooks        ~/.claude/settings.json — or $CLAUDE_CONFIG_DIR/settings.json —
+ *   hooks        ~/.claude/settings.json â€” or $CLAUDE_CONFIG_DIR/settings.json â€”
  *                runs hooks/agent-tracker.sh for every event the installer
  *                registers, from a file that exists. Same rule as
  *                hooks/install-hooks.sh: an entry is ours when a word of its
@@ -14,7 +14,7 @@
  *                agent-office plugin is
  *                installed: enabledPlugins in settings.json plus a copy under
  *                plugins/ (installed_plugins.json, cache/, marketplaces/).
- *   status line  statusLine + subagentStatusLine run hooks/status-line.sh —
+ *   status line  statusLine + subagentStatusLine run hooks/status-line.sh â€”
  *                the meters; a plugin cannot register statusLine, so plugin
  *                installs are pointed at npm run install-status-line (the
  *                status line alone: the installer's hooks next to the
@@ -53,7 +53,7 @@ export const COMMANDS = {
   statusLine: 'npm run install-status-line',
   uninstall: 'npm run uninstall-hooks',
   uninstallHooks: 'npm run uninstall-hooks -- --no-status-line',
-  plugin:    'claude plugin marketplace add carissadarmafissaleha/nara-office-ds && claude plugin install nara-studio@nara-studio',
+  plugin:    'claude plugin marketplace add carissadarmafissaleha/nara-studio-virtual && claude plugin install nara-studio@nara-studio',
   unplugin:  'claude plugin uninstall nara-studio@nara-studio',
   start:     'npm run build && npm run server',
   startAlt:  'bash scripts/start-office.sh',
@@ -109,7 +109,7 @@ export function shellWords(command) {
 
 /**
  * The path a hook command runs that ends in hooks/`name` (the layout of every
- * checkout and of the plugin), or null when the command is not ours — the
+ * checkout and of the plugin), or null when the command is not ours â€” the
  * installer's own rule (its `script_path`). Containing the name is not
  * enough: my-status-line.sh or ~/.claude/status-line.sh is someone else's.
  */
@@ -169,7 +169,7 @@ export function expectedEvents(root = ROOT) {
 export function checkNode(version = process.versions.node) {
   const major = Number(version.split('.')[0])
   if (major >= MIN_NODE_MAJOR) return result(PASS, `node v${version}`)
-  return result(FAIL, `node v${version} — the server (better-sqlite3) needs Node ${MIN_NODE_MAJOR}+; install a current LTS`)
+  return result(FAIL, `node v${version} â€” the server (better-sqlite3) needs Node ${MIN_NODE_MAJOR}+; install a current LTS`)
 }
 
 /**
@@ -267,16 +267,16 @@ export function checkHooks({ settingsPath, settings, settingsState, events, trac
   const plugin = inspectPlugin(settings, configDir)
   const n = events.length
 
-  if (settingsState?.error) out.push(result(FAIL, `settings: ${settingsPath} is not valid JSON (${settingsState.error}) — Claude Code ignores it; fix it, then ${COMMANDS.install}`))
+  if (settingsState?.error) out.push(result(FAIL, `settings: ${settingsPath} is not valid JSON (${settingsState.error}) â€” Claude Code ignores it; fix it, then ${COMMANDS.install}`))
 
   if (hooks.any) {
     const where = hooks.paths.length === 1 ? hooks.paths[0] : `${hooks.paths.length} different paths`
     if (hooks.dead.length) {
       out.push(result(FAIL, `hooks: ${n - hooks.missing.length}/${n} events registered in ${settingsPath}, but they run a file that does not exist: ${hooks.dead.join(', ')}`,
-        `Claude Code reports a hook error on every tool call and the office hears nothing — ${COMMANDS.install} repoints them at this checkout`))
+        `Claude Code reports a hook error on every tool call and the office hears nothing â€” ${COMMANDS.install} repoints them at this checkout`))
     } else if (hooks.missing.length) {
       out.push(result(WARN, `hooks: ${hooks.registered.length}/${n} events run ${where} (missing: ${hooks.missing.join(', ')})`,
-        `an older install — ${COMMANDS.install} adds the rest`))
+        `an older install â€” ${COMMANDS.install} adds the rest`))
     } else {
       out.push(result(PASS, `hooks: ${n}/${n} events run ${where}`))
     }
@@ -285,7 +285,7 @@ export function checkHooks({ settingsPath, settings, settingsState, events, trac
         `fine if that clone is the one you mean to use; ${COMMANDS.install} here repoints them`))
     }
     if (hooks.duplicated.length) {
-      out.push(result(WARN, `hooks: registered twice for ${hooks.duplicated.join(', ')} — every agent arrives twice`,
+      out.push(result(WARN, `hooks: registered twice for ${hooks.duplicated.join(', ')} â€” every agent arrives twice`,
         `${COMMANDS.install} drops the duplicate`))
     }
   }
@@ -293,7 +293,7 @@ export function checkHooks({ settingsPath, settings, settingsState, events, trac
   if (plugin.found) {
     const copy = plugin.copies[0]
     if (hooks.any) {
-      out.push(result(WARN, `plugin ${plugin.enabledKey} is installed as well (${copy.source}) — plugin hooks merge with the settings hooks, so every agent arrives twice`,
+      out.push(result(WARN, `plugin ${plugin.enabledKey} is installed as well (${copy.source}) â€” plugin hooks merge with the settings hooks, so every agent arrives twice`,
         `keep one: ${COMMANDS.uninstallHooks} takes the installer's hooks out and keeps the status line (the meters), or ${COMMANDS.unplugin}`))
     } else {
       out.push(result(PASS, `plugin ${plugin.enabledKey}: enabled, hooks run ${copy.tracker}`))
@@ -305,11 +305,11 @@ export function checkHooks({ settingsPath, settings, settingsState, events, trac
     const notes = [
       plugin.disabledKey ? `the plugin ${plugin.disabledKey} is installed but disabled: claude plugin enable ${plugin.disabledKey}` : null,
       !plugin.disabledKey && plugin.copies.length ? `a plugin copy exists at ${plugin.copies[0].dir} but is not enabled: ${COMMANDS.plugin}` : null,
-      fallback?.any ? `they are in ${fallback.path} — but CLAUDE_CONFIG_DIR is set, so Claude Code reads ${settingsPath}; ${COMMANDS.install} with CLAUDE_CONFIG_DIR set writes them there (CLAUDE_CONFIG_DIR= ${COMMANDS.uninstall} takes the old ones out)` : null,
+      fallback?.any ? `they are in ${fallback.path} â€” but CLAUDE_CONFIG_DIR is set, so Claude Code reads ${settingsPath}; ${COMMANDS.install} with CLAUDE_CONFIG_DIR set writes them there (CLAUDE_CONFIG_DIR= ${COMMANDS.uninstall} takes the old ones out)` : null,
       `${COMMANDS.install} registers them (or install the plugin: ${COMMANDS.plugin})`,
     ]
     const what = settingsState?.missing ? `${settingsPath} does not exist` : `nothing in ${settingsPath} runs hooks/${TRACKER_NAME}`
-    out.push(result(FAIL, `hooks: not installed — ${what}, and no agent-office plugin is enabled`, ...notes))
+    out.push(result(FAIL, `hooks: not installed â€” ${what}, and no agent-office plugin is enabled`, ...notes))
   }
 
   return { results: out, hooks, plugin }
@@ -331,20 +331,20 @@ export function checkStatusLine({ settings, statusScript, home, pluginOnly }) {
   const sub = entry('subagentStatusLine')
 
   if (main.ours && !main.exists) {
-    return result(FAIL, `status line: statusLine runs ${main.path}, which does not exist — Claude Code shows an error instead of a status line`, `${fix} repoints it`)
+    return result(FAIL, `status line: statusLine runs ${main.path}, which does not exist â€” Claude Code shows an error instead of a status line`, `${fix} repoints it`)
   }
   if (main.ours) {
     const notes = [
-      !sub.ours ? `subagentStatusLine is not registered (subagent token rows) — ${fix} adds it` : null,
+      !sub.ours ? `subagentStatusLine is not registered (subagent token rows) â€” ${fix} adds it` : null,
       !main.current ? `(not this checkout's hooks/${STATUS_NAME}: ${main.path})` : null,
     ]
     return result(sub.ours ? PASS : WARN, `status line: statusLine${sub.ours ? ' + subagentStatusLine' : ''} run ${main.path}`, ...notes)
   }
   if (pluginOnly) {
-    return result(WARN, 'status line: not registered — a plugin cannot set statusLine, so the payroll / electricity / memory meters stay hidden',
+    return result(WARN, 'status line: not registered â€” a plugin cannot set statusLine, so the payroll / electricity / memory meters stay hidden',
       `${COMMANDS.statusLine} from a clone adds it and nothing else (the hooks stay with the plugin; ${COMMANDS.install} would register them a second time)`)
   }
-  return result(WARN, 'status line: not registered — the payroll / electricity / memory meters stay hidden',
+  return result(WARN, 'status line: not registered â€” the payroll / electricity / memory meters stay hidden',
     main.other ? `${COMMANDS.install} adds it and chains the one you have (${main.other})` : `${COMMANDS.install} adds it`)
 }
 
@@ -352,7 +352,7 @@ export function checkTools(names = ['python3', 'bash', 'curl'], path = process.e
   const why = { python3: 'the hook parses every event with it, and the installer merges settings.json with it', bash: 'every hook command is `bash .../agent-tracker.sh`', curl: 'the hook POSTs to the server with it' }
   return names.map(name => {
     const found = which(name, path)
-    return found ? result(PASS, `${name}: ${found}`) : result(FAIL, `${name}: not on PATH — ${why[name] ?? 'needed'}`)
+    return found ? result(PASS, `${name}: ${found}`) : result(FAIL, `${name}: not on PATH â€” ${why[name] ?? 'needed'}`)
   })
 }
 
@@ -362,24 +362,24 @@ export async function checkServer({ port = DEFAULT_PORT, fetchImpl = globalThis.
   let body
   try {
     const res = await fetchImpl(url, { signal: AbortSignal.timeout(timeoutMs) })
-    if (!res.ok) return { results: [result(WARN, `server: ${url} answered HTTP ${res.status} — something else is listening on :${port}?`)], up: false }
+    if (!res.ok) return { results: [result(WARN, `server: ${url} answered HTTP ${res.status} â€” something else is listening on :${port}?`)], up: false }
     body = await res.json()
   } catch {
     return {
-      results: [result(WARN, `server: nothing answers on ${url} — the office server is not running`, `start it: ${COMMANDS.start}  (or ${COMMANDS.startAlt})`)],
+      results: [result(WARN, `server: nothing answers on ${url} â€” the office server is not running`, `start it: ${COMMANDS.start}  (or ${COMMANDS.startAlt})`)],
       up: false,
     }
   }
   if (!body || body.status !== 'ok') {
-    return { results: [result(WARN, `server: ${url} did not answer like the office server — something else on :${port}?`)], up: false }
+    return { results: [result(WARN, `server: ${url} did not answer like the office server â€” something else on :${port}?`)], up: false }
   }
   const out = []
-  const version = body.version ? `v${body.version}` : '(version unknown — older server)'
+  const version = body.version ? `v${body.version}` : '(version unknown â€” older server)'
   const up = typeof body.uptimeMs === 'number' ? `, up ${formatSpan(body.uptimeMs)}` : ''
-  out.push(result(PASS, `server: ${version}${up} on :${port} — ${body.sessions ?? '?'} session(s), ${body.agents ?? 0} agent(s), ${body.clients ?? 0} office window(s) connected`,
+  out.push(result(PASS, `server: ${version}${up} on :${port} â€” ${body.sessions ?? '?'} session(s), ${body.agents ?? 0} agent(s), ${body.clients ?? 0} office window(s) connected`,
     body.clients === 0 ? `no office window is connected: npm run open opens it with the office token (or the link the server printed; npm run open -- --dev for Vite on :3333 under ${COMMANDS.dev})` : null))
   if (typeof body.hooksSeen !== 'number') {
-    out.push(result(WARN, 'server: this server predates hook counting — restart it from this checkout to see whether hooks arrive'))
+    out.push(result(WARN, 'server: this server predates hook counting â€” restart it from this checkout to see whether hooks arrive'))
   } else if (body.hooksSeen > 0) {
     out.push(result(PASS, `hooks reaching the server: ${body.hooksSeen} since it started, last ${formatSpan(now - body.lastHookAt)} ago`))
   } else {
@@ -387,7 +387,7 @@ export async function checkServer({ port = DEFAULT_PORT, fetchImpl = globalThis.
       'run a tool in Claude Code and re-check; if nothing arrives, see the hooks line above'))
   }
   if (body.uiAvailable === false) {
-    out.push(result(WARN, `server: UI not built — http://127.0.0.1:${port}/ is a 404; ${COMMANDS.start} serves it there, or ${COMMANDS.dev} for Vite on :3333`))
+    out.push(result(WARN, `server: UI not built â€” http://127.0.0.1:${port}/ is a 404; ${COMMANDS.start} serves it there, or ${COMMANDS.dev} for Vite on :3333`))
   }
   return { results: out, up: true, body }
 }
@@ -396,8 +396,8 @@ export function checkToken({ officeHome, serverUp }) {
   const file = join(officeHome, 'auth-token')
   if (!existsSync(file)) {
     return serverUp
-      ? result(FAIL, `token: ${file} is missing although the server is up — hooks cannot authenticate`, 'is the server running with another AGENT_OFFICE_HOME? set the same one for the hook, or restart it from here')
-      : result(WARN, `token: ${file} not written yet — the server writes it when it starts`)
+      ? result(FAIL, `token: ${file} is missing although the server is up â€” hooks cannot authenticate`, 'is the server running with another AGENT_OFFICE_HOME? set the same one for the hook, or restart it from here')
+      : result(WARN, `token: ${file} not written yet â€” the server writes it when it starts`)
   }
   let mode
   try {
@@ -406,15 +406,15 @@ export function checkToken({ officeHome, serverUp }) {
     return result(FAIL, `token: ${file} cannot be read (${err instanceof Error ? err.message : err})`)
   }
   if (mode & 0o077) {
-    return result(FAIL, `token: ${file} is mode 0${mode.toString(8)} — anyone on this machine can post as an agent`, `chmod 600 "${file}" (the server also rewrites it 0600 when it starts)`)
+    return result(FAIL, `token: ${file} is mode 0${mode.toString(8)} â€” anyone on this machine can post as an agent`, `chmod 600 "${file}" (the server also rewrites it 0600 when it starts)`)
   }
   return result(PASS, `token: ${file} (0600)`)
 }
 
 export function checkDist({ root, port = DEFAULT_PORT }) {
   const index = join(root, 'dist', 'index.html')
-  if (existsSync(index)) return result(PASS, `dist/: built — the server serves it at http://127.0.0.1:${port}/`)
-  return result(WARN, 'dist/: not built — npm run build for the one-port page, or npm run dev for the Vite dev server on :3333')
+  if (existsSync(index)) return result(PASS, `dist/: built â€” the server serves it at http://127.0.0.1:${port}/`)
+  return result(WARN, 'dist/: not built â€” npm run build for the one-port page, or npm run dev for the Vite dev server on :3333')
 }
 
 // ---------------------------------------------------------------------------
@@ -471,7 +471,7 @@ const ANSI = { [PASS]: '\x1b[32m', [WARN]: '\x1b[33m', [FAIL]: '\x1b[31m', dim: 
 /** The report as lines; colour only when asked. */
 export function formatReport({ results, ok, context }, { color = false } = {}) {
   const c = (code, text) => (color ? `${ANSI[code]}${text}${ANSI.reset}` : text)
-  const lines = [c('bold', 'Agent Office doctor'), c('dim', `  ${context.root}  ·  settings ${context.settingsPath}  ·  port ${context.port}`), '']
+  const lines = [c('bold', 'Agent Office doctor'), c('dim', `  ${context.root}  Â·  settings ${context.settingsPath}  Â·  port ${context.port}`), '']
   for (const r of results) {
     lines.push(`  ${c(r.level, r.level)}  ${r.title}`)
     for (const note of r.notes) lines.push(`        ${c('dim', note)}`)
@@ -479,7 +479,7 @@ export function formatReport({ results, ok, context }, { color = false } = {}) {
   const counts = { [PASS]: 0, [WARN]: 0, [FAIL]: 0 }
   for (const r of results) counts[r.level]++
   lines.push('')
-  lines.push(`  ${counts[PASS]} passed, ${counts[WARN]} warning(s), ${counts[FAIL]} failed${ok ? '' : c(FAIL, ' — fix the FAIL lines above')}`)
+  lines.push(`  ${counts[PASS]} passed, ${counts[WARN]} warning(s), ${counts[FAIL]} failed${ok ? '' : c(FAIL, ' â€” fix the FAIL lines above')}`)
   lines.push('')
   lines.push(c('bold', 'Commands') + c('dim', `  (from ${context.root})`))
   const rows = [

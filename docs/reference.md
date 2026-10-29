@@ -32,102 +32,102 @@ Or add the hooks to `~/.claude/settings.json` yourself:
   "hooks": {
     "PreToolUse": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "PostToolUse": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "PostToolUseFailure": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "SubagentStart": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "SubagentStop": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "SessionStart": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "SessionEnd": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "UserPromptSubmit": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "Stop": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "PermissionRequest": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "Notification": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "StopFailure": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "PreCompact": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "PostCompact": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "PostToolBatch": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "CwdChanged": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "PostModelSwitch": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "TaskCreated": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ],
     "TaskCompleted": [
       {
-        "hooks": [{ "type": "command", "command": "bash /path/to/nara-office-ds/hooks/agent-tracker.sh" }]
+        "hooks": [{ "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/agent-tracker.sh" }]
       }
     ]
   },
-  "statusLine": { "type": "command", "command": "bash /path/to/nara-office-ds/hooks/status-line.sh", "padding": 0 },
-  "subagentStatusLine": { "type": "command", "command": "bash /path/to/nara-office-ds/hooks/status-line.sh --subagents" }
+  "statusLine": { "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/status-line.sh", "padding": 0 },
+  "subagentStatusLine": { "type": "command", "command": "bash /path/to/nara-studio-virtual/hooks/status-line.sh --subagents" }
 }
 ```
 
@@ -156,13 +156,13 @@ In the office that record is one Claude per terminal (`main-<session id>`, creat
 The repository is also a [Claude Code plugin](https://code.claude.com/docs/en/plugins) (`.claude-plugin/plugin.json`) and its own marketplace (`.claude-plugin/marketplace.json`), so the hooks can be installed without the installer touching `~/.claude/settings.json`. In a Claude Code session:
 
 ```text
-/plugin install nara-studio --marketplace carissadarmafissaleha/nara-office-ds
+/plugin install nara-studio --marketplace carissadarmafissaleha/nara-studio-virtual
 ```
 
 or from your shell, where it needs no confirmation:
 
 ```bash
-claude plugin marketplace add carissadarmafissaleha/nara-office-ds
+claude plugin marketplace add carissadarmafissaleha/nara-studio-virtual
 claude plugin install nara-studio@nara-studio
 ```
 
@@ -184,7 +184,7 @@ Two things to know. Plugin hooks merge with the ones in your settings, so pick o
 
 | Platform | Office in the browser | Claude Code hooks + status line | Desktop app (Electron) |
 |---|---|---|---|
-| **macOS** | Yes — `start-office.sh` opens the browser with `open`; notifications via `osascript` | Yes — the hooks are bash scripts that call `python3` and `curl`; macOS ships `bash` and `curl`, `python3` comes with the Xcode command-line tools | Unsigned `.dmg` for Apple silicon and Intel on the [releases page](https://github.com/carissadarmafissaleha/nara-office-ds/releases), built by the release workflow (first launch: see [Download](#desktop-app-electron)); not launched by hand this week |
+| **macOS** | Yes — `start-office.sh` opens the browser with `open`; notifications via `osascript` | Yes — the hooks are bash scripts that call `python3` and `curl`; macOS ships `bash` and `curl`, `python3` comes with the Xcode command-line tools | Unsigned `.dmg` for Apple silicon and Intel on the [releases page](https://github.com/carissadarmafissaleha/nara-studio-virtual/releases), built by the release workflow (first launch: see [Download](#desktop-app-electron)); not launched by hand this week |
 | **Linux** | Yes (verified) — `xdg-open` opens the browser; notifications via `notify-send` when present | Yes | Yes — `.AppImage` on the releases page; the self-contained bundle was built, launched and screenshotted on Linux this week |
 | **Windows** | Node runs the server natively: `npm run build && npm run server`, then open `http://127.0.0.1:3334` yourself | Through **WSL** or **Git Bash**, with `python3` and `curl` on the PATH: the installer and the hooks are bash scripts. A native Node hook is on the [roadmap](#roadmap) | NSIS `.exe` installer on the releases page, built by the release workflow; not launched by hand yet |
 
@@ -284,7 +284,7 @@ The recipient goes in `metadata.to` (name, role or office id); replies thread th
 
 The desktop app is self-contained: it bundles the office server, the built UI and `node_modules`, runs the server on the Node that ships inside Electron (nothing needs to be installed, and no `node` on the PATH), and loads the office from `http://127.0.0.1:3334/` — one port for the page, its assets and the WebSocket — with the office token from `~/.agent-office/auth-token` in the URL fragment, read once the server answers (see [Security](#security)). Launched with `AGENT_OFFICE_PORT` in its environment (from a terminal, say), the app starts its server, loads the page and points the tray at that port instead. If something else already answers on that port without the office's page (a checkout server with no `npm run build`, say), the packaged app says so in a dialog naming the port instead of loading a blank window.
 
-**Download.** Every tagged release carries installers built by the [release workflow](../.github/workflows/release.yml); the [releases page](https://github.com/carissadarmafissaleha/nara-office-ds/releases) has them, named `Agent-Office-<version>-<os>-<arch>`:
+**Download.** Every tagged release carries installers built by the [release workflow](../.github/workflows/release.yml); the [releases page](https://github.com/carissadarmafissaleha/nara-studio-virtual/releases) has them, named `Agent-Office-<version>-<os>-<arch>`:
 
 - **macOS** — `…-mac-arm64.dmg` (Apple silicon) or `…-mac-x64.dmg` (Intel); drag the app into Applications. The app is not signed or notarised, so macOS refuses it on first launch: right-click (Control-click) the app and choose **Open**; if it says the app is damaged, clear the quarantine flag with `xattr -dr com.apple.quarantine "/Applications/Agent Office.app"` and open it again.
 - **Windows** — `…-win-x64.exe`, an ordinary installer that asks where to install. SmartScreen warns about an unknown publisher: **More info → Run anyway**.
@@ -529,7 +529,7 @@ requires the token, conversation text requires it, and the rest stay open:
 
 ## Roadmap
 
-Open and planned work lives in [GitHub issues](https://github.com/carissadarmafissaleha/nara-office-ds/issues). Next up, roughly in order:
+Open and planned work lives in [GitHub issues](https://github.com/carissadarmafissaleha/nara-studio-virtual/issues). Next up, roughly in order:
 
 - **OS notification** when a permission wait starts, now that the office can answer the dialog itself (`notify.sh` already covers macOS and Linux; the server only calls it for chat mentions and failed agents today)
 - **`npx` one-liner** to start the office without a checkout

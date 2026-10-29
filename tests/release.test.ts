@@ -3,7 +3,7 @@
  * on a `v*` tag and uploads them to a draft GitHub release, from the `build`
  * section of package.json. These checks keep the workflow, that section and
  * electron/after-pack.cjs in step with each other, and run
- * scripts/sync-plugin-version.mjs — the `version` script that moves
+ * scripts/sync-plugin-version.mjs â€” the `version` script that moves
  * .claude-plugin/plugin.json to package.json's version when `npm version`
  * cuts a release (tests/plugin.test.ts fails when the two differ).
  */
@@ -30,10 +30,10 @@ describe('the electron-builder configuration a release is built from', () => {
 
   it('publishes to a GitHub draft, in the repository package.json names', () => {
     expect(build.publish).toEqual({ provider: 'github', releaseType: 'draft' })
-    expect(pkg.repository.url).toMatch(/^https:\/\/github\.com\/carissadarmafissaleha\/nara-office-ds(\.git)?$/)
+    expect(pkg.repository.url).toMatch(/^https:\/\/github\.com\/carissadarmafissaleha\/nara-studio-virtual(\.git)?$/)
   })
 
-  it('builds macOS as one dmg per architecture, never universal — after-pack.cjs refuses that', () => {
+  it('builds macOS as one dmg per architecture, never universal â€” after-pack.cjs refuses that', () => {
     expect(build.mac.target).toEqual([{ target: 'dmg', arch: ['arm64', 'x64'] }])
     expect(read('electron/after-pack.cjs')).toMatch(/archName === 'universal'/)
   })

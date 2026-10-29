@@ -22,8 +22,8 @@ dikenali di terminal yang sama dengan repo.
 ## 1. Clone dan pasang
 
 ```bash
-git clone https://github.com/carissadarmafissaleha/nara-office-ds.git
-cd nara-office-ds
+git clone https://github.com/carissadarmafissaleha/nara-studio-virtual.git
+cd nara-studio-virtual
 npm install
 npm run setup:check
 ```

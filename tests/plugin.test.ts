@@ -26,7 +26,7 @@ const hooksFile = readJson('hooks/hooks.json')
 const hooks: Record<string, any[]> = hooksFile.hooks
 
 /**
- * Every hook event name Claude Code 2.1.300 accepts — its own "Valid events:"
+ * Every hook event name Claude Code 2.1.300 accepts â€” its own "Valid events:"
  * list, printed when a settings file names an unknown one.
  */
 const VALID_EVENTS = [
@@ -39,7 +39,7 @@ const VALID_EVENTS = [
 ]
 
 /**
- * What hooks/install-hooks.sh registers — read from its EVENTS tuple, so the
+ * What hooks/install-hooks.sh registers â€” read from its EVENTS tuple, so the
  * plugin and the installer cannot drift apart without this test noticing.
  */
 const INSTALLER_EVENTS = (() => {
@@ -58,7 +58,7 @@ describe('.claude-plugin/plugin.json', () => {
     expect(plugin.name).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)
   })
 
-  it('does not take a name reserved for, or that reads as, one of Anthropic’s own plugins', () => {
+  it('does not take a name reserved for, or that reads as, one of Anthropicâ€™s own plugins', () => {
     const name = plugin.name.toLowerCase()
     // `claude plugin validate` errors on these ...
     expect(name).not.toMatch(/^(claude|anthropic|anthropics|cc-plugin)[-_. ]/)
@@ -75,8 +75,8 @@ describe('.claude-plugin/plugin.json', () => {
     expect(plugin.license).toBe('MIT')
     // homepage must parse as a URL or the plugin fails to load
     expect(() => new URL(plugin.homepage)).not.toThrow()
-    expect(plugin.homepage).toBe('https://github.com/carissadarmafissaleha/nara-office-ds')
-    expect(plugin.repository).toBe('https://github.com/carissadarmafissaleha/nara-office-ds')
+    expect(plugin.homepage).toBe('https://github.com/carissadarmafissaleha/nara-studio-virtual')
+    expect(plugin.repository).toBe('https://github.com/carissadarmafissaleha/nara-studio-virtual')
   })
 
   it('declares no component paths, so the standard layout (hooks/hooks.json, commands/) is what loads', () => {
@@ -149,7 +149,7 @@ describe('hooks/hooks.json', () => {
     }
   })
 
-  it('registers exactly the 19 events the installer registers (workers, sessions, the main thread’s turn, the task list)', () => {
+  it('registers exactly the 19 events the installer registers (workers, sessions, the main threadâ€™s turn, the task list)', () => {
     expect(INSTALLER_EVENTS).toHaveLength(19)
     expect(Object.keys(hooks).sort()).toEqual([...INSTALLER_EVENTS].sort())
   })
@@ -175,14 +175,14 @@ describe('hooks/hooks.json', () => {
           const path = join(ROOT, m![1])
           expect(existsSync(path), `${m![1]} missing`).toBe(true)
           expect(() => accessSync(path, constants.X_OK), `${m![1]} not executable`).not.toThrow()
-          // No ".." — a path that escapes the plugin root does not load
+          // No ".." â€” a path that escapes the plugin root does not load
           expect(m![1]).not.toContain('..')
         }
       }
     }
   })
 
-  it('narrows nothing: every event fires on every occurrence, like the installer’s matcher ""', () => {
+  it('narrows nothing: every event fires on every occurrence, like the installerâ€™s matcher ""', () => {
     // PreToolUse is activity for every tool, a main-thread PostToolUse of any
     // tool lowers a permission hand (session_tool_done), and the rest either
     // have no matcher support (UserPromptSubmit, Stop, PostToolBatch, CwdChanged)
@@ -193,7 +193,7 @@ describe('hooks/hooks.json', () => {
   })
 })
 
-describe('hooks/hooks.json × agent-tracker.sh', () => {
+describe('hooks/hooks.json Ã— agent-tracker.sh', () => {
   // A payload per registered event, in the shape Claude Code 2.1.300 sends
   // (see tests/hook-script.test.ts for the verbatim captures). Run through
   // the real script, not just its Python, with no office server to talk to.
