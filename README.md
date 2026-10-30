@@ -32,7 +32,8 @@ Panduan langkah-demi-langkah untuk tiap mesin, dari clone sampai MP4:
 | :-------------------- | :------------------------------------------------ | :---------------------------- | :------------------------ | :---------------------- |
 | **Antigravity (AGY)** | [tutorial-agy.md](docs/tutorial-agy.md)           | `npm run dev:office-agy`      | `/engine agy`             | `npm run wake:agy`      |
 | **DeepSeek (DS)**     | [tutorial-deepseek.md](docs/tutorial-deepseek.md) | `npm run dev:office-ds`       | `/engine deepseek`        | `npm run wake:ds`       |
-| **OpenCode**          | [tutorial-opencode.md](docs/tutorial-opencode.md) | `npm run dev:office-opencode` | `/engine opencode` (`oc`) | `npm run wake:opencode` |
+| **OpenCode**          | [tutorial-opencode.md](docs/tutorial-opencode.md) | `npm run dev:office-opencode`      | `/engine opencode` (`oc`) | `npm run wake:opencode` |
+| **Hermes**            | [tutorial-hermes.md](docs/tutorial-hermes.md)     | `npm run dev:office-hermes`        | `/engine hermes`          | `npm run wake:hermes`   |
 
 Setiap tutorial berisi: prasyarat, clone & install, menyalakan stack, membuka
 kantor dengan token, mengganti mesin, memasang wake (termasuk opsi foreground

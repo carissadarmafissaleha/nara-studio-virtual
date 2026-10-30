@@ -2,7 +2,7 @@
   "name": "office-nara",
   "productName": "NARA Virtual Video Production Studio",
   "version": "1.1.2",
-  "description": "NARA Virtual Video Production Studio — Isometric Pixel Art Virtual Office for DeepSeek AI Agents & Remotion Video Production",
+  "description": "NARA Virtual Video Production Studio \u2014 Isometric Pixel Art Virtual Office for DeepSeek AI Agents & Remotion Video Production",
   "author": "NARA Studio",
   "license": "MIT",
   "repository": {
@@ -62,7 +62,10 @@
     "install-status-line": "bash hooks/install-hooks.sh --status-line-only",
     "uninstall-hooks": "bash hooks/install-hooks.sh --uninstall",
     "doctor": "node scripts/doctor.mjs",
-    "remotion:render": "node scripts/regen-registry.mjs && remotion render src/remotion/index.ts MainVideo out/video.mp4"
+    "remotion:render": "node scripts/regen-registry.mjs && remotion render src/remotion/index.ts MainVideo out/video.mp4",
+    "dev:office-hermes": "concurrently \"node server/index.js\" \"vite\" \"node scripts/studio-bridge.mjs\" \"node scripts/engine-inbox-daemon.mjs --engine hermes\"",
+    "listen:hermes": "node scripts/order-wake.mjs --engine hermes",
+    "wake:hermes": "node scripts/order-wake.mjs --engine hermes"
   },
   "dependencies": {
     "@remotion/player": "^4.0.539",

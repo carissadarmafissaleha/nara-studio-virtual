@@ -9,6 +9,7 @@ import * as none from './none.mjs'
 import * as deepseek from './deepseek.mjs'
 import * as antigravity from './antigravity.mjs'
 import * as opencode from './opencode.mjs'
+import * as hermes from './hermes.mjs'
 
 /** Alias yang diterima di chat / `engine.json` → kunci engine sebenarnya. */
 export const ENGINE_ALIASES = {
@@ -18,6 +19,7 @@ export const ENGINE_ALIASES = {
   deepseek: 'deepseek',
   oc: 'opencode',
   opencode: 'opencode',
+  hermes: 'hermes',
 }
 
 /** Nama kunci engine dari alias apa pun; null bila tidak dikenal. */
@@ -26,7 +28,7 @@ export function resolveEngineKey(raw) {
   return ENGINE_ALIASES[key] || (ENGINES[key] ? key : null)
 }
 
-export const ENGINES = { none, deepseek, antigravity, opencode }
+export const ENGINES = { none, deepseek, antigravity, opencode, hermes }
 
 export function engineConfigPath() {
   const home = process.env.AGENT_OFFICE_HOME || path.join(os.homedir(), '.agent-office')
@@ -39,6 +41,7 @@ const DEFAULTS = {
     deepseek: { url: '' },
     antigravity: {},
     opencode: {},
+    hermes: {},
   },
 }
 
