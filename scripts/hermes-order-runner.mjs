@@ -23,7 +23,7 @@ async function runOrder(order) {
   console.log('[hermes-runner] processing', order.id, topic)
   const { stdout } = await exec('node', ['scripts/studio-compose.mjs', '--topic', topic], { cwd: WORKSPACE, maxBuffer: 10 * 1024 * 1024 })
   let info
-  try { info = JSON.parse(stdout.trim().split('\n').pop()) } catch { info = null }
+  try { info = JSON.parse(stdout.trim()) } catch { info = null }
   if (!info?.compName) throw new Error('studio-compose failed')
   const comp = info.compName
   const scenes = Array.isArray(info?.audio?.timings) ? info.audio.timings.length : 8
