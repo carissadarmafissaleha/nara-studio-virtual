@@ -111,7 +111,7 @@ Layar dibagi menjadi tiga zona vertikal yang terisolasi:
 </AbsoluteFill>
 ```
 
-### 1.5 Karakter Tematik & Alur Cerita (Storytelling Arc)
+### 1.5 Karakter Tematik & Alur Cerita (Storytelling Arc Minimal 8 Scene)
 
 **Karakter kontekstual & hidup.** Setiap video wajib punya karakter atau maskot yang sesuai tema:
 
@@ -122,22 +122,38 @@ Layar dibagi menjadi tiga zona vertikal yang terisolasi:
 | Sains     | Dokter atau sel             |
 | Edukasi   | Anak ceria                  |
 
-Rig ekspresi wajib: mata berkedip, reaksi emosional (kaget, senang), dan animasi bernapas/idle.
+Rig ekspresi wajib: mata berkedip, reaksi emosional (kaget, senang, bingung, bersemangat), dan animasi bernapas/idle.
 
-**Alur 4 babak (Cinematic Story Arc).** Dilarang keras membuat video seperti daftar poin kaku / slide presentasi. Setiap scene harus menjadi babak cerita dengan visual aksi karakter:
+**Wajib Storytelling & Struktur Minimal 8 Scene (MANDATORI):**
+Dilarang keras membuat video pendek dangkal atau daftar poin kaku/slide presentasi. Setiap video **wajib memiliki minimal 8 scene** dengan alur narasi dramatis yang utuh:
 
-| Babak                         | Porsi durasi | Isi                                                                   |
-| ----------------------------- | ------------ | --------------------------------------------------------------------- |
-| **1. Hook & Konflik**         | 0–20%        | Karakter menghadapi rasa penasaran, masalah, atau kebutuhan mendesak  |
-| **2. Perjalanan & Tantangan** | 20–60%       | Karakter mengeksplorasi langkah atau fakta penting                    |
-| **3. Pencerahan & Solusi**    | 60–85%       | Masalah selesai lewat bukti atau demonstrasi nyata                    |
-| **4. Konklusi & CTA**         | 85–100%      | Pesan moral atau tips utama, lalu ajakan aksi penutup yang bersahabat |
+| Scene | Nama Babak | Durasi Relatif | Isi & Aksi Karakter |
+| ----- | ---------- | -------------- | ------------------- |
+| **1** | **Hook Menggelegar** | ~10% | Pertanyaan provokatif, misteri, atau kejadian mengejutkan dalam 3 detik pertama yang langsung mencengkeram atensi penonton. |
+| **2** | **Problem & Konflik Nyata** | ~12% | Karakter utama menghadapi rintangan, rasa lelah, kebingungan, kegagalan, atau dilema mendesak. |
+| **3** | **Eksplorasi / Kesalahan Umum** | ~12% | Karakter mencari jawaban, membongkar mitos, atau mencoba trik yang salah sebelum menemukan jalan yang benar. |
+| **4** | **Kedatangan Solusi (The Turning Point)** | ~14% | Kemunculan solusi pahlawan (bahan utama, metode kunci, produk) dengan entrance spektakuler (aura, spring pop, SFX impact). |
+| **5** | **Bedah Mekanisme Solusi (Why it Works)** | ~14% | Visualisasi cara kerja solusi secara ilmiah/logis (misal nutrisi diserap tubuh, sistem digital bekerja, reaksi kimia positif). |
+| **6** | **Aksi & Transformasi Karakter** | ~14% | Karakter mengonsumsi/menerapkan solusi dan mengalami transformasi dramatis (energi meluap, visual glowing, percaya diri kembali). |
+| **7** | **Bukti Nyata & Hasil Sukses** | ~12% | Demonstrasi hasil nyata: produktivitas naik, tubuh bugar, prestasi diraih, panggung selebrasi sukacita. |
+| **8** | **Konklusi, Golden Rule & Call to Action (CTA)** | ~12% | Pesan takeaway 1 kalimat tegas, badge aturan emas (misal: "1 Butir Sehari"), serta ajakan interaksi penonton yang bersahabat. |
 
-### 1.6 Dinamika Nuansa Background Antar-Scene (Mandatori)
+### 1.6 Environment Scenery & Background Berkomponen (Anti-Background Kosong)
 
-- Setiap pergantian scene **wajib** mengubah nuansa latar: pergeseran gradien warna, pencahayaan, arah partikel ambient, atau suasana panggung.
-- Tujuannya agar perpindahan babak terasa hidup dan tidak monoton.
-- Dilarang memakai satu warna latar statis sepanjang video.
+**Dilarang Keras Latar Belakang Kosong/Polos.** Latar video tidak boleh hanya gradien datar atau warna polos tanpa dunia cerita (*no empty void*). Setiap adegan wajib memiliki tata letak panggung lingkungan (*world-building scenery*) yang kaya komponen kontekstual:
+
+| Tipe Setting | Komponen Wajib Hadir di Latar | Efek & Ambience |
+| ------------ | ----------------------------- | --------------- |
+| **Outdoor (Taman, Alam, Luar Ruang)** | Pohon rindang berayun lembut, semak-semak, rumput bergoyang, awan melayang di langit, matahari/sinar cahaya (*sun rays*), jalan setapak, siluet gedung kota di cakrawala. | Partikel daun jatuh, hembusan angin, kilau cahaya matahari. |
+| **Indoor (Rumah, Kamar Tidur, Ruang Tamu)** | Jendela dengan pemandangan luar, meja & kursi, lampu ruangan yang berpijar, rak buku / bingkai foto dinding, karpet, jam dinding, pot tanaman hias hijau. | Pencahayaan hangat/sejuk, bayangan lembut perabot. |
+| **Indoor (Kantor, Ruang Kerja, Studio)** | Meja kerja, monitor komputer, papan tulis/diagram kerja, lampu meja, kursi ergonomis, tanaman sudut, partisi ruangan. | Glitch lembut layar, pencahayaan kantor profesional. |
+| **Area Spesifik (Dapur / Restoran)** | Kitchen set, kompor berasap tipis, wajan/panci, kulkas, rak bumbu dapur, gantungan spatula, meja makan. | Efek uap panas mengepul, aroma visual. |
+| **Area Spesifik (Laboratorium / Medis)** | Meja riset kimia, rak tabung reaksi berwarna, mikroskop, layar hologram HUD/monitor detak, papan tulis formula. | Gelembung tabung bereaksi, glow neon HUD. |
+
+**Prinsip 3 Layer Kedalaman (Parallax Depth):**
+1. **Background Layer**: Dinding, pemandangan luar jendela, langit, pohon cakrawala (bergerak lambat / bernapas lembut).
+2. **Midground Layer**: Karakter utama, meja kerja/tanah tempat berdiri, props interaktif (fokus tajam, pencahayaan utama).
+3. **Foreground Layer (Ambient Props)**: Daun di pinggir layar, partikel debu cahaya (bokeh), kilatan sinar, atau perabot tepi yang memberi rasa dimensi 3D.
 
 ---
 
