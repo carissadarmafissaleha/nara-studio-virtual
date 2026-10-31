@@ -23,7 +23,7 @@ import { findWaypointPath } from './agentManager'
 import {
   reduceOffice, stepOffice, initialOfficeState,
   moveAgentsForEvent, returnAgentsFromEvent, pickSingleEventAgent, walkDurationMs, errandWaitMs, checkErrand,
-  MAIN_ROOM, BOSS_ID, CLAUDE_ID, CLAUDE_ROLE,
+  MAIN_ROOM, BOSS_ID, CLAUDE_ID, CLAUDE_ROLE, deduplicateOfficeAgents,
   type OfficeState, type OfficeAction, type OfficeEffect, type OfficeEnv,
 } from './officeReducer'
 import { BOSS_ROLE } from './config'
@@ -413,9 +413,11 @@ const App: React.FC = () => {
   const agentsRef = useRef<Agent[]>(officeRef.current.agents)
 
   const commit = useCallback((next: OfficeState) => {
-    officeRef.current = next
-    agentsRef.current = next.agents
-    setAgents(next.agents)
+    const cleanAgents = deduplicateOfficeAgents(next.agents)
+    const cleanState = cleanAgents.length !== next.agents.length ? { ...next, agents: cleanAgents } : next
+    officeRef.current = cleanState
+    agentsRef.current = cleanState.agents
+    setAgents(cleanState.agents)
   }, [])
 
   /** Apply a pure transform to the agents array (the few ad-hoc moves outside the reducer) */
@@ -1815,7 +1817,7 @@ const App: React.FC = () => {
           <TaskBoard sessions={sessions} night={forcedNight ? 1 : dayNightMode === 'auto' ? nightOpacity : dayNightMode === 'night' ? 1 : 0} onActivate={() => setShowTaskBoardModal(true)} />
 
           {/* Agents */}
-          {agents.map(agent => {
+          {deduplicateOfficeAgents(agents).map(agent => {
             // Use spot zIndex override when agent is at their desk
             const spot = MAIN_ROOM.agentSpots.find(s => s.id === agent.assignedSpotId)
             const atDesk = Math.abs(agent.position.x - agent.deskPosition.x) < 1 &&

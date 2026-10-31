@@ -1,8 +1,8 @@
-# NARA STUDIO: ATURAN PRODUKSI & STANDAR AGEN (DEEPSEEK)
+# NARA STUDIO: ATURAN PRODUKSI & STANDAR AGEN
 
-Studio ini dibangun khusus untuk **DeepSeek**. Mesin produksi utama = sesi DeepSeek yang bekerja di workspace ini; order dari kantor virtual (`office-nara`) sampai lewat `~/.agent-office/engine-inbox/`.
+Studio ini dibangun khusus untuk **AI Engine**. Mesin produksi utama = sesi Agent yang bekerja di workspace ini; order dari kantor virtual (`office-nara`) sampai lewat `~/.agent-office/engine-inbox/`.
 
-Setiap kali menerima order pembuatan video (`/buat-video`), Agen **DeepSeek (AI Engine)** WAJIB mematuhi standar berikut secara otomatis, tanpa meminta konfirmasi ulang.
+Setiap kali menerima order pembuatan video (`/buat-video`), Agen **AI Engine** WAJIB mematuhi standar berikut secara otomatis, tanpa meminta konfirmasi ulang.
 
 ---
 

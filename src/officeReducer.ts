@@ -95,7 +95,63 @@ export const STUDIO_AGENT_IDS = new Set([
 ])
 
 export function isStudioPermanentAgent(id: string): boolean {
-  return STUDIO_AGENT_IDS.has(id) || id === 'boss-caca' || id === 'boss-boss' || id === BOSS_ID
+  return STUDIO_AGENT_IDS.has(id) || id === 'boss-caca' || id === 'boss-boss' || id === BOSS_ID || id.startsWith('boss-')
+}
+
+export function isBossAgent(a: { id?: string; role?: string; name?: string; assignedSpotId?: string }): boolean {
+  const id = (a.id || '').toLowerCase()
+  const role = (a.role || '').toLowerCase()
+  const name = (a.name || '').toLowerCase()
+  return (
+    id === BOSS_ID.toLowerCase() ||
+    id === 'boss-caca' ||
+    id === 'boss-boss' ||
+    id === 'boss' ||
+    id.startsWith('boss-') ||
+    role === BOSS_ROLE.toLowerCase() ||
+    role === 'boss' ||
+    name === 'caca' ||
+    name === 'boss' ||
+    name === BOSS_NAME.toLowerCase() ||
+    a.assignedSpotId === 'spot-1'
+  )
+}
+
+/**
+ * Deduplicate office agents:
+ * 1. Strictly guarantee at most ONE boss (Caca) in the entire studio.
+ * 2. Strictly guarantee at most ONE agent per studio permanent role/id.
+ * 3. Guarantee all agent IDs are unique.
+ */
+export function deduplicateOfficeAgents(agents: Agent[]): Agent[] {
+  const seenIds = new Set<string>()
+  let hasBoss = false
+  const result: Agent[] = []
+
+  for (const a of agents) {
+    if (!a || !a.id) continue
+
+    const isBoss = isBossAgent(a)
+    if (isBoss) {
+      if (hasBoss) {
+        // Drop any duplicate boss immediately!
+        continue
+      }
+      hasBoss = true
+      seenIds.add(a.id)
+      result.push(a)
+      continue
+    }
+
+    if (seenIds.has(a.id)) {
+      // Drop duplicate agent ID
+      continue
+    }
+    seenIds.add(a.id)
+    result.push(a)
+  }
+
+  return result
 }
 
 export function getStudioDefaultAgent(id: string): Agent | null {
@@ -462,12 +518,13 @@ export const IDLE_WANDER_SPOTS: { spot: Position; msg: string; icon: string; sfx
 ]
 
 export function initialOfficeState(agents: Agent[], now: number): OfficeState {
+  const cleanAgents = deduplicateOfficeAgents(agents)
   const meta: Record<string, AgentMeta> = {}
-  for (const a of agents) {
+  for (const a of cleanAgents) {
     const isWalking = a.state === 'new-hire' || a.state === 'walking-to-desk' || (a.pathQueue && a.pathQueue.length > 0)
     meta[a.id] = newMeta(now, !isWalking)
   }
-  return { agents, lobby: [], pendingStatus: {}, meta, recentChatKeys: [], endedSessions: {}, handoverSeq: 0, health: initialHealth(now), redRuns: {} }
+  return { agents: cleanAgents, lobby: [], pendingStatus: {}, meta, recentChatKeys: [], endedSessions: {}, handoverSeq: 0, health: initialHealth(now), redRuns: {} }
 }
 
 // ---------------------------------------------------------------------------
@@ -578,8 +635,8 @@ function spawnAgent(state: OfficeState, raw: SpawnFields, env: OfficeEnv, announ
   let meta = newMeta(env.now)
   let lobby = state.lobby
 
-  const isBossRole = role === BOSS_ROLE || id === BOSS_ID || id === 'boss-caca' || id === 'boss-boss' || (name && (name.toLowerCase() === 'caca' || name.toLowerCase() === 'boss'))
-  if (isBossRole && state.agents.some(a => a.role === BOSS_ROLE || a.id === BOSS_ID || a.id === 'boss-caca' || a.id === 'boss-boss')) {
+  const isBossRole = isBossAgent({ id, name, role, assignedSpotId: raw.preferredSpotId })
+  if (isBossRole && state.agents.some(a => isBossAgent(a))) {
     // Only ONE boss allowed in the studio — never spawn a duplicate boss!
     return { state, effects: [] }
   }
@@ -997,11 +1054,18 @@ function hardNeedsYouCount(state: OfficeState): number {
  */
 export function reduceOffice(state: OfficeState, action: OfficeAction, env: OfficeEnv): OfficeResult {
   const r = reduceEvent(state, action, env)
-  if (r.state === state) return r
+  let nextState = r.state
+  if (nextState && nextState.agents) {
+    const deduped = deduplicateOfficeAgents(nextState.agents)
+    if (deduped.length !== nextState.agents.length) {
+      nextState = { ...nextState, agents: deduped }
+    }
+  }
+  if (nextState === state) return { state, effects: r.effects }
   const before = hardNeedsYouCount(state) > 0
-  const after = hardNeedsYouCount(r.state) > 0
-  if (before === after) return r
-  return { state: r.state, effects: [...r.effects, { kind: 'title', prefix: after ? '✋ ' : '' }] }
+  const after = hardNeedsYouCount(nextState) > 0
+  if (before === after) return { state: nextState, effects: r.effects }
+  return { state: nextState, effects: [...r.effects, { kind: 'title', prefix: after ? '✋ ' : '' }] }
 }
 
 /** Turn events that say nothing once their session has ended (only a session_started revives it) */
@@ -1153,20 +1217,7 @@ function reduceEvent(state: OfficeState, action: OfficeAction, env: OfficeEnv): 
       }
 
       // Deduplicate: strictly guarantee at most ONE boss and unique agent IDs
-      const seenIds = new Set<string>()
-      let seenBoss = false
-      const dedupedAgents: Agent[] = []
-      for (const a of cur.agents) {
-        const isBoss = a.role === BOSS_ROLE || a.id === BOSS_ID || a.id === 'boss-caca' || a.id === 'boss-boss'
-        if (isBoss) {
-          if (seenBoss) continue // Drop duplicate boss!
-          seenBoss = true
-        }
-        if (seenIds.has(a.id)) continue // Drop duplicate agent ID!
-        seenIds.add(a.id)
-        dedupedAgents.push(a)
-      }
-      cur = { ...cur, agents: dedupedAgents }
+      cur = { ...cur, agents: deduplicateOfficeAgents(cur.agents) }
 
       // Also ensure any studio agent currently marked 'completed' or boss is restored at desk
       const bossSpot = MAIN_ROOM.agentSpots.find(s => s.id === 'spot-1') ?? { id: 'spot-1', x: 25.8, y: 71, spriteFacing: 'rear-left' as const }
@@ -1273,6 +1324,7 @@ function reduceEvent(state: OfficeState, action: OfficeAction, env: OfficeEnv): 
         cur = r.state
         effects.push(...r.effects)
       }
+      cur = { ...cur, agents: deduplicateOfficeAgents(cur.agents) }
       return { state: cur, effects }
     }
 
@@ -1881,7 +1933,8 @@ export function stepOffice(state: OfficeState, dt: number, env: OfficeEnv): Step
   }
 
   if (!changed) return { state, effects, changed: false }
-  return { state: { ...state, agents: kept, lobby, pendingStatus, meta }, effects, changed: true }
+  const cleanKept = deduplicateOfficeAgents(kept)
+  return { state: { ...state, agents: cleanKept, lobby, pendingStatus, meta }, effects, changed: true }
 }
 
 // ---------------------------------------------------------------------------
