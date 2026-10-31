@@ -507,6 +507,17 @@ export function getStudioStandbyStatus(id: string): string {
   }
 }
 
+export const BOSS_WANDER_ACTIVITIES: { spot: Position; msg: string; icon: string; sfx?: SfxName }[] = [
+  { spot: { x: 73.5, y: 56.7 }, msg: 'ambil kopi studio dulu ☕', icon: '☕', sfx: 'coffee' },
+  { spot: { x: 80.0, y: 46.0 }, msg: 'cek papan ToDo & tugas tim 📋', icon: '📋' },
+  { spot: { x: 37.9, y: 64.0 }, msg: 'keliling cek meja Nara & brief 🎬', icon: '👀' },
+  { spot: { x: 28.5, y: 57.0 }, msg: 'tengok naskah storyboard Lumi ✍️', icon: '✨' },
+  { spot: { x: 42.0, y: 53.0 }, msg: 'pantau audio & VO Ardi 🎙️', icon: '🎧' },
+  { spot: { x: 50.0, y: 51.0 }, msg: 'cek timeline video & render Jeje 🖥️', icon: '🎞️' },
+  { spot: { x: 56.5, y: 46.0 }, msg: 'minum air sejenak 💧', icon: '💧' },
+  { spot: { x: 64.0, y: 46.6 }, msg: 'stretching & jalan santai cari ide 🚶', icon: '🚶' },
+]
+
 export const IDLE_WANDER_SPOTS: { spot: Position; msg: string; icon: string; sfx?: SfxName }[] = [
   { spot: { x: 73.5, y: 56.7 }, msg: 'ambil kopi studio ☕', icon: '☕', sfx: 'coffee' },
   { spot: { x: 56.5, y: 46.0 }, msg: 'minum air dulu 💧', icon: '💧' },
@@ -1836,16 +1847,21 @@ export function stepOffice(state: OfficeState, dt: number, env: OfficeEnv): Step
       changed = true
     }
 
-    // Random coffee / water break for anyone who has sat at their desk a while.
-    // A session's Claude never wanders off mid-turn (it dozes at its desk between turns instead).
+    // Random coffee / water break for anyone who has sat at their desk a while (including Boss Caca!)
     const cur = meta[agent.id]
-    if (updated.state === 'working' && !isMainAgent(updated) && cur.arrivedAtDeskAt !== null && !cur.onBreak && COFFEE_SPOT !== null) {
-      if (now - cur.arrivedAtDeskAt >= BREAK_MIN_DESK_TIME && env.random() < BREAK_CHANCE_PER_SEC * (dt / 60)) {
+    const isBoss = isBossAgent(updated)
+    const canTakeBreak = updated.state === 'working' || (isBoss && updated.state === 'idle')
+    if (canTakeBreak && !isMainAgent(updated) && cur.arrivedAtDeskAt !== null && !cur.onBreak && COFFEE_SPOT !== null) {
+      const deskTime = now - cur.arrivedAtDeskAt
+      const minDeskTime = isBoss ? 5000 : BREAK_MIN_DESK_TIME
+      const breakChance = isBoss ? 0.08 * (dt / 60) : BREAK_CHANCE_PER_SEC * (dt / 60)
+      if (deskTime >= minDeskTime && env.random() < breakChance) {
         const useWater = env.random() < 0.35 && WATER_SPOTS.length > 0
         const breakSpot = useWater ? pickOne(WATER_SPOTS, env.random) : COFFEE_SPOT
         setMeta(agent.id, { onBreak: false, arrivedAtDeskAt: null })
-        const isBoss = updated.id === BOSS_ID
-        const breakMsg = useWater ? waterMessage() : (isBoss ? 'ambil kopi studio dulu ☕' : coffeeMessage())
+        const breakMsg = isBoss
+          ? (useWater ? 'ambil air minum studio 💧' : 'ambil kopi studio dulu ☕')
+          : (useWater ? waterMessage() : coffeeMessage())
         const breakIcon = isBoss ? '🥫' : (useWater ? '💧' : '☕')
         effects.push(
           { kind: 'msg', sender: updated.name, role: updated.role, color: cfgFor(updated.role).color, text: `${breakIcon} ${breakMsg}` },
@@ -1863,15 +1879,16 @@ export function stepOffice(state: OfficeState, dt: number, env: OfficeEnv): Step
       }
     }
 
-    
-    // Idle wandering for agents who have been sitting at their desk
+    // Idle wandering for agents who have been sitting at their desk (Boss Caca actively walks & inspects!)
     const atDeskNow = near(updated.position, updated.deskPosition)
-    // Boss Caca stays at her executive desk and does not idle-wander to random spots
-    if (updated.id !== BOSS_ID && updated.role !== BOSS_ROLE && updated.state === 'idle' && atDeskNow && cur.arrivedAtDeskAt !== null && !cur.onBreak) {
+    if (updated.state === 'idle' && atDeskNow && cur.arrivedAtDeskAt !== null && !cur.onBreak) {
       const idleTime = now - cur.arrivedAtDeskAt
       const wanderingCount = state.agents.filter(a => a.state === 'coffee-break' || (a.state === 'walking-to-desk' && !near(a.targetPosition, a.deskPosition))).length
-      if (idleTime >= 6000 && wanderingCount < 2 && env.random() < 0.05 * (dt / 60)) {
-        const wander = pickOne(IDLE_WANDER_SPOTS, env.random)
+      const minIdle = isBoss ? 4500 : 6000
+      const wanderChance = isBoss ? 0.09 * (dt / 60) : 0.05 * (dt / 60)
+      if (idleTime >= minIdle && wanderingCount < 3 && env.random() < wanderChance) {
+        const wanderPool = isBoss ? BOSS_WANDER_ACTIVITIES : IDLE_WANDER_SPOTS
+        const wander = pickOne(wanderPool, env.random)
         setMeta(agent.id, { onBreak: false, arrivedAtDeskAt: null, idleWander: true })
         effects.push({ kind: 'msg', sender: updated.name, role: updated.role, color: cfgFor(updated.role).color, text: `${wander.icon} ${wander.msg}` })
         if (wander.sfx) effects.push({ kind: 'sfx', sfx: wander.sfx })

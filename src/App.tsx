@@ -23,7 +23,7 @@ import { findWaypointPath } from './agentManager'
 import {
   reduceOffice, stepOffice, initialOfficeState,
   moveAgentsForEvent, returnAgentsFromEvent, pickSingleEventAgent, walkDurationMs, errandWaitMs, checkErrand,
-  MAIN_ROOM, BOSS_ID, CLAUDE_ID, CLAUDE_ROLE, deduplicateOfficeAgents,
+  MAIN_ROOM, BOSS_ID, CLAUDE_ID, CLAUDE_ROLE, deduplicateOfficeAgents, isBossAgent,
   type OfficeState, type OfficeAction, type OfficeEffect, type OfficeEnv,
 } from './officeReducer'
 import { BOSS_ROLE } from './config'
@@ -585,12 +585,12 @@ const App: React.FC = () => {
     // Walk boss to the item. The route is computed once, so the watch below is
     // timed against the walk he actually takes (detours and jitter included)
     const target = interaction.walkTo
-    const bossNow = agentsRef.current.find(a => a.id === BOSS_ID)
+    const bossNow = agentsRef.current.find(a => isBossAgent(a))
     if (!bossNow) return
     const path = computePath(bossNow.position, target)
     const waitMs = errandWaitMs(walkDurationMs(bossNow.position, path, target))
     updateAgents(prev => prev.map(a => {
-      if (a.id !== BOSS_ID) return a
+      if (!isBossAgent(a)) return a
       return {
         ...a,
         state: 'walking-to-desk' as const,
@@ -604,7 +604,7 @@ const App: React.FC = () => {
 
     const walkBackToDesk = () => {
       updateAgents(prev => prev.map(a => {
-        if (a.id !== BOSS_ID) return a
+        if (!isBossAgent(a)) return a
         return {
           ...a,
           state: 'walking-to-desk' as const,
@@ -620,7 +620,7 @@ const App: React.FC = () => {
     // give up and send him back to his desk rather than leave him at the item
     const startedAt = Date.now()
     const checkArrival = () => {
-      const verdict = checkErrand(agentsRef.current.find(a => a.id === BOSS_ID), target, Date.now() - startedAt, waitMs)
+      const verdict = checkErrand(agentsRef.current.find(a => isBossAgent(a)), target, Date.now() - startedAt, waitMs)
       if (verdict === 'walking') { schedule(checkArrival, 200); return }
       if (verdict === 'late') { walkBackToDesk(); return }
       if (verdict === 'redirected') return
@@ -1874,7 +1874,7 @@ const App: React.FC = () => {
 
           {/* Boss interaction effect */}
           {bossEffect && (() => {
-            const boss = agents.find(a => a.id === BOSS_ID)
+            const boss = agents.find(a => isBossAgent(a))
             if (!boss) return null
             return (
               <div
