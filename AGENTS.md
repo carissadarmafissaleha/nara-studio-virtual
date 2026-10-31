@@ -64,49 +64,60 @@ Setiap video yang diproduksi **wajib** menggabungkan keenam komponen berikut.
 | **Safe area (9:16)** | **180px atas** dan **240px bawah** bebas dari konten penting (UI mobile/player)                       |
 | **Komponen**         | Lencana kicker, kartu metrik, diagram HUD, dan teks pendukung dengan visual modern dan presisi tinggi |
 
-### 1.4 Anti-Overlap & Tata Letak 3 Zona (Mandatori)
+### 1.4 Anti-Overlap, Proporsi Visual & Isolasi Total 3 Zona (MANDATORI)
 
-Teks **tidak boleh** bertumpuk atau menabrak karakter, maskot, diagram, atau badge.
+Dilarang keras tulisan, karakter, dan ornamen saling tumpang tindih (*zero-overlap*) atau memiliki ukuran yang tidak proporsional (*anti-disproporsi*).
 
-**Aturan Khusus Badge, Stiker & Ikon Grafis (WAJIB):**
+#### A. Hukum Isolasi Total 3 Zona Vertikal
+Layar kanvas 9:16 (1080 x 1920) dibagi secara kaku menjadi tiga zona terisolasi:
+
+| Zona | Rentang Y | Tinggi | Aturan Keramat & Isi Konten |
+| :--- | :--- | :--- | :--- |
+| **Zona Atas (Top Text Zone)** | **0 – 460px** | **460px** | **DILARANG KERAS** menaruh elemen ornamen apa pun (jendela, jam, pohon, matahari, awan, bintang, rak buku, dsb) di zona ini! Zona ini **KHUSUS TEKS** (Kicker badge + Headline 1–2 baris terpusat). Padding top safe area: **160px**. Latar hanya boleh gradien bersih. |
+| **Zona Tengah (Mid Visual Stage)** | **460 – 1500px** | **1040px** | **PANGGUNG VISUAL EKSKLUSIF** untuk karakter/maskot, perabot panggung, dan ornamen pemandangan (*environment scenery*). **DILARANG** menaruh teks narasi/paragraf panjang di panggung ini agar visual bersih dan berjiwa. |
+| **Zona Bawah (Bottom Text Zone)** | **1500 – 1920px** | **420px** | **KHUSUS SUBTITLE NARRATION CARD**. Dilarang karakter atau props panggung menabrak masuk ke bawah Y = 1500px. Padding bottom safe area: **200px**. Subtitle berupa kartu pill semi-transparan yang elegan dan kontras. |
+
+#### B. Standar Proporsi Skala & Komposisi Panggung Tengah (Anti-Disproporsional)
+Setiap adegan di dalam panggung tengah (Zona 2) wajib mematuhi proporsi ukuran visual yang harmonis:
+
+1. **Skala Karakter Utama**: Tinggi karakter **280px – 340px** (sekitar 30–35% dari tinggi panggung tengah). Karakter tidak boleh terlalu raksasa hingga mendominasi layar atau terlalu kerdil hingga kehilangan ekspresi.
+2. **Tata Letak Perabot Lantai (Anchor Props)**: Meja belajar, kitchen stove, panggung, atau rumput diletakkan di **bagian bawah panggung tengah (Y: 1100 – 1450px)** sebagai lantai pijakan alami tempat karakter berdiri/duduk.
+3. **Tata Letak Ornamen Dinding & Langit (Background Scenery)**: Jendela kelas (maksimal 250px), jam dinding (maksimal 110px), rak buku (maksimal 260px), atau matahari kartun (maksimal 180px) diletakkan di **bagian atas panggung tengah (Y: 480 – 750px)** dan **TIDAK BOLEH** melintasi batas atas Y = 460px.
+4. **Komposisi Berdampingan (Side-by-Side Props & Karakter)**: Jika karakter berdampingan dengan badge atau piala (misal Scene 8), beri jarak aman (*gap*) minimal **30px – 40px** dan atur total lebar keduanya tidak melebihi 600px agar terpusat proporsional di kanvas 1080px.
+5. **Fitur Kandungan / Poin Nutrisi**: DILARANG memaksakan 3 kartu berjajar horisontal secara sempit jika teksnya panjang karena menyebabkan teks berdesakan. **WAJIB gunakan Vertical Feature Rows** (baris fitur bertingkat) yang lega, lapang, dan nyaman dibaca.
+
+#### C. Aturan Khusus Badge, Stiker & Ikon Grafis (WAJIB)
 - Diameter atau lebar teks di dalam badge/stiker **maksimal 60–65%** dari diameter wadah bagian dalam.
 - Sisakan minimal **20% safe padding** di sekeliling teks agar ketika badge berputar (`spin`/`rotate`) atau terkena efek spring pop-in, teks tidak pernah memotong garis tepi lingkaran/border.
 - Dilarang menumpuk font besar di dalam lingkaran sempit tanpa menguji rotasinya.
 
-Layar dibagi menjadi tiga zona vertikal yang terisolasi:
+#### D. Auto-Scale Tipografi Headline (1080p)
 
-| Zona       | Tinggi  | Isi                                                                          |
-| ---------- | ------- | ---------------------------------------------------------------------------- |
-| **Atas**   | **26%** | Badge kicker + judul headline, terpusat, auto-scale                          |
-| **Tengah** | **50%** | Panggung visual khusus maskot, karakter, dan diagram animasi. **Bebas teks** |
-| **Bawah**  | **24%** | Bar narasi/subtitle + badge CTA pendukung                                    |
-
-> Total tepat 100%. Safe area 180px/240px dihitung sebagai padding **di dalam** zona atas dan bawah.
-
-**Auto-scale tipografi & line-clamp (1080p):**
-
-| Panjang judul | Ukuran font | Aturan lain                          |
-| ------------- | ----------- | ------------------------------------ |
-| 1–4 kata      | 72–88px     |                                      |
-| 5–8 kata      | 52–64px     | maks 2 baris                         |
-| > 8 kata      | 42–48px     | maks 2 baris, `line-height` 1,15–1,2 |
-
-**Implementasi:** gunakan flex column terisolasi atau container safe-zone, bukan koordinat absolut acak.
+| Panjang judul | Ukuran font | Aturan lain |
+| :--- | :--- | :--- |
+| 1–4 kata | 64–72px | max-width 880px |
+| 5–8 kata | 48–56px | maks 2 baris, line-height 1.2 |
+| > 8 kata | 40–46px | maks 2 baris, line-height 1.15 |
 
 ```tsx
-<AbsoluteFill
-  style={{
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  }}
->
-  <div style={{ flex: "0 0 26%", paddingTop: 180 }}>
-    {/* kicker + headline */}
+// Arsitektur Container 3 Zona Bersih (Zero-Overlap)
+<AbsoluteFill style={{ display: "flex", flexDirection: "column" }}>
+  {/* Zona 1: Top Text Zone (460px) - STRICTLY TEXT ONLY */}
+  <div style={{ width: "100%", height: 460, paddingTop: 160, display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div style={{ /* Kicker badge */ }}>{kicker}</div>
+    <h1 style={{ fontSize: 52, maxWidth: 920 }}>{headline}</h1>
   </div>
-  <div style={{ flex: "1 1 50%" }}>{/* karakter / diagram */}</div>
-  <div style={{ flex: "0 0 24%", paddingBottom: 240 }}>
-    {/* subtitle + CTA */}
+
+  {/* Zona 2: Mid Visual Stage (1040px) - CHARACTERS & SCENERY ONLY */}
+  <div style={{ width: "100%", height: 1040, position: "relative", overflow: "hidden" }}>
+    {/* Background Scenery (Y: 480-750) */}
+    {/* Karakter Utama (Y: 700-1100) */}
+    {/* Anchor Props / Lantai (Y: 1100-1450) */}
+  </div>
+
+  {/* Zona 3: Bottom Text Zone (420px) - SUBTITLE PILL ONLY */}
+  <div style={{ width: "100%", height: 420, paddingBottom: 200, display: "flex", justifyContent: "center" }}>
+    <div style={{ /* Subtitle Card */ }}>{subtitle}</div>
   </div>
 </AbsoluteFill>
 ```
