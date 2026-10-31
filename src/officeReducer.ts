@@ -88,8 +88,6 @@ export const CLAUDE_HOME_SPOT = 'spot-2'
  */
 export const STUDIO_AGENT_IDS = new Set([
   BOSS_ID,
-  'boss-caca',
-  'boss-boss',
   CLAUDE_ID,
   'lumi-script',
   'opi-vo',
@@ -97,7 +95,7 @@ export const STUDIO_AGENT_IDS = new Set([
 ])
 
 export function isStudioPermanentAgent(id: string): boolean {
-  return STUDIO_AGENT_IDS.has(id)
+  return STUDIO_AGENT_IDS.has(id) || id === 'boss-caca' || id === 'boss-boss' || id === BOSS_ID
 }
 
 export function getStudioDefaultAgent(id: string): Agent | null {
@@ -580,7 +578,11 @@ function spawnAgent(state: OfficeState, raw: SpawnFields, env: OfficeEnv, announ
   let meta = newMeta(env.now)
   let lobby = state.lobby
 
-  const isBossRole = role === BOSS_ROLE || id === BOSS_ID || id === 'boss-caca' || id === 'boss-boss'
+  const isBossRole = role === BOSS_ROLE || id === BOSS_ID || id === 'boss-caca' || id === 'boss-boss' || (name && (name.toLowerCase() === 'caca' || name.toLowerCase() === 'boss'))
+  if (isBossRole && state.agents.some(a => a.role === BOSS_ROLE || a.id === BOSS_ID || a.id === 'boss-caca' || a.id === 'boss-boss')) {
+    // Only ONE boss allowed in the studio — never spawn a duplicate boss!
+    return { state, effects: [] }
+  }
   const preferred = raw.preferredSpotId
     ? MAIN_ROOM.agentSpots.find(s => s.id === raw.preferredSpotId && !occupiedSpotIds(state.agents).has(s.id)) ?? null
     : null
@@ -1129,9 +1131,18 @@ function reduceEvent(state: OfficeState, action: OfficeAction, env: OfficeEnv): 
       const effects: OfficeEffect[] = []
 
       // 0. Studio permanent agents: ensure they are all present and seated at work!
-      const currentIds = new Set(cur.agents.map(a => a.id))
+      // Check Boss first (strictly at most ONE boss in the entire office!)
+      const hasBoss = cur.agents.some(a => a.role === BOSS_ROLE || a.id === BOSS_ID || a.id === 'boss-caca' || a.id === 'boss-boss')
       const restoredStudioAgents: Agent[] = []
-      for (const sId of STUDIO_AGENT_IDS) {
+      if (!hasBoss) {
+        const def = getStudioDefaultAgent(BOSS_ID)
+        if (def) restoredStudioAgents.push(def)
+      }
+
+      // Check other permanent studio members (Nara, Lumi, Ardi, Jeje)
+      const currentIds = new Set(cur.agents.map(a => a.id))
+      const OTHER_STUDIO_MEMBERS = [CLAUDE_ID, 'lumi-script', 'opi-vo', 'jeje-edit']
+      for (const sId of OTHER_STUDIO_MEMBERS) {
         if (!currentIds.has(sId)) {
           const def = getStudioDefaultAgent(sId)
           if (def) restoredStudioAgents.push(def)
@@ -1140,6 +1151,22 @@ function reduceEvent(state: OfficeState, action: OfficeAction, env: OfficeEnv): 
       if (restoredStudioAgents.length > 0) {
         cur = { ...cur, agents: [...cur.agents, ...restoredStudioAgents] }
       }
+
+      // Deduplicate: strictly guarantee at most ONE boss and unique agent IDs
+      const seenIds = new Set<string>()
+      let seenBoss = false
+      const dedupedAgents: Agent[] = []
+      for (const a of cur.agents) {
+        const isBoss = a.role === BOSS_ROLE || a.id === BOSS_ID || a.id === 'boss-caca' || a.id === 'boss-boss'
+        if (isBoss) {
+          if (seenBoss) continue // Drop duplicate boss!
+          seenBoss = true
+        }
+        if (seenIds.has(a.id)) continue // Drop duplicate agent ID!
+        seenIds.add(a.id)
+        dedupedAgents.push(a)
+      }
+      cur = { ...cur, agents: dedupedAgents }
 
       // Also ensure any studio agent currently marked 'completed' or boss is restored at desk
       const bossSpot = MAIN_ROOM.agentSpots.find(s => s.id === 'spot-1') ?? { id: 'spot-1', x: 25.8, y: 71, spriteFacing: 'rear-left' as const }

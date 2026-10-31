@@ -113,3 +113,4 @@ graphify-out/.graphify_*
 graphify-out/graph.html
 server/render_status.json
 server/draft_status.json
+server/deleted_compositions.json

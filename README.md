@@ -126,11 +126,13 @@ node scripts/order.mjs release <id>    # lepas klaim sebelum pindah mesin
 
 ## 📐 Standar Produksi Video (`/buat-video`)
 
-1. **Skill Wajib:** `bang-motion` + `remotion` + `ui-ux-pro-max` (skill seni/motion lain sedang ditinjau ulang untuk standar baru).
-2. **Anti-PPT & Dinamika Background:** Latar hidup (partikel/gradien bernapas) dan **wajib ganti nuansa background di setiap scene**.
-3. **Aset Gambar PNG (2–10 File):** Wajib men-generate dan menyematkan minimal 2 hingga 10 gambar `.png` pendukung ke dalam adegan.
-4. **Karakter Tematik & Alur 4 Babak:** Maskot kontekstual dengan rig ekspresi hidup dalam alur _Hook → Eksplorasi → Solusi → Konklusi/CTA_.
-5. **Tata Letak 3-Zona Anti-Overlap:** Zona Atas (Headline auto-scale), Zona Tengah (Visual/Maskot bebas teks), Zona Bawah (Subtitle/CTA).
+1. **Skill Wajib:** `bang-motion` + `remotion` + `ui-ux-pro-max`.
+2. **Eksplorasi Sound FX Bebas (Openverse CC0):** Bebas mencari dan memadukan suara apa pun tanpa batasan (`https://api.openverse.org/v1/audio/?q=<SOUND>&license=cc0` atau `node scripts/fetch-sfx.mjs "<query>"`). Disimpan ke `public/audio/sfx/` dengan sistem caching lokal.
+3. **Eksplorasi Font Bebas (Internet):** Bebas memilih ribuan font internet sesuai genre video tanpa batasan (Google Fonts / CDN atau `node scripts/fetch-font.mjs "<FontFamily>"`). Disimpan ke `public/fonts/` dengan sistem caching lokal.
+4. **Anti-PPT & Dinamika Background:** Latar hidup (partikel/gradien bernapas) dan **wajib ganti nuansa background di setiap scene**.
+5. **Aset Gambar PNG (15–30 File):** Wajib men-generate dan menyematkan 15 hingga 30 gambar `.png` atau `.svg` pendukung ke dalam adegan.
+6. **Karakter Tematik & Alur 4 Babak:** Maskot kontekstual dengan rig ekspresi hidup dalam alur _Hook → Eksplorasi → Solusi → Konklusi/CTA_.
+7. **Tata Letak 3-Zona Anti-Overlap:** Zona Atas (Headline auto-scale), Zona Tengah (Visual/Maskot bebas teks), Zona Bawah (Subtitle/CTA).
 
 ---
 

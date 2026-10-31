@@ -19,6 +19,8 @@ Wake order hanya bekerja kalau listener berjalan sebagai **background job di dal
    - mesin `deepseek` → `npm run wake:ds`
    - mesin `antigravity` → `npm run wake:agy`
    - mesin `opencode` → `npm run wake:opencode`
+   - mesin `hermes` → `npm run wake:hermes`
+
 3. Pasang **hanya** watcher lane yang aktif **dan** yang cocok dengan sesi ini. Kalau kamu sesi DeepSeek tetapi `engine.json` berisi `antigravity`, jangan pasang `wake:agy` — pindahkan mesin dulu (`/engine deepseek` di chat) atau biarkan sesi AGY yang memasangnya. Watcher lane yang salah akan mengklaim order dan mengunci mesin yang benar sampai TTL 6 jam.
 4. Setelah setiap order selesai dieksekusi (atau gagal), **pasang ulang** watcher untuk order berikutnya.
 5. Kalau order berstatus `claimed` tetapi produksi sudah tidak berjalan, lepaskan dengan `node scripts/order.mjs release <id>` sebelum pindah mesin.
@@ -44,7 +46,10 @@ Setiap video yang diproduksi **wajib** menggabungkan keenam komponen berikut.
 - Komposisi React **Remotion 4.x** murni di `src/remotion/compositions/<CompName>.tsx`.
 - Durasi dan jumlah frame dihitung presisi dari **panjang audio narasi yang sebenarnya**, bukan tebakan.
 - Audio narasi disinkronkan per scene dengan `<Sequence>`.
-- SFX yang tersedia: `impact`, `whoosh`, `tick`, `riser`, `pop`, `boing`.
+- **Eksplorasi Sound FX (SFX) Bebas Tanpa Batasan (Openverse CC0) & Caching**: DILARANG membatasi atau terpaku pada suara itu-itu saja (seperti whoosh/pop melulu). Agen DIBEBASKAN PENUH dan DIDORONG mengeksplorasi ribuan variasi efek suara dari API Openverse:
+  `https://api.openverse.org/v1/audio/?q=<QUERY_BEBAS>&license=cc0`
+  Bebas cari suara apa pun sesuai imajinasi & konteks cerita (misal foley, instrumen musik, kartun boing/squeak, suara alam, sci-fi hum, digital glitch, ketegangan, sub-bass, cash register, dll. atau pakai skrip `node scripts/fetch-sfx.mjs "<query>"`). Simpan ke `public/audio/sfx/`.
+  - **Aturan Caching / Reuse (WAJIB)**: Sebelum mengunduh, agen wajib memeriksa isi folder `public/audio/sfx/`. Jika berkas audio yang dibutuhkan sudah ada di lokal, **wajib gunakan langsung berkas lokal tersebut dan JANGAN download ulang** agar efisien dan cepat.
 - Daftarkan komposisi ke `src/remotion/registry.ts` agar langsung tampil di **Screening Room**.
 
 ### 1.3 `ui-ux-pro-max` · `.agents/skills/ui-ux-pro-max/`
@@ -139,7 +144,8 @@ Rig ekspresi wajib: mata berkedip, reaksi emosional (kaget, senang), dan animasi
 - **Wajib Generate Gambar PNG Pendukung (Minimal 15, Maksimal 30):** Setiap produksi video WAJIB menghasilkan dan menyematkan aset gambar `.png` atau '.svg' pendukung minimal 15 dan maksimal 30 buah (ilustrasi karakter/objek, ikon props tematik, atau tekstur dengan latar transparan/alpha) via sub-agen `image-generator` atau generator visual untuk memperkaya panggung visual.
 - **Sub-Agen Voiceover (VO) & Audio Sync:** Diizinkan penuh memanggil sub-agen/modul VO (`audio-sync`, script TTS `scripts/tts-cli.py`) untuk memproduksi rekaman narasi suara per adegan, mengukur panjang durasi audio secara riil, dan menyinkronkannya dengan SFX ke timeline.
 - **Aset Vektor & Semantik:** Maskot/karakter berbasis SVG semantik murni, flat cartoon, skematik teknis, blueprint, grafik HUD, kartu data, badge, partikel.
-- **Font wajib dimuat sungguhan**: unduh woff2 ke `public/fonts/`, deklarasikan `@font-face` di dalam komposisi, tahan render dengan `delayRender()` sampai `document.fonts.load()` selesai.
+- **Eksplorasi Sound FX Bebas (Openverse API CC0) & Caching**: Hapus segala batasan jenis suara. Agen bebas mencari dan memadukan efek suara apa pun dari Openverse CC0 API (`https://api.openverse.org/v1/audio/?q=<SOUND>&license=cc0` atau `node scripts/fetch-sfx.mjs "<query>"`) untuk menghidupkan suasana video. Simpan ke `public/audio/sfx/`, dan gunakan cache lokal bila sudah ada.
+- **Eksplorasi Font Bebas (Internet & Caching Lokal)**: DILARANG membatasi diri pada font bawaan lokal atau 1–2 font itu-itu saja (seperti Baloo 2 atau Comic Neue). Agen DIBEBASKAN PENUH mengeksplorasi ribuan font internet (Google Fonts / Bunny CDN atau via `node scripts/fetch-font.mjs "<FontFamily>" [weight]`) yang paling pas dengan DNA & genre video (misal: `Space Grotesk`, `Plus Jakarta Sans`, `Syne`, `Bebas Neue`, `Cinzel`, `Fredoka`, `Outfit`, `DynaPuff`, `Fraunces`, dll.). Simpan ke `public/fonts/`. Periksa folder `public/fonts/` terlebih dahulu: bila font yang dicari sudah ada, langsung gunakan tanpa download ulang; bila belum, baru unduh. Deklarasikan `@font-face` di komposisi dan tahan render dengan `delayRender()` sampai `document.fonts.load()` selesai.
 
 ---
 
