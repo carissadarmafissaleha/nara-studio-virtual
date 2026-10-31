@@ -34,9 +34,10 @@ Setiap video yang diproduksi **wajib** menggabungkan keenam komponen berikut.
 
 ### 1.1 `bang-motion` · `.agents/skills/bang-motion/`
 
-| Aturan                     | Penjelasan                                                                                   |
-| -------------------------- | -------------------------------------------------------------------------------------------- |
-| **Hukum Anti-PPT**         | Dilarang membuat slide yang digerakkan (`section fade` / slide deck)                         |
+| Aturan                               | Penjelasan                                                                                                                                           |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Hukum Anti-PPT (Storytelling)**    | **Dilarang keras** membuat slide presentasi, fade statis, atau kartu-kartu poin kaku (bullet cards). Cerita wajib digerakkan aksi karakter hidup.  |
+| **Transisi Sinematik Antar-Scene**   | Dilarang hard cut atau slide fade. Wajib kamera bergerak mulus (push/pull/pan/zoom + spring damping) disertai SFX transisi sinkron (whoosh/swoosh). |
 | **Living Background**      | Latar wajib hidup: partikel, gradien yang "bernapas", tekstur bergerak, kamera yang bernapas |
 | **Kinetic Typography**     | Teks muncul kata per kata (_staggered spring_), rotasi halus, skala tegas                    |
 | **Ritme & Spring Physics** | Setiap elemen masuk dengan _anticipation → overshoot → settle_                               |
@@ -65,7 +66,14 @@ Setiap video yang diproduksi **wajib** menggabungkan keenam komponen berikut.
 
 ### 1.4 Anti-Overlap & Tata Letak 3 Zona (Mandatori)
 
-Teks **tidak boleh** bertumpuk atau menabrak karakter, maskot, diagram, atau badge. Layar dibagi menjadi tiga zona vertikal yang terisolasi:
+Teks **tidak boleh** bertumpuk atau menabrak karakter, maskot, diagram, atau badge.
+
+**Aturan Khusus Badge, Stiker & Ikon Grafis (WAJIB):**
+- Diameter atau lebar teks di dalam badge/stiker **maksimal 60–65%** dari diameter wadah bagian dalam.
+- Sisakan minimal **20% safe padding** di sekeliling teks agar ketika badge berputar (`spin`/`rotate`) atau terkena efek spring pop-in, teks tidak pernah memotong garis tepi lingkaran/border.
+- Dilarang menumpuk font besar di dalam lingkaran sempit tanpa menguji rotasinya.
+
+Layar dibagi menjadi tiga zona vertikal yang terisolasi:
 
 | Zona       | Tinggi  | Isi                                                                          |
 | ---------- | ------- | ---------------------------------------------------------------------------- |
@@ -116,7 +124,7 @@ Teks **tidak boleh** bertumpuk atau menabrak karakter, maskot, diagram, atau bad
 
 Rig ekspresi wajib: mata berkedip, reaksi emosional (kaget, senang), dan animasi bernapas/idle.
 
-**Alur 4 babak.** Dilarang membuat video seperti daftar poin kaku.
+**Alur 4 babak (Cinematic Story Arc).** Dilarang keras membuat video seperti daftar poin kaku / slide presentasi. Setiap scene harus menjadi babak cerita dengan visual aksi karakter:
 
 | Babak                         | Porsi durasi | Isi                                                                   |
 | ----------------------------- | ------------ | --------------------------------------------------------------------- |
