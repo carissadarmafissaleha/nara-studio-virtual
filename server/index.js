@@ -2954,35 +2954,29 @@ function handleSlashCommand(cmd) {
       const agentCount = activeAgents.size
       const working = Array.from(activeAgents.values()).filter(a => a.state === 'working').length
       const clients = wss?.clients?.size ?? 0
-      return `📊 ${agentCount} agents active, ${working} working, ${clients} clients connected`
+      return `📊 ${agentCount} agen studio aktif, ${working} sedang produksi, ${clients} layar terhubung`
     }
     case '/agents': {
       const agents = Array.from(activeAgents.values())
-      if (agents.length === 0) return '🏢 Office is quiet — no agents active'
+      if (agents.length === 0) return '🏢 Studio sedang hening — belum ada kru yang aktif'
       return agents.map(a => `${a.name} (${a.role}) — ${a.state}`).join(', ')
     }
-    case '/clear':
-    {
+    case '/clear': {
       clearMessages()
-      // The last prompt and reply on each session are the same conversation
       retrimAndAnnounce('chat cleared', { clear: true })
       broadcast({ type: 'chat_clear' })
       return '🧹 Riwayat obrolan kantor berhasil dibersihkan'
     }
-    // Incident mode ("Prod Is Down"): relayed to every connected office as a
-    // variant_change so all tabs switch together. Nothing is persisted server-side.
-    // Sent after the reply lines below so the office's own postmortem card lands
-    // under the all-clear line rather than above it.
     case '/incident': {
       setImmediate(() => broadcast({ type: 'variant_change', variant: 'incident', reason: 'manual', timestamp: Date.now() }))
-      return '🔴 INCIDENT DECLARED — prod is down. Everyone to the war room. (/all-clear when it is over)'
+      return '🔴 SIMULASI DARURAT STUDIO DIAKTIFKAN — antrean render terkendala! Semua tim kumpul di ruang kontrol. (Ketik /all-clear bila sudah selesai)'
     }
     case '/all-clear': {
       setImmediate(() => broadcast({ type: 'variant_change', variant: 'none', reason: 'manual', timestamp: Date.now() }))
-      return '✅ ALL CLEAR — incident over. Postmortem at 10, blameless, bring pizza.'
+      return '✅ SEMUA NORMAL — status darurat selesai. Timeline dan antrean render kembali lancar!'
     }
     case '/help':
-      return '📋 Commands: /buat-video — order video baru, /status — status tim studio, /agents — daftar agen, /clear — bersihkan riwayat obrolan, /incident — simulasi insiden, /all-clear — normal, /help — bantuan'
+      return '📋 Daftar Perintah: /buat-video — order video baru, /status — status tim studio, /agents — daftar kru studio, /clear — bersihkan riwayat obrolan, /incident — simulasi insiden darurat, /all-clear — kembali normal, /help — bantuan'
     default:
       return null
   }

@@ -76,11 +76,11 @@ describe('POST /chat — /incident and /all-clear', () => {
       const echo = await client.next(m => m.type === 'chat_message' && m.sender === 'Boss')
       expect(echo.text).toBe('/incident')
       const sys = await client.next(m => m.type === 'chat_message' && m.sender === 'system')
-      expect(sys).toMatchObject({ isSystem: true, text: expect.stringContaining('INCIDENT DECLARED') })
+      expect(sys).toMatchObject({ isSystem: true, text: expect.stringContaining('DARURAT') })
     }
 
     const chat = await request(office.server.app).get('/chat')
-    expect(chat.body.messages.at(-1)).toMatchObject({ sender: 'system', is_system: 1, text: expect.stringContaining('INCIDENT DECLARED') })
+    expect(chat.body.messages.at(-1)).toMatchObject({ sender: 'system', is_system: 1, text: expect.stringContaining('DARURAT') })
   })
 
   it('/all-clear broadcasts variant_change=none and answers with the all-clear line', async () => {
@@ -94,7 +94,7 @@ describe('POST /chat — /incident and /all-clear', () => {
     const change = await a.next(m => m.type === 'variant_change')
     expect(change).toMatchObject({ variant: 'none', reason: 'manual' })
     const sys = await a.next(m => m.type === 'chat_message' && m.sender === 'system')
-    expect(sys.text).toContain('ALL CLEAR')
+    expect(sys.text).toContain('SEMUA NORMAL')
   })
 
   it('/help lists both commands', async () => {
@@ -112,6 +112,6 @@ describe('POST /chat — /incident and /all-clear', () => {
     const status = await request(office.server.app).post('/chat').send({ sender: 'Boss', text: '/status' })
     expect(status.status).toBe(200)
     const chat = await request(office.server.app).get('/chat')
-    expect(chat.body.messages.at(-1).text).toContain('0 agents active')
+    expect(chat.body.messages.at(-1).text).toContain('0 agen studio aktif')
   })
 })

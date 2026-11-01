@@ -404,30 +404,29 @@ function clip(text: string, max: number): string {
   return text.length > max ? `${text.slice(0, max - 1)}…` : text
 }
 
-const ROOT_CAUSES_WITHOUT_FAILURES =['a Friday deploy', 'DNS. it is always DNS.', 'a config change nobody remembers', 'a null. always a null.']
+const ROOT_CAUSES_WITHOUT_FAILURES = ['revisi dadakan Jumat sore', 'sinkronisasi audio VO meleset', 'aset font atau SVG hilang dari path', 'VRAM GPU kehabisan memori']
 
 /** One-line "postmortem card" for the chat. `bystanders` = agents in the room when nobody's tool failed. */
 export function formatPostmortem(summary: IncidentSummary, bystanders: string[] = []): string {
-  const parts = [`📋 Postmortem ${summary.id}`, `all clear after ${formatDuration(summary.durationMs)}`]
+  const parts = [`📋 Laporan Pasca-Insiden ${summary.id}`, `kembali normal setelah ${formatDuration(summary.durationMs)}`]
 
   if (summary.failureCount === 0) {
-    parts.push('no tool failures')
+    parts.push('tidak ada kegagalan alat')
   } else {
     const byTool = Object.entries(summary.tools)
       .sort((a, b) => b[1] - a[1])
       .map(([tool, n]) => `${tool} ×${n}`)
       .join(', ')
-    parts.push(`${summary.failureCount} tool failure${summary.failureCount === 1 ? '' : 's'} (${byTool})`)
+    parts.push(`${summary.failureCount} kendala render (${byTool})`)
   }
 
   const who = summary.participants.length > 0 ? summary.participants : bystanders
-  parts.push(who.length > 0 ? `responders: ${who.slice(0, 6).join(', ')}` : 'responders: just the boss and Claude')
+  parts.push(who.length > 0 ? `tim penanganan: ${who.slice(0, 6).join(', ')}` : 'tim penanganan: Bos Caca & tim studio')
 
-  // A named failure (a deploy, build or test signal) beats the bare tool name
   const cause = (summary.cause ? clip(summary.cause, 140) : null)
     ?? summary.lastTool
     ?? ROOT_CAUSES_WITHOUT_FAILURES[summary.startedAt % ROOT_CAUSES_WITHOUT_FAILURES.length]
-  parts.push(`root cause: ${cause}`)
+  parts.push(`akar masalah: ${cause}`)
 
   return parts.join(' · ')
 }
@@ -444,25 +443,25 @@ export function incidentTransitionLines(t: IncidentTransition, agentsInRoom: { n
       case 'failures': {
         const n = recentFailures(t.state.failures, t.state.startedAt ?? Date.now()).length
         const last = t.state.failures[t.state.failures.length - 1]
-        lines.push(`🔴 ${n} tool failures in 5 min — INCIDENT MODE ON. Prod is down. Everyone to the war room.${last?.label ? ` Latest: ${clip(last.label, 120)}.` : ''}`)
+        lines.push(`🔴 ${n} kendala render dalam 5 mnt — MODE DARURAT STUDIO AKTIF! Semua kru ke ruang kontrol.${last?.label ? ` Terakhir: ${clip(last.label, 120)}.` : ''}`)
         break
       }
       case 'deploy-fail': {
         const deploy = [...t.state.failures].reverse().find(f => f.tool === 'deploy')
-        lines.push(`🔴 ${deploy?.target ? `The ${deploy.target} deploy` : 'A deploy'} failed — INCIDENT MODE ON. Prod is down. Everyone to the war room.`)
+        lines.push(`🔴 ${deploy?.target ? `Ekspor ${deploy.target}` : 'Ekspor video'} gagal — MODE DARURAT STUDIO AKTIF! Semua kru ke ruang kontrol.`)
         break
       }
       case 'event':
-        lines.push('🚨 Mini-incident declared (90 s) — rollback in progress. Nobody deploys until the graph is flat.')
+        lines.push('🚨 Insiden darurat studio diaktifkan (90 dtk) — perbaikan timeline berjalan. Dilarang render master sebelum grafik stabil.')
         break
       case 'manual':
-        lines.push('🔴 INCIDENT MODE ON — declared by the boss. Everyone to the war room.')
+        lines.push('🔴 MODE DARURAT STUDIO DIAKTIFKAN — perintah dari Bos. Semua kru kumpul di ruang kontrol!')
         break
       case 'url':
-        lines.push('🔴 INCIDENT MODE pinned by ?variant=incident — type /all-clear to end it.')
+        lines.push('🔴 MODE DARURAT STUDIO dipasang via ?variant=incident — ketik /all-clear untuk mengakhiri.')
         break
       case 'restored':
-        lines.push('🔴 Still in INCIDENT MODE from last time — type /all-clear when prod is back.')
+        lines.push('🔴 Masih dalam MODE DARURAT STUDIO dari sesi sebelumnya — ketik /all-clear saat render sudah normal.')
         break
       case 'remote':
         break
@@ -483,12 +482,41 @@ export function incidentTransitionLines(t: IncidentTransition, agentsInRoom: { n
 // ---------------------------------------------------------------------------
 
 export const INCIDENT_LINES = {
-  spawn: ['paged. on it.', 'joining the bridge, who is IC?', 'clocked in at 02:14, send coffee', 'laptop open before the eyes were'],
-  work: ['bisecting between 4f2a1c and main', 'it is not DNS. checking DNS.', 'tailing prod logs, 400 req/s of sadness', 'reading the runbook for the first time', 'adding a feature flag we should have had'],
-  done: ['rollback complete, error rate 0.1%', 'root cause: a null. always a null.', 'hotfix merged, tests added after', 'status page back to green'],
-  coffee: ['third coffee, do not judge', 'the machine is the only thing working', 'coffee is not a sleep substitute, trying anyway'],
-  water: ['water. then more coffee.', 'hydrating like a responsible adult at 2am', 'the water cooler is also degraded'],
-  bossReply: ['all clear. nobody deploys on Friday again.', 'postmortem at 10, blameless, bring pizza', 'good catch. write it down for the timeline.', 'I know. I KNOW.'],
+  spawn: [
+    'dapat notifikasi darurat. langsung cek timeline!',
+    'gabung ruang kontrol, siapa lead proyek ini?',
+    'siaga render darurat, tolong sediain kopi',
+    'laptop udah kebuka sebelum mata melek',
+  ],
+  work: [
+    'melacak frame corrupt antara 4f2a1c dan timeline utama',
+    'bukan masalah audio. lagi cek layer partikel.',
+    'pantau log render Remotion, 400 frame drop terdeteksi',
+    'baca catatan panduan darurat studio',
+    'tambahin buffer zona aman yang tadi kelewat',
+  ],
+  done: [
+    'render ulang selesai, error rate 0.1%!',
+    'akar masalah: ada aset null di sekuens 3.',
+    'perbaikan selesai, lolos preview 60fps',
+    'layar monitoring studio kembali hijau',
+  ],
+  coffee: [
+    'kopi ketiga malam ini, jangan dihakimi',
+    'mesin kopi satu-satunya yang setia pas render crash',
+    'kopi bukan pengganti tidur, tapi gas aja lah',
+  ],
+  water: [
+    'minum air putih dulu, abis itu lanjut kopi',
+    'tetap terhidrasi biar keyframe gak miring',
+    'dispenser studio juga lagi rame antre',
+  ],
+  bossReply: [
+    'semua kembali normal. jangan ada yang batch render 4K pas Jumat sore lagi ya.',
+    'briefing evaluasi jam 10, tanpa saling salahin, bawa pizza!',
+    'penemuan bagus. catat kronologinya buat evaluasi tim.',
+    'iya paham, gue paham banget.',
+  ],
 } as const
 
 export type IncidentLineKind = keyof typeof INCIDENT_LINES
