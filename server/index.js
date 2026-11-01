@@ -2962,7 +2962,7 @@ function handleSlashCommand(cmd) {
       return agents.map(a => `${a.name} (${a.role}) — ${a.state}`).join(', ')
     }
     case '/clear':
-    case '/clear-chat': {
+    {
       clearMessages()
       // The last prompt and reply on each session are the same conversation
       retrimAndAnnounce('chat cleared', { clear: true })
@@ -2982,13 +2982,13 @@ function handleSlashCommand(cmd) {
       return '✅ ALL CLEAR — incident over. Postmortem at 10, blameless, bring pizza.'
     }
     case '/help':
-      return '📋 Commands: /buat-video — order video baru, /status — status tim studio, /agents — daftar agen, /clear-chat — bersihkan chat kantor, /incident — simulasi insiden, /all-clear — normal, /help — bantuan'
+      return '📋 Commands: /buat-video — order video baru, /status — status tim studio, /agents — daftar agen, /clear — bersihkan riwayat obrolan, /incident — simulasi insiden, /all-clear — normal, /help — bantuan'
     default:
       return null
   }
 }
 
-// Slash commands that destroy state - /clear and /clear-chat are permitted locally
+// Slash commands that destroy state - /clear is permitted locally
 const PRIVILEGED_COMMANDS = new Set([])
 
 // ---------------------------------------------------------------------------
@@ -3028,6 +3028,9 @@ app.post('/chat', (req, res) => {
     }
     const cmdResult = handleSlashCommand(cmd)
     if (cmdResult) {
+      if (cmd === '/clear') {
+        return res.json({ ok: true })
+      }
       const userMsg = addMessage({ sender: clampString(sender), text: clampString(text, 2000) })
       broadcast({ type: 'chat_message', ...userMsg })
       const sysMsg = addMessage({ sender: 'system', text: cmdResult, isSystem: true })
@@ -3778,7 +3781,7 @@ function processEvent(body) {
       // Proactive message — announce task in chat
       const taskShort = (record.task ?? '').slice(0, 50)
       if (taskShort) {
-        const chatMsg = addMessage({ sender: record.name, role: record.role, text: `starting: ${taskShort}` })
+        const chatMsg = addMessage({ sender: record.name, role: record.role, text: `Mulai: ${taskShort}` })
         broadcast({ type: 'chat_message', ...chatMsg })
       }
 
@@ -3960,7 +3963,7 @@ function processEvent(body) {
 
         // Proactive message — announce completion in chat
         const resultShort = (body.result ?? 'done').slice(0, 50)
-        const chatMsg = addMessage({ sender: agent.name, role: agent.role, text: `done: ${resultShort}` })
+        const chatMsg = addMessage({ sender: agent.name, role: agent.role, text: `Selesai: ${resultShort}` })
         broadcast({ type: 'chat_message', ...chatMsg })
 
         // Smart notification — alert on failure

@@ -177,7 +177,7 @@ async function dispatchOfficeCommand(sender, text, rawText = text) {
   const lower = text.toLowerCase().trim();
 
   // Ignore UI-only slash commands
-  if (/^\/(screen|todo|tasks|settings|pengaturan|skills|hire|wardrobe|clear|clear-chat|clear-all|all-clear|the-office|theoffice|incident|help)(\s|$)/i.test(lower)) {
+  if (/^\/(screen|todo|tasks|settings|pengaturan|skills|hire|wardrobe|clear|all-clear|the-office|theoffice|incident|help)(\s|$)/i.test(lower)) {
     return;
   }
 

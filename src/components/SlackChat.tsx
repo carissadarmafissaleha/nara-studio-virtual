@@ -73,7 +73,6 @@ const SLASH_COMMANDS = [
   { cmd: '/incident', label: '🚨 /incident', desc: 'Simulasi mode insiden darurat' },
   { cmd: '/all-clear', label: '✅ /all-clear', desc: 'Kembali normal (all clear)' },
   { cmd: '/help', label: '❓ /help', desc: 'Bantuan & panduan perintah' },
-  { cmd: '/clear-chat', label: '🧹 /clear-chat', desc: 'Bersihkan riwayat obrolan kantor' },
   { cmd: '/clear', label: '🧹 /clear', desc: 'Bersihkan riwayat obrolan' },
 ]
 

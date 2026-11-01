@@ -344,7 +344,7 @@ export const TaskBoardModal: React.FC<TaskBoardModalProps> = ({ onClose, onOpenS
           aria-expanded={armed}
           title={count === 0 ? `Kolom ${meta.label} kosong` : `Hapus semua ${count} kartu di ${meta.label}`}
         >
-          <TrashIcon />
+          {armed ? 'Batal' : 'Hapus semua'}
         </button>
       </div>
     );

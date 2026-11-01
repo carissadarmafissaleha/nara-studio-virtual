@@ -1630,12 +1630,15 @@ const App: React.FC = () => {
   }, [])
 
   const handleSendMessage = useCallback((text: string) => {
-    if (text === '/render' || text === '/screen' || text === '/screening' || text === '/screeningroom' || text === '/studio') { setShowScreeningRoom(true); return }
-    if (text === '/tasks' || text === '/kanban' || text === '/todo') { setShowTaskBoardModal(true); return }
-    if (text === '/wardrobe' || text === '/kostum' || text === '/karakter') { setSettingsInitialTab('character'); setShowSettingsModal(true); return }
-    if (text === '/hire' || text === '/rekrut' || text === '/kru') { setSettingsInitialTab('hire'); setShowSettingsModal(true); return }
-    if (text === '/settings' || text === '/pengaturan' || text === '/skills') { setSettingsInitialTab('skills'); setShowSettingsModal(true); return }
-        if (text === '/clear' || text === '/clear-chat' || text === '/clearchat') {
+    const raw = text || '';
+    const trimmed = raw.trim();
+    const lower = trimmed.toLowerCase();
+    if (lower === '/render' || lower === '/screen' || lower === '/screening' || lower === '/screeningroom' || lower === '/studio') { setShowScreeningRoom(true); return }
+    if (lower === '/tasks' || lower === '/kanban' || lower === '/todo') { setShowTaskBoardModal(true); return }
+    if (lower === '/wardrobe' || lower === '/kostum' || lower === '/karakter') { setSettingsInitialTab('character'); setShowSettingsModal(true); return }
+    if (lower === '/hire' || lower === '/rekrut' || lower === '/kru') { setSettingsInitialTab('hire'); setShowSettingsModal(true); return }
+    if (lower === '/settings' || lower === '/pengaturan' || lower === '/skills') { setSettingsInitialTab('skills'); setShowSettingsModal(true); return }
+    if (lower === '/clear') {
       setMessages([])
       try { localStorage.removeItem(CHAT_STORAGE_KEY) } catch {}
       fetch(`${officeHttpBase()}/chat/clear`, { method: 'POST' }).catch(() => {})

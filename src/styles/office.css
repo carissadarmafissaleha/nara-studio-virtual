@@ -1670,9 +1670,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  padding: 0;
+  padding: 2px 7px;
+  font-size: 10px;
+  line-height: 14px;
+  font-family: inherit;
+  font-weight: 500;
   border: 1px solid #2a2740;
   border-radius: 6px;
   background: transparent;
