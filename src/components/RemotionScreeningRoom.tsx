@@ -325,41 +325,41 @@ export const RemotionScreeningRoom: React.FC<Props> = ({ onClose }) => {
                 />
               </div>
 
-              {/* Tombol Utama Render */}
-              <div style={{ marginTop: '14px', width: '100%', maxWidth: '320px', textAlign: 'center' }}>
+              {/* Tombol Render (Sederhana & Ringkas) */}
+              <div style={{ marginTop: '10px', textAlign: 'center' }}>
                 <button
                   type="button"
                   onClick={() => activeMotion && handleRenderMP4(activeMotion)}
                   disabled={isRendering}
                   style={{
-                    width: '100%',
-                    padding: '10px 16px',
+                    padding: '6px 14px',
                     background: isRendering ? '#334155' : '#f97316',
                     color: '#fff',
                     border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '12px',
-                    fontWeight: 700,
+                    borderRadius: '6px',
+                    fontSize: '11px',
+                    fontWeight: 600,
                     cursor: isRendering ? 'not-allowed' : 'pointer',
-                    display: 'flex',
+                    display: 'inline-flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
                     gap: '6px',
                     fontFamily: 'inherit',
+                    boxShadow: isRendering ? 'none' : '0 2px 8px rgba(249, 115, 22, 0.3)',
                   }}
                 >
-                  {isRendering ? '⏳ Merender Video...' : '🎬 Render Video MP4'}
+                  {isRendering ? '⏳ Merender...' : '🎬 Render MP4'}
                 </button>
 
                 {renderFeedback && (
                   <div
                     style={{
-                      marginTop: '8px',
-                      fontSize: '11px',
+                      marginTop: '6px',
+                      fontSize: '10px',
                       color: renderFeedback.includes('Gagal') || renderFeedback.includes('Error') ? '#f87171' : '#4ade80',
-                      background: 'rgba(0,0,0,0.4)',
-                      padding: '6px 10px',
-                      borderRadius: '6px',
+                      background: 'rgba(0,0,0,0.5)',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      display: 'inline-block',
                     }}
                   >
                     {renderFeedback}
