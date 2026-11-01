@@ -79,7 +79,7 @@ const FurnitureRenderer: React.FC<FurnitureRendererProps> = ({ items, onItemClic
               pointerEvents: clickable ? 'auto' : 'none',
               cursor: clickable ? 'pointer' : 'default',
             }}
-            title={item.label || (clickable ? 'Click to interact' : undefined)}
+            title={item.label || (clickable ? 'Klik untuk berinteraksi' : undefined)}
             onClick={clickable && onItemClick ? () => onItemClick(item.id) : undefined}
           >
             <img

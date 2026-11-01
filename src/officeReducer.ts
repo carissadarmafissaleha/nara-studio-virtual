@@ -1754,7 +1754,7 @@ export function stepOffice(state: OfficeState, dt: number, env: OfficeEnv): Step
   if (state.agents.length === 0) return { state, effects: [], changed: false }
 
   const now = env.now
-  const speed = WALK_SPEED * dt
+  const speed = Math.max(0, WALK_SPEED * Math.max(0, dt))
   const effects: OfficeEffect[] = []
   let changed = false
   let meta = state.meta

@@ -194,10 +194,10 @@ const Character: React.FC<CharacterProps> = ({ agent, idleDurationMs = 0, zIndex
     <div
       className={`character-wrapper state-${animState}${mainState ? ` main-${mainState}` : ''}${scene ? ` scene-${scene.kind}` : ''}${onClick ? ' clickable' : ''}${inspected ? ' inspected' : ''}`}
       style={{
-        left: `${agent.position.x}%`,
-        top: `${agent.position.y}%`,
+        left: `${(!agent.position || isNaN(agent.position.x)) ? (agent.deskPosition?.x ?? 25.8) : agent.position.x}%`,
+        top: `${(!agent.position || isNaN(agent.position.y)) ? (agent.deskPosition?.y ?? 71.0) : agent.position.y}%`,
         transform: 'translate(-50%, -100%)',
-        zIndex: speaking ? SPEAKING_Z : zIndex ?? Math.round(agent.position.y),
+        zIndex: speaking ? SPEAKING_Z : zIndex ?? Math.round((!agent.position || isNaN(agent.position.y)) ? (agent.deskPosition?.y ?? 71.0) : agent.position.y),
       }}
       title={projectTag || main ? tooltip : undefined}
       data-main-state={mainState}

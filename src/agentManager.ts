@@ -68,18 +68,25 @@ export function stepToward(
   targetPosition: Position,
   speed: number,
 ): { position: Position; arrived: boolean } {
+  if (!position || isNaN(position.x) || isNaN(position.y)) {
+    return { position: { ...(targetPosition ?? { x: 25.8, y: 71 }) }, arrived: true }
+  }
+  if (!targetPosition || isNaN(targetPosition.x) || isNaN(targetPosition.y)) {
+    return { position: { ...position }, arrived: true }
+  }
   const dx = targetPosition.x - position.x
   const dy = targetPosition.y - position.y
   const dist = Math.sqrt(dx * dx + dy * dy)
 
-  if (dist <= speed) {
+  const safeSpeed = Math.max(0, isNaN(speed) ? 0 : speed)
+  if (dist === 0 || dist <= safeSpeed || dist < 0.0001) {
     return { position: { ...targetPosition }, arrived: true }
   }
 
   return {
     position: {
-      x: position.x + (dx / dist) * speed,
-      y: position.y + (dy / dist) * speed,
+      x: position.x + (dx / dist) * safeSpeed,
+      y: position.y + (dy / dist) * safeSpeed,
     },
     arrived: false,
   }

@@ -105,11 +105,11 @@ export const ROOMS: Record<RoomId, Room> = {
       // Filing cabinet
       { id: 'filing-1', type: 'filing-cabinet', sprite: 'filing-closed', x: 45, y: 56.5, state: 'closed', label: 'Filing Cabinet' },
       // Plants
-      { id: 'plant-1', type: 'plant-monstera', sprite: 'plant-monstera', x: 91.9, y: 64.7 },
-      { id: 'plant-2', type: 'plant-snake', sprite: 'plant-snake', x: 43.2, y: 37.9 },
-      { id: 'plant-3', type: 'plant-money', sprite: 'plant-money', x: 32, y: 71.2 },
-      { id: 'plant-4', type: 'plant-money', sprite: 'plant-money', x: 89.2, y: 65.7 },
-      { id: 'plant-5', type: 'plant-monstera', sprite: 'plant-monstera', x: 60.2, y: 80.4 },
+      { id: 'plant-1', type: 'plant-monstera', sprite: 'plant-monstera', x: 91.9, y: 64.7, label: 'Tanaman Monstera' },
+      { id: 'plant-2', type: 'plant-snake', sprite: 'plant-snake', x: 43.2, y: 37.9, label: 'Tanaman Lidah Mertua' },
+      { id: 'plant-3', type: 'plant-money', sprite: 'plant-money', x: 32, y: 71.2, label: 'Tanaman Meja' },
+      { id: 'plant-4', type: 'plant-money', sprite: 'plant-money', x: 89.2, y: 65.7, label: 'Tanaman Sudut' },
+      { id: 'plant-5', type: 'plant-monstera', sprite: 'plant-monstera', x: 60.2, y: 80.4, label: 'Tanaman Hijau' },
       // Printer (swaps between working/broken on printer jam event)
       { id: 'printer-1', type: 'printer', sprite: 'printer-working', x: 85.4, y: 56.8, state: 'working', label: 'Printer' },
       // Background hotspots — baked into the room image, no sprite, just clickable zones

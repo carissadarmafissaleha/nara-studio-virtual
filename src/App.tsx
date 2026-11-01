@@ -1422,7 +1422,7 @@ const App: React.FC = () => {
     let lastTime = performance.now()
 
     function tick(now: number) {
-      const dt = Math.min((now - lastTime) / 16.67, 3)
+      const dt = Math.max(0, Math.min((now - lastTime) / 16.67, 3))
       lastTime = now
 
       // stepOffice only moves agents along their paths (plus arrival, breaks,

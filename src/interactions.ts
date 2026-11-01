@@ -36,11 +36,15 @@ export function getInteraction(furnitureId: string, board: TaskBoardInfo | null 
   switch (furnitureId) {
     // Plants — water them
     case 'plant-1':
+      return { walkTo: { x: 88.0, y: 64.0 }, effect: '/sprites/effects/watering-can.png', duration: 3000, chatMessage: ['Menyiram tanaman studio 🌿', 'Biar suasana studio video tetap segar', 'Merawat tanaman hijau'], cooldown: 3000 }
     case 'plant-2':
+      return { walkTo: { x: 44.0, y: 44.0 }, effect: '/sprites/effects/watering-can.png', duration: 3000, chatMessage: ['Siram tanaman sudut 🌿', 'Tanaman studio bikin visual makin adem', 'Merawat tanaman hias'], cooldown: 3000 }
     case 'plant-3':
+      return { walkTo: { x: 32.0, y: 72.0 }, effect: '/sprites/effects/watering-can.png', duration: 3000, chatMessage: ['Menyiram tanaman dekat meja 🌿', 'Tanaman hias studio harus subur', 'Segar kembali!'], cooldown: 3000 }
     case 'plant-4':
+      return { walkTo: { x: 86.0, y: 65.0 }, effect: '/sprites/effects/watering-can.png', duration: 3000, chatMessage: ['Merawat tanaman lobi 🌿', 'Biar kru studio makin semangat berkarya', 'Siram daun monstera'], cooldown: 3000 }
     case 'plant-5':
-      return { walkTo: { x: 58, y: 81 }, effect: '/sprites/effects/watering-can.png', duration: 3000, chatMessage: ['Menyiram tanaman studio', 'Biar suasana studio video tetap segar', 'Merawat tanaman hijau'], cooldown: 30000 }
+      return { walkTo: { x: 58.0, y: 79.0 }, effect: '/sprites/effects/watering-can.png', duration: 3000, chatMessage: ['Menyiram tanaman studio 🌿', 'Biar suasana studio video tetap segar', 'Merawat tanaman hijau'], cooldown: 3000 }
 
     // Coffee machine
     case 'coffee':
@@ -50,7 +54,7 @@ export function getInteraction(furnitureId: string, board: TaskBoardInfo | null 
         duration: 4000,
         chatMessage: ['Menyeduh kopi studio dulu ☕', 'Waktunya kopi! Mata butuh jeda render', 'Isi bensin kafein animator', 'Ada yang mau kopi hangat?'],
         furnitureState: { id: 'coffee', state: 'on', revertAfter: 10000 },
-        cooldown: 15000,
+        cooldown: 4000,
         sound: 'coffee',
       }
 
@@ -62,7 +66,7 @@ export function getInteraction(furnitureId: string, board: TaskBoardInfo | null 
         duration: 3000,
         chatMessage: ['Mencari dokumen storyboard 📁', 'Menyimpan arsip naskah video', 'Cek folder aset visual', 'Merapikan konsep scene video'],
         furnitureState: { id: 'filing-1', state: 'open', revertAfter: 8000 },
-        cooldown: 10000,
+        cooldown: 4000,
       }
 
     // Printer
@@ -72,7 +76,7 @@ export function getInteraction(furnitureId: string, board: TaskBoardInfo | null 
         effect: '/sprites/effects/post-it.png',
         duration: 3000,
         chatMessage: ['Mencetak lembar storyboard 🖨️', 'Print breakdown naskah 4-scene', 'Cek panduan color grading', 'Print naskah dubbing untuk Ardi'],
-        cooldown: 15000,
+        cooldown: 4000,
       }
 
     // Whiteboard / kanban board
@@ -83,7 +87,7 @@ export function getInteraction(furnitureId: string, board: TaskBoardInfo | null 
         effect: '/sprites/effects/post-it.png',
         duration: 4000,
         chatMessage: ['Cek timeline produksi video 🎬', 'Memindahkan scene yang sudah dirender', 'Jadwal screening berikutnya', 'Review shot list eksplain hari ini'],
-        cooldown: 20000,
+        cooldown: 4000,
       }
 
     // Background hotspots
