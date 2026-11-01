@@ -511,11 +511,11 @@ export const BOSS_WANDER_ACTIVITIES: { spot: Position; msg: string; icon: string
   { spot: { x: 73.5, y: 56.7 }, msg: 'ambil kopi studio dulu ☕', icon: '☕', sfx: 'coffee' },
   { spot: { x: 80.0, y: 46.0 }, msg: 'cek papan ToDo & tugas tim 📋', icon: '📋' },
   { spot: { x: 37.9, y: 64.0 }, msg: 'keliling cek meja Nara & brief 🎬', icon: '👀' },
-  { spot: { x: 28.5, y: 57.0 }, msg: 'tengok naskah storyboard Lumi ✍️', icon: '✨' },
-  { spot: { x: 42.0, y: 53.0 }, msg: 'pantau audio & VO Ardi 🎙️', icon: '🎧' },
-  { spot: { x: 50.0, y: 51.0 }, msg: 'cek timeline video & render Jeje 🖥️', icon: '🎞️' },
+  { spot: { x: 26.9, y: 59.2 }, msg: 'tengok naskah storyboard Lumi ✍️', icon: '✨' },
+  { spot: { x: 38.5, y: 55.2 }, msg: 'pantau audio & VO Ardi 🎙️', icon: '🎧' },
+  { spot: { x: 48.9, y: 52.9 }, msg: 'cek timeline video & render Jeje 🖥️', icon: '🎞️' },
   { spot: { x: 56.5, y: 46.0 }, msg: 'minum air sejenak 💧', icon: '💧' },
-  { spot: { x: 64.0, y: 46.6 }, msg: 'stretching & jalan santai cari ide 🚶', icon: '🚶' },
+  { spot: { x: 62.6, y: 46.0 }, msg: 'stretching & jalan santai cari ide 🚶', icon: '🚶' },
 ]
 
 export const IDLE_WANDER_SPOTS: { spot: Position; msg: string; icon: string; sfx?: SfxName }[] = [
@@ -1765,7 +1765,8 @@ export function stepOffice(state: OfficeState, dt: number, env: OfficeEnv): Step
   }
 
   const next = state.agents.map(agent => {
-    const m = meta[agent.id] ?? newMeta(now)
+    const isAtDeskInitial = near(agent.position, agent.deskPosition)
+    const m = meta[agent.id] ?? newMeta(now, isAtDeskInitial)
     if (!meta[agent.id]) meta = { ...meta, [agent.id]: m }
 
     // Walk toward the first waypoint in the queue, or straight to the
@@ -1829,10 +1830,10 @@ export function stepOffice(state: OfficeState, dt: number, env: OfficeEnv): Step
               effects.push({ kind: 'furniture', id: 'filing-1', state: 'open' })
             }
             updated = { ...agent, position }
-          } else if (now - (m.breakStartedAt ?? now) >= (m.idleWander ? 5500 : BREAK_DURATION)) {
+          } else if (now - (m.breakStartedAt ?? now) >= (m.idleWander ? 4500 : BREAK_DURATION)) {
             setMeta(agent.id, { onBreak: false, breakStartedAt: null, idleWander: false, arrivedAtDeskAt: null })
             effects.push({ kind: 'furniture', id: 'coffee', state: 'off' }, { kind: 'furniture', id: 'filing-1', state: 'closed' })
-            const returnMsg = m.idleWander ? 'kembali ke meja' : workMessage()
+            const returnMsg = isBossAgent(agent) ? 'kembali ke meja' : (m.idleWander ? 'kembali ke meja' : workMessage())
             updated = walkTo({ ...agent, position }, agent.deskPosition, returnMsg, env)
             changed = true
           }
@@ -1848,12 +1849,20 @@ export function stepOffice(state: OfficeState, dt: number, env: OfficeEnv): Step
     }
 
     // Random coffee / water break for anyone who has sat at their desk a while (including Boss Caca!)
-    const cur = meta[agent.id]
+    const cur = meta[agent.id] ?? m
     const isBoss = isBossAgent(updated)
+    const atDeskNow = near(updated.position, updated.deskPosition)
+
+    // Jaga agar agent yang duduk di meja selalu memiliki arrivedAtDeskAt tercatat
+    if (atDeskNow && cur.arrivedAtDeskAt === null && !cur.onBreak && updated.state !== 'walking-to-desk' && updated.state !== 'new-hire') {
+      cur.arrivedAtDeskAt = now
+      setMeta(agent.id, { arrivedAtDeskAt: now })
+    }
+
     const canTakeBreak = updated.state === 'working' || (isBoss && updated.state === 'idle')
     if (canTakeBreak && !isMainAgent(updated) && cur.arrivedAtDeskAt !== null && !cur.onBreak && COFFEE_SPOT !== null) {
       const deskTime = now - cur.arrivedAtDeskAt
-      const minDeskTime = isBoss ? 5000 : BREAK_MIN_DESK_TIME
+      const minDeskTime = isBoss ? 4000 : BREAK_MIN_DESK_TIME
       const breakChance = isBoss ? 0.08 * (dt / 60) : BREAK_CHANCE_PER_SEC * (dt / 60)
       if (deskTime >= minDeskTime && env.random() < breakChance) {
         const useWater = env.random() < 0.35 && WATER_SPOTS.length > 0
@@ -1880,13 +1889,13 @@ export function stepOffice(state: OfficeState, dt: number, env: OfficeEnv): Step
     }
 
     // Idle wandering for agents who have been sitting at their desk (Boss Caca actively walks & inspects!)
-    const atDeskNow = near(updated.position, updated.deskPosition)
-    if (updated.state === 'idle' && atDeskNow && cur.arrivedAtDeskAt !== null && !cur.onBreak) {
+    const canWander = updated.state === 'idle' || (isBoss && updated.state === 'working')
+    if (canWander && atDeskNow && cur.arrivedAtDeskAt !== null && !cur.onBreak) {
       const idleTime = now - cur.arrivedAtDeskAt
       const wanderingCount = state.agents.filter(a => a.state === 'coffee-break' || (a.state === 'walking-to-desk' && !near(a.targetPosition, a.deskPosition))).length
-      const minIdle = isBoss ? 4500 : 6000
-      const wanderChance = isBoss ? 0.09 * (dt / 60) : 0.05 * (dt / 60)
-      if (idleTime >= minIdle && wanderingCount < 3 && env.random() < wanderChance) {
+      const minIdle = isBoss ? 2500 : 6000
+      const wanderChance = isBoss ? 0.18 * (dt / 60) : 0.05 * (dt / 60)
+      if (idleTime >= minIdle && (isBoss || wanderingCount < 3) && env.random() < wanderChance) {
         const wanderPool = isBoss ? BOSS_WANDER_ACTIVITIES : IDLE_WANDER_SPOTS
         const wander = pickOne(wanderPool, env.random)
         setMeta(agent.id, { onBreak: false, arrivedAtDeskAt: null, idleWander: true })
