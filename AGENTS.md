@@ -157,7 +157,16 @@ Wake order hanya bekerja kalau listener berjalan sebagai **background job di dal
 
 ## 1. Standar Video (Wajib)
 
-Skill yang dipakai: `bang-motion` dan `remotion` (`.agents/skills/`). `ui-ux-pro-max` tidak lagi wajib; aturan yang masih perlu sudah dilebur ke 1.3.
+Skill yang dipakai: `bang-motion`, `remotion`, dan `lemo-opuscar` (`.agents/skills/`). `ui-ux-pro-max` tidak lagi wajib; aturan yang masih perlu sudah dilebur ke 1.3.
+- **Pustaka 66 Gaya Film (`lemo-opuscar`) — WAJIB OTOMATIS:** Untuk **setiap** order `/buat-video` (baik user menyebut gaya spesifik maupun tidak), Agen WAJIB memilih 1 gaya paling cocok dari 66 gaya di `.agents/skills/lemo-opuscar/styles/README.md`, membaca `.agents/skills/lemo-opuscar/styles/<slug>/STYLE.md`, dan memakai helper deterministik di `src/remotion/opuscar/lib.tsx` (`<OpuscarCanvas>`, `monotone`, `track`, `boilOffset`, `drawCrayonLine`, `vnoise`, `fbm2`).
+- **Panduan Sutradara Otomatis (`.agents/skills/lemo-opuscar/DIRECTOR.md`):** Wajib diterapkan otomatis di setiap storyboard & komposisi:
+  1. *Hook < 3 detik*, *One subject, one goal, one turn*, dan *bookend ending*.
+  2. *One Native Move* di puncak emosi/klimaks (transisi atau aksi khas dari material gaya yang dipilih).
+  3. *Camera Grammar*: minimal 4 variasi gerak kamera (push, pull, pan/truck, parallax) + 1 *signature shot*.
+  4. *Rhythm*: variasi tempo cepat-lambat dan minimal 1 jeda bernapas (*near-silence/pause*) sebelum klimaks.
+- **Panduan Audio & Sound Design Otomatis (`audio-sync` + `.agents/skills/lemo-opuscar/core/audio/INSTRUMENTS.md`):** Wajib diterapkan otomatis saat menyusun VO, SFX, dan BGM:
+  1. **Tiga Layer Audio:** *Ambience* + *Material Foley/SFX* (bunyi sesuai tekstur objek: kertas, krayon, air, kayu, kaca, logam) + *BGM/Score* yang instrumennya mengikuti bagian *Sound Palette* di `STYLE.md` & `INSTRUMENTS.md`.
+  2. **Ducking & Flatten Sequence:** BGM di-duck di bawah VO; semua `<Audio>` dipasang pada `<Sequence from={frame}>` level root (tidak bersarang) agar pemutaran di Screening Room tidak macet.
 
 ### 1.1 Gerak & Storytelling (`bang-motion`)
 

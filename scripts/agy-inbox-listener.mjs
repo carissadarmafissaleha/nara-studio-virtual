@@ -206,6 +206,7 @@ async function watch() {
       if (order) {
         console.log('=== NEW ORDER CLAIMED FOR ANTIGRAVITY (AGY) ===')
         console.log(JSON.stringify(view(order), null, 2))
+        console.log('[AUTO-SKILL CHECKLIST] 1) Pilih 1 dari 66 gaya di .agents/skills/lemo-opuscar/styles/README.md & baca STYLE.md-nya. 2) Terapkan .agents/skills/lemo-opuscar/DIRECTOR.md (hook 3s, native move, 4 camera moves). 3) Terapkan audio-sync + .agents/skills/lemo-opuscar/core/audio/INSTRUMENTS.md (3-layer audio sesuai material & flatten <Sequence> di root). 4) Gunakan helper src/remotion/opuscar/lib.tsx.')
         // Exit(0) → Reactive Wakeup sesi Antigravity.
         process.exit(0)
       }

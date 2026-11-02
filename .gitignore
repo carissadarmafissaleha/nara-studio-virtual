@@ -56,6 +56,8 @@ skills/*
 !skills/render-qa/
 !skills/skill-repair/
 !skills/skill-repair/**
+!skills/lemo-opuscar/
+!skills/lemo-opuscar/**
 !skills/.nara-skills.lock.json
 
 # Studio Production Outputs (Jangan upload hasil produksi video, audio, naskah, & upload user)
