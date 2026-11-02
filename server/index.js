@@ -1582,6 +1582,44 @@ function validateEvent(body) {
 // Express + HTTP server
 // ---------------------------------------------------------------------------
 
+
+// --- LIVE TERMINAL LOG BUFFER ---
+const TERMINAL_LOG_BUFFER = [];
+const MAX_TERMINAL_LOGS = 1500;
+
+function pushTerminalLog(stream, text) {
+  const time = new Date().toLocaleTimeString();
+  const rawLines = String(text).split('\n');
+  for (const line of rawLines) {
+    const clean = line.replace(/\r/g, '').trimEnd();
+    if (clean) {
+      TERMINAL_LOG_BUFFER.push({
+        id: Date.now() + Math.random(),
+        time,
+        stream,
+        line: clean,
+      });
+      if (TERMINAL_LOG_BUFFER.length > MAX_TERMINAL_LOGS) {
+        TERMINAL_LOG_BUFFER.shift();
+      }
+    }
+  }
+}
+
+const origStdoutWrite = process.stdout.write.bind(process.stdout);
+process.stdout.write = function (chunk, encoding, callback) {
+  pushTerminalLog('stdout', chunk);
+  return origStdoutWrite(chunk, encoding, callback);
+};
+
+const origStderrWrite = process.stderr.write.bind(process.stderr);
+process.stderr.write = function (chunk, encoding, callback) {
+  pushTerminalLog('stderr', chunk);
+  return origStderrWrite(chunk, encoding, callback);
+};
+
+pushTerminalLog('stdout', '[NARA Studio] Terminal log capture initialized');
+
 const app = express()
 
 // JSON bodies: 10 KiB is plenty for a chat line or a tool event, but a
@@ -2145,37 +2183,34 @@ app.get('/api/tasks', (req, res) => {
 
 app.post('/api/tasks', (req, res) => {
   try {
-    const { tasks, deletedIds } = req.body || {};
+    const { tasks, deletedIds, replace } = req.body || {};
     if (Array.isArray(tasks)) {
-      // Merge with the file instead of replacing it. The board keeps its own
-      // list in localStorage, and a stale copy used to erase the approval card
-      // the chat bridge had just queued (so its render could never be approved).
       let onDisk = [];
       try {
         if (fs.existsSync(TASKS_PATH_PUBLIC)) onDisk = JSON.parse(fs.readFileSync(TASKS_PATH_PUBLIC, 'utf8'));
       } catch (_) {}
       const deleted = new Set(Array.isArray(deletedIds) ? deletedIds : []);
-      const incoming = new Set(tasks.map((t) => t && t.id));
 
-      // Deleting a card also dismisses the footer job that card belongs to, so
-      // the boss never has to look at a finished build for work already removed.
       for (const task of Array.isArray(onDisk) ? onDisk : []) {
         if (!task || !deleted.has(task.id)) continue;
         try {
           clearJobFor({ compositionId: task.compositionId, taskId: task.id })
         } catch (_) {}
       }
-      const merged = tasks.filter((t) => t && !deleted.has(t.id));
-      // Keep only cards that a background job queued while the board was open:
-      // a draft waiting for approval, or a render already running. Everything
-      // else missing from the payload was deleted by the user, so it must stay
-      // deleted (merging ordinary cards made deleted ToDos reappear).
-      for (const task of Array.isArray(onDisk) ? onDisk : []) {
-        if (!task || deleted.has(task.id) || incoming.has(task.id)) continue;
-        const queuedDraft = task.approval === 'render' && task.status === 'todo';
-        const runningRender = task.status === 'in_progress' && !!task.compositionId;
-        if (queuedDraft || runningRender) merged.push(task);
+
+      // If replace is true or deletedIds is supplied, user explicitly removed tasks
+      let merged = tasks.filter((t) => t && !deleted.has(t.id));
+
+      if (!replace && (!deletedIds || deletedIds.length === 0)) {
+        const incoming = new Set(tasks.map((t) => t && t.id));
+        for (const task of Array.isArray(onDisk) ? onDisk : []) {
+          if (!task || deleted.has(task.id) || incoming.has(task.id)) continue;
+          const queuedDraft = task.approval === 'render' && task.status === 'todo';
+          const runningRender = task.status === 'in_progress' && !!task.compositionId;
+          if (queuedDraft || runningRender) merged.push(task);
+        }
       }
+
       const dataStr = JSON.stringify(merged, null, 2);
       try { fs.writeFileSync(TASKS_PATH_PUBLIC, dataStr, 'utf8'); } catch (_) {}
       try { fs.writeFileSync(TASKS_PATH_NASKAH, dataStr, 'utf8'); } catch (_) {}
@@ -2184,6 +2219,45 @@ app.post('/api/tasks', (req, res) => {
     res.status(400).json({ error: 'Invalid tasks array' });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/tasks/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    let onDisk = [];
+    if (fs.existsSync(TASKS_PATH_PUBLIC)) {
+      try { onDisk = JSON.parse(fs.readFileSync(TASKS_PATH_PUBLIC, 'utf8')); } catch (_) {}
+    }
+    for (const task of onDisk) {
+      if (task && task.id === id) {
+        try { clearJobFor({ compositionId: task.compositionId, taskId: task.id }); } catch (_) {}
+      }
+    }
+    const filtered = onDisk.filter(t => t && t.id !== id);
+    const dataStr = JSON.stringify(filtered, null, 2);
+    try { fs.writeFileSync(TASKS_PATH_PUBLIC, dataStr, 'utf8'); } catch (_) {}
+    try { fs.writeFileSync(TASKS_PATH_NASKAH, dataStr, 'utf8'); } catch (_) {}
+    res.json({ ok: true, message: `Task ${id} deleted`, tasks: filtered });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+app.delete('/api/tasks', (req, res) => {
+  try {
+    const { status } = req.query;
+    let onDisk = [];
+    if (fs.existsSync(TASKS_PATH_PUBLIC)) {
+      try { onDisk = JSON.parse(fs.readFileSync(TASKS_PATH_PUBLIC, 'utf8')); } catch (_) {}
+    }
+    const filtered = status ? onDisk.filter(t => t && t.status !== status) : [];
+    const dataStr = JSON.stringify(filtered, null, 2);
+    try { fs.writeFileSync(TASKS_PATH_PUBLIC, dataStr, 'utf8'); } catch (_) {}
+    try { fs.writeFileSync(TASKS_PATH_NASKAH, dataStr, 'utf8'); } catch (_) {}
+    res.json({ ok: true, message: 'Tasks cleared', tasks: filtered });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
   }
 });
 
@@ -2709,6 +2783,78 @@ app.get('/api/listener-status', (_req, res) => {
     daemon: daemon ? { active: daemon.active, engine: daemon.engine, mode: daemon.mode, diffMs: daemon.diffMs } : null,
     wake: wake ? { active: wake.active, engine: wake.engine, mode: wake.mode, diffMs: wake.diffMs } : null,
   })
+
+/**
+ * Log proses pengerjaan tugas & riwayat order studio untuk footer & audit UI.
+ */
+
+app.get('/api/terminal-logs', (req, res) => {
+  const limit = Math.min(Number(req.query.limit) || 400, 1500);
+  res.json({
+    ok: true,
+    logs: TERMINAL_LOG_BUFFER.slice(-limit),
+    total: TERMINAL_LOG_BUFFER.length,
+    timestamp: Date.now(),
+  });
+});
+
+app.post('/api/terminal-logs/clear', (req, res) => {
+  TERMINAL_LOG_BUFFER.length = 0;
+  pushTerminalLog('stdout', '[NARA Studio] Terminal buffer dibersihkan.');
+  res.json({ ok: true });
+});
+
+app.get('/api/process-logs', (req, res) => {
+  try {
+    const INBOX_DIR = path.join(RUNTIME_DIR, 'engine-inbox');
+    let orders = [];
+    if (fs.existsSync(INBOX_DIR)) {
+      orders = fs.readdirSync(INBOX_DIR)
+        .filter((file) => file.endsWith('.json') && !file.startsWith('.'))
+        .map((file) => {
+          try {
+            const raw = JSON.parse(fs.readFileSync(path.join(INBOX_DIR, file), 'utf8'));
+            if (!raw || !raw.id) return null;
+            const prodDir = path.join(__dirname, '..', 'productions', raw.id);
+            const hasProd = fs.existsSync(prodDir);
+            let prodFiles = [];
+            if (hasProd) {
+              try { prodFiles = fs.readdirSync(prodDir); } catch (_) {}
+            }
+            return {
+              ...raw,
+              hasProd,
+              prodFiles,
+            };
+          } catch (_) {
+            return null;
+          }
+        })
+        .filter(Boolean)
+        .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+    }
+
+    let activeTasks = [];
+    if (fs.existsSync(TASKS_PATH_PUBLIC)) {
+      try { activeTasks = JSON.parse(fs.readFileSync(TASKS_PATH_PUBLIC, 'utf8')); } catch (_) {}
+    }
+
+    const draftJob = draftChannel.get();
+    const renderJob = renderChannel.get();
+
+    res.json({
+      ok: true,
+      orders,
+      activeTasks,
+      draftJob,
+      renderJob,
+      timestamp: Date.now(),
+    });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 })
 
 // Dismiss a job from the footer (the bar's × button). A running job is left

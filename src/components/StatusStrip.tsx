@@ -39,6 +39,8 @@ interface StatusStripProps {
   office: { readonly current: OfficeState | null }
   sessions?: SessionInfo[]
   readOnly?: boolean
+  onOpenTerminalLog?: () => void
+  onOpenProcessLog?: () => void
 }
 
 export function formatAgo(ms: number): string {
@@ -93,7 +95,7 @@ function describe(h: HealthState, v: HookVerdict, now: number, c: StripCounts): 
   return lines.filter(Boolean).join('\n')
 }
 
-const StatusStrip: React.FC<StatusStripProps> = ({ office, sessions = [], readOnly = false }) => {
+const StatusStrip: React.FC<StatusStripProps> = ({ office, sessions = [], readOnly = false, onOpenProcessLog, onOpenTerminalLog }) => {
   const [view, setView] = useState(() => ({ health: office.current?.health ?? null, now: Date.now() }))
   const [listenerStatus, setListenerStatus] = useState<{
     active: boolean
@@ -157,7 +159,7 @@ const StatusStrip: React.FC<StatusStripProps> = ({ office, sessions = [], readOn
       data-connection={h.connection}
       data-hooks={v.kind}
     >
-      {/* Row 1: Status Koneksi & Hook */}
+      {/* Row 1: Status Koneksi, Listener, Wake, dan Log Proses */}
       <div className="status-strip-row status-strip-row-1">
         <span className="strip-item strip-conn">
           <span className="strip-dot" />
@@ -187,6 +189,34 @@ const StatusStrip: React.FC<StatusStripProps> = ({ office, sessions = [], readOn
           <span className="strip-listener-dot" />
           WAKE: {listenerStatus.wake ? 'SIAP' : 'OFF'}
         </span>
+
+        {/* Tombol Simpel Log Terminal */}
+        {(onOpenTerminalLog || onOpenProcessLog) && (
+          <>
+            <span className="strip-sep" />
+            <button
+              type="button"
+              className="strip-item"
+              onClick={onOpenTerminalLog || onOpenProcessLog}
+              title="Buka Terminal Log"
+              style={{
+                background: 'none',
+                border: 'none',
+                padding: '0 2px',
+                font: 'inherit',
+                color: 'inherit',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+              }}
+            >
+              <span style={{ color: '#28c840', fontSize: '6px' }}>●</span>
+              <span>LOG</span>
+            </button>
+          </>
+        )}
+
         {readOnly && (
           <>
             <span className="strip-sep" />

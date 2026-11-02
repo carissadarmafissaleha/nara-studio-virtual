@@ -64,6 +64,7 @@ const SLASH_COMMANDS = [
   { cmd: '/hire', label: '➕ /hire', desc: 'Rekrut kru freelance / sub-agent baru' },
   { cmd: '/render', label: '🎬 /render', desc: 'Buka Screening Room video' },
   { cmd: '/screen', label: '📺 /screen', desc: 'Buka Screening Room video (/screen)' },
+  { cmd: '/log', label: '📋 /log', desc: 'Buka Log Proses & Riwayat Pengerjaan Tugas' },
   { cmd: '/tasks', label: '📋 /tasks', desc: 'Buka papan ToDo Kanban' },
   { cmd: '/todo', label: '📋 /todo', desc: 'Buka papan ToDo Kanban' },
   { cmd: '/naskah', label: '✍️ /naskah', desc: 'Minta naskah panggung ke Lumi' },

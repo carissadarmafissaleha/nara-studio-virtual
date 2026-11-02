@@ -5,7 +5,6 @@ import { useServerCompositions } from '../useCompositions';
 import {
   COMPONENT_REGISTRY,
   DISCOVERED_PROJECTS,
-  hasComposition,
   type MotionItem,
 } from '../remotionDiscovery';
 
@@ -33,7 +32,7 @@ export const RemotionScreeningRoom: React.FC<Props> = ({ onClose }) => {
   const [motionList, setMotionList] = useState<MotionItem[]>(INITIAL_MOTION_PROJECTS);
   const [selectedId, setSelectedId] = useState<string>(() => {
     const focused = focusComp
-      ? INITIAL_MOTION_PROJECTS.find((item) => item.compName === focusComp)
+      ? INITIAL_MOTION_PROJECTS.find((item) => item.compName === focusComp || item.id === focusComp)
       : null;
     return focused?.id || INITIAL_MOTION_PROJECTS[0]?.id || '';
   });
@@ -44,13 +43,38 @@ export const RemotionScreeningRoom: React.FC<Props> = ({ onClose }) => {
 
   const studioJob = pickJob(useStudioStatus());
 
+  // Merge server compositions with discovered bundle compositions
   useEffect(() => {
     if (!serverLoaded) return;
-    const onDisk = new Set(serverComps.map((comp) => comp.compName));
-    setMotionList((prev) => {
-      const next = prev.filter((item) => onDisk.has(item.compName));
-      return next.length === prev.length ? prev : next;
-    });
+    const onDiskMap = new Map(serverComps.map((comp) => [comp.compName, comp]));
+    const combined: MotionItem[] = [];
+    const seen = new Set<string>();
+
+    // 1. Add all serverComps that exist on disk
+    for (const sc of serverComps) {
+      combined.push({
+        id: sc.id || sc.compName,
+        title: sc.title || sc.compName,
+        compName: sc.compName,
+        duration: sc.duration || 30,
+        frames: sc.frames || 900,
+        fps: sc.fps || 30,
+        width: sc.width || 1080,
+        height: sc.height || 1920,
+        order: sc.order ?? 50,
+      });
+      seen.add(sc.compName);
+    }
+
+    // 2. Add any from DISCOVERED_PROJECTS that are registered and not yet added
+    for (const dp of DISCOVERED_PROJECTS) {
+      if (!seen.has(dp.compName) && (onDiskMap.has(dp.compName) || COMPONENT_REGISTRY[dp.compName])) {
+        combined.push(dp);
+        seen.add(dp.compName);
+      }
+    }
+
+    setMotionList(combined);
   }, [serverLoaded, serverComps]);
 
   const updatedAtByComp = new Map(serverComps.map((comp) => [comp.compName, comp.updatedAt]));
@@ -59,25 +83,31 @@ export const RemotionScreeningRoom: React.FC<Props> = ({ onClose }) => {
     return freshest !== 0 ? freshest : (a.order ?? 50) - (b.order ?? 50);
   });
 
+  // Keep selectedId valid & select focusComp or freshest draft
+  const initialPickDone = useRef(false);
   useEffect(() => {
-    if (orderedList.length > 0 && !orderedList.some((m) => m.id === selectedId)) {
-      setSelectedId(orderedList[0].id);
-    } else if (orderedList.length === 0) {
-      setSelectedId('');
+    if (orderedList.length === 0) {
+      if (selectedId) setSelectedId('');
+      return;
     }
-  }, [motionList, selectedId, serverComps]);
 
-  const autoPickedRef = useRef(false);
-  useEffect(() => {
-    if (!serverLoaded || autoPickedRef.current) return;
-    autoPickedRef.current = true;
-    if (focusComp) return;
-    const newest = serverComps
-      .filter((comp) => hasComposition(comp.compName))
-      .sort((a, b) => b.updatedAt - a.updatedAt)[0];
-    const item = newest ? motionList.find((m) => m.compName === newest.compName) : null;
-    if (item) setSelectedId(item.id);
-  }, [serverLoaded, serverComps, motionList, focusComp]);
+    if (!initialPickDone.current) {
+      initialPickDone.current = true;
+      if (focusComp) {
+        const focused = orderedList.find((m) => m.compName === focusComp || m.id === focusComp);
+        if (focused) {
+          setSelectedId(focused.id);
+          return;
+        }
+      }
+      setSelectedId(orderedList[0].id);
+      return;
+    }
+
+    if (!orderedList.some((m) => m.id === selectedId)) {
+      setSelectedId(orderedList[0].id);
+    }
+  }, [orderedList, selectedId, focusComp]);
 
   const saveMotionList = (newList: MotionItem[]) => {
     setMotionList(newList);
@@ -137,6 +167,7 @@ export const RemotionScreeningRoom: React.FC<Props> = ({ onClose }) => {
   };
 
   const activeMotion = orderedList.find((m) => m.id === selectedId);
+  const isPlayable = Boolean(activeMotion && COMPONENT_REGISTRY[activeMotion.compName]);
 
   return (
     <div
@@ -187,7 +218,7 @@ export const RemotionScreeningRoom: React.FC<Props> = ({ onClose }) => {
                 Screening Room
               </div>
               <div style={{ fontSize: '10px', color: '#94a3b8' }}>
-                Preview video Remotion
+                Preview & render video Remotion
               </div>
             </div>
           </div>
@@ -297,63 +328,141 @@ export const RemotionScreeningRoom: React.FC<Props> = ({ onClose }) => {
             overflowY: 'auto',
           }}
         >
-          {activeMotion && COMPONENT_REGISTRY[activeMotion.compName] ? (
-            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div
-                style={{
-                  width: '100%',
-                  maxWidth: (activeMotion.height || 1080) > (activeMotion.width || 1920) ? '280px' : '520px',
-                  aspectRatio: `${activeMotion.width || 1920}/${activeMotion.height || 1080}`,
-                  borderRadius: '10px',
-                  overflow: 'hidden',
-                  boxShadow: '0 8px 30px rgba(0,0,0,0.8)',
-                  border: '1px solid #332d4f',
-                  backgroundColor: '#000',
-                }}
-              >
-                <Player
-                  ref={playerRef}
-                  component={COMPONENT_REGISTRY[activeMotion.compName]}
-                  durationInFrames={activeMotion.frames}
-                  compositionWidth={activeMotion.width || 1920}
-                  compositionHeight={activeMotion.height || 1080}
-                  fps={activeMotion.fps}
-                  controls
-                  autoPlay={false}
-                  loop
-                  style={{ width: '100%', height: '100%' }}
-                />
-              </div>
-
-              {/* Tombol Render (Sederhana & Ringkas) */}
-              <div style={{ marginTop: '10px', textAlign: 'center' }}>
-                <button
-                  type="button"
-                  onClick={() => activeMotion && handleRenderMP4(activeMotion)}
-                  disabled={isRendering}
+          {activeMotion ? (
+            isPlayable ? (
+              <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div
                   style={{
-                    padding: '6px 14px',
-                    background: isRendering ? '#334155' : '#f97316',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '6px',
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    cursor: isRendering ? 'not-allowed' : 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontFamily: 'inherit',
-                    boxShadow: isRendering ? 'none' : '0 2px 8px rgba(249, 115, 22, 0.3)',
+                    width: '100%',
+                    maxWidth: (activeMotion.height || 1080) > (activeMotion.width || 1920) ? '280px' : '520px',
+                    maxHeight: '60vh',
+                    aspectRatio: `${activeMotion.width || 1920}/${activeMotion.height || 1080}`,
+                    borderRadius: '10px',
+                    overflow: 'hidden',
+                    boxShadow: '0 8px 30px rgba(0,0,0,0.8)',
+                    border: '1px solid #332d4f',
+                    backgroundColor: '#000',
                   }}
                 >
-                  {isRendering ? '⏳ Merender...' : '🎬 Render MP4'}
-                </button>
+                  <Player
+                    ref={playerRef}
+                    component={COMPONENT_REGISTRY[activeMotion.compName]}
+                    durationInFrames={activeMotion.frames}
+                    compositionWidth={activeMotion.width || 1920}
+                    compositionHeight={activeMotion.height || 1080}
+                    fps={activeMotion.fps}
+                    controls
+                    autoPlay={false}
+                    loop
+                    numberOfSharedAudioTags={32}
+                    playbackRate={1}
+                    showVolumeControls
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </div>
 
+                {/* Tombol Render (Sederhana & Ringkas) */}
+                <div style={{ marginTop: '10px', textAlign: 'center' }}>
+                  <button
+                    type="button"
+                    onClick={() => handleRenderMP4(activeMotion)}
+                    disabled={isRendering}
+                    style={{
+                      padding: '6px 14px',
+                      background: isRendering ? '#334155' : '#f97316',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '6px',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      cursor: isRendering ? 'not-allowed' : 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontFamily: 'inherit',
+                      boxShadow: isRendering ? 'none' : '0 2px 8px rgba(249, 115, 22, 0.3)',
+                    }}
+                  >
+                    {isRendering ? '⏳ Merender...' : '🎬 Render MP4'}
+                  </button>
+
+                  {renderFeedback && (
+                    <div
+                      style={{
+                        marginTop: '6px',
+                        fontSize: '10px',
+                        color: renderFeedback.includes('Gagal') || renderFeedback.includes('Error') ? '#f87171' : '#4ade80',
+                        background: 'rgba(0,0,0,0.5)',
+                        padding: '4px 8px',
+                        borderRadius: '4px',
+                        display: 'inline-block',
+                      }}
+                    >
+                      {renderFeedback}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              /* Draf ada di disk tetapi player perlu reload bundle */
+              <div
+                style={{
+                  textAlign: 'center',
+                  padding: '32px 24px',
+                  background: 'rgba(28, 25, 48, 0.7)',
+                  borderRadius: '12px',
+                  border: '1px solid #3b3560',
+                  maxWidth: '460px',
+                }}
+              >
+                <div style={{ fontSize: '32px', marginBottom: '8px' }}>⚡</div>
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#f8fafc', marginBottom: '6px' }}>
+                  Draf "{activeMotion.title}" Siap di Disk
+                </div>
+                <div style={{ fontSize: '11px', color: '#94a3b8', lineHeight: 1.5, marginBottom: '14px' }}>
+                  Komposisi baru telah dibuat di disk. Muat ulang tab browser untuk memuat kode player atau render langsung ke MP4.
+                </div>
+                <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                  <button
+                    type="button"
+                    onClick={() => window.location.reload()}
+                    style={{
+                      padding: '6px 14px',
+                      background: '#6366f1',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '6px',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      fontFamily: 'inherit',
+                    }}
+                  >
+                    ⟳ Muat Ulang Player
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleRenderMP4(activeMotion)}
+                    disabled={isRendering}
+                    style={{
+                      padding: '6px 14px',
+                      background: isRendering ? '#334155' : '#f97316',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '6px',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      cursor: isRendering ? 'not-allowed' : 'pointer',
+                      fontFamily: 'inherit',
+                    }}
+                  >
+                    {isRendering ? '⏳ Merender...' : '🎬 Render MP4'}
+                  </button>
+                </div>
                 {renderFeedback && (
                   <div
                     style={{
-                      marginTop: '6px',
+                      marginTop: '10px',
                       fontSize: '10px',
                       color: renderFeedback.includes('Gagal') || renderFeedback.includes('Error') ? '#f87171' : '#4ade80',
                       background: 'rgba(0,0,0,0.5)',
@@ -366,7 +475,7 @@ export const RemotionScreeningRoom: React.FC<Props> = ({ onClose }) => {
                   </div>
                 )}
               </div>
-            </div>
+            )
           ) : (
             <div style={{ textAlign: 'center', padding: '30px', color: '#64748b' }}>
               <div style={{ fontSize: '30px', marginBottom: '8px' }}>🎬</div>

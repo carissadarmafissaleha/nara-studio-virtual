@@ -24,6 +24,31 @@ interface TaskBoardModalProps {
 }
 
 const TODO_STORAGE_KEY = 'nara_studio_kanban_tasks_v3';
+const TOMBSTONE_STORAGE_KEY = 'nara_studio_deleted_tasks_v1';
+
+const readTombstones = (): Set<string> => {
+  try {
+    const raw = localStorage.getItem(TOMBSTONE_STORAGE_KEY);
+    if (raw) return new Set(JSON.parse(raw));
+  } catch (_) {}
+  return new Set();
+};
+
+const saveTombstones = (set: Set<string>) => {
+  try {
+    localStorage.setItem(TOMBSTONE_STORAGE_KEY, JSON.stringify(Array.from(set)));
+  } catch (_) {}
+};
+
+const syncTasksToServer = async (tasks: TaskItem[], deletedIds: string[] = [], replace: boolean = false) => {
+  try {
+    await fetch('/api/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tasks, deletedIds, replace }),
+    });
+  } catch (_) {}
+};
 
 const DEFAULT_TASKS: TaskItem[] = [
   {
@@ -69,13 +94,23 @@ export const TaskBoardModal: React.FC<TaskBoardModalProps> = ({ onClose }) => {
     } catch (_) {}
   }, [localTasks]);
 
-  // Sync from backend server if available
+  // Sync from backend server with tombstone filtering
   useEffect(() => {
     fetch('/api/tasks')
       .then((r) => r.json())
       .then((data) => {
-        if (data.ok && Array.isArray(data.tasks) && data.tasks.length > 0) {
-          setLocalTasks(data.tasks);
+        if (data.ok && Array.isArray(data.tasks)) {
+          const tombstones = readTombstones();
+          const valid = data.tasks.filter((t: TaskItem) => t && !tombstones.has(t.id));
+          setLocalTasks((prev) => {
+            const cleanPrev = prev.filter((p) => !tombstones.has(p.id));
+            const prevIds = new Set(cleanPrev.map((p) => p.id));
+            const merged = [...cleanPrev];
+            for (const vt of valid) {
+              if (!prevIds.has(vt.id)) merged.push(vt);
+            }
+            return merged;
+          });
         }
       })
       .catch(() => {});
@@ -93,27 +128,46 @@ export const TaskBoardModal: React.FC<TaskBoardModalProps> = ({ onClose }) => {
       owner: 'Studio',
     };
 
-    setLocalTasks((prev) => [newTask, ...prev]);
+    const next = [newTask, ...localTasks];
+    setLocalTasks(next);
     setNewTaskText('');
+    syncTasksToServer(next);
   };
 
   const handleMoveStatus = (id: string, newStatus: TaskStatus) => {
-    setLocalTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, status: newStatus } : t))
-    );
+    const next = localTasks.map((t) => (t.id === id ? { ...t, status: newStatus } : t));
+    setLocalTasks(next);
     if (selectedTask && selectedTask.id === id) {
       setSelectedTask((prev) => (prev ? { ...prev, status: newStatus } : null));
     }
+    syncTasksToServer(next);
   };
 
   const handleDeleteTask = (id: string) => {
-    setLocalTasks((prev) => prev.filter((t) => t.id !== id));
+    const tombstones = readTombstones();
+    tombstones.add(id);
+    saveTombstones(tombstones);
+
+    const next = localTasks.filter((t) => t.id !== id);
+    setLocalTasks(next);
     if (selectedTask?.id === id) setSelectedTask(null);
+
+    syncTasksToServer(next, [id], true);
+    fetch(`/api/tasks/${encodeURIComponent(id)}`, { method: 'DELETE' }).catch(() => {});
   };
 
   const handleClearColumn = (status: TaskStatus) => {
-    setLocalTasks((prev) => prev.filter((t) => t.status !== status));
+    const toDelete = localTasks.filter((t) => t.status === status).map((t) => t.id);
+    const tombstones = readTombstones();
+    toDelete.forEach((id) => tombstones.add(id));
+    saveTombstones(tombstones);
+
+    const next = localTasks.filter((t) => t.status !== status);
+    setLocalTasks(next);
     setClearConfirm(null);
+
+    syncTasksToServer(next, toDelete, true);
+    fetch(`/api/tasks?status=${status}`, { method: 'DELETE' }).catch(() => {});
   };
 
   const todoTasks = localTasks.filter((t) => t.status === 'todo');

@@ -42,6 +42,8 @@ import {
 import IncidentLayer from './components/IncidentLayer'
 import TaskBoard from './components/TaskBoard'
 import { RemotionScreeningRoom } from './components/RemotionScreeningRoom'
+import { ProcessLogModal } from './components/ProcessLogModal'
+import { TerminalLogModal } from './components/TerminalLogModal'
 import { TaskBoardModal } from './components/TaskBoardModal'
 import { StudioSettingsModal } from './components/StudioSettingsModal'
 import { dispatchTaskBoards } from './taskBoard'
@@ -404,7 +406,17 @@ const App: React.FC = () => {
   // then gets its own Claude (officeReducer ensureClaude). ?sim / ?video have
   // no sessions, so the decorative Claude keeps its desk there.
   if (officeRef.current === null) officeRef.current = initialOfficeState(createStudioRoster(), Date.now())
-  const [showScreeningRoom, setShowScreeningRoom] = useState(false)
+  const [showScreeningRoom, setShowScreeningRoom] = useState(() => {
+    try {
+      const p = window.location.pathname.toLowerCase()
+      const s = new URLSearchParams(window.location.search)
+      return p.startsWith('/screen') || s.has('screen') || s.has('render') || s.get('tab') === 'screen'
+    } catch (_) {
+      return false
+    }
+  })
+  const [showProcessLogModal, setShowProcessLogModal] = useState(false)
+  const [showTerminalLogModal, setShowTerminalLogModal] = useState(false)
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [settingsInitialTab, setSettingsInitialTab] = useState<'skills' | 'character' | 'hire' | 'tips'>('skills')
   const [showTaskBoardModal, setShowTaskBoardModal] = useState(false)
@@ -1634,6 +1646,7 @@ const App: React.FC = () => {
     const trimmed = raw.trim();
     const lower = trimmed.toLowerCase();
     if (lower === '/render' || lower === '/screen' || lower === '/screening' || lower === '/screeningroom' || lower === '/studio') { setShowScreeningRoom(true); return }
+    if (lower === '/terminal' || lower === '/term' || lower === '/log' || lower === '/logs' || lower === '/proses' || lower === '/process') { setShowTerminalLogModal(true); return }
     if (lower === '/tasks' || lower === '/kanban' || lower === '/todo') { setShowTaskBoardModal(true); return }
     if (lower === '/wardrobe' || lower === '/kostum' || lower === '/karakter') { setSettingsInitialTab('character'); setShowSettingsModal(true); return }
     if (lower === '/hire' || lower === '/rekrut' || lower === '/kru') { setSettingsInitialTab('hire'); setShowSettingsModal(true); return }
@@ -1946,7 +1959,29 @@ const App: React.FC = () => {
       />
       </div>
       </div>
-      {showScreeningRoom && <RemotionScreeningRoom onClose={() => setShowScreeningRoom(false)} />}
+      {showScreeningRoom && (
+        <RemotionScreeningRoom
+          onClose={() => {
+            setShowScreeningRoom(false)
+            if (window.location.pathname.startsWith('/screen')) {
+              window.history.replaceState(null, '', window.location.search ? `/${window.location.search}` : '/')
+            }
+          }}
+        />
+      )}
+      {showTerminalLogModal && (
+        <TerminalLogModal onClose={() => setShowTerminalLogModal(false)} />
+      )}
+      {showProcessLogModal && (
+        <ProcessLogModal
+          onClose={() => setShowProcessLogModal(false)}
+          onOpenScreening={(compName) => {
+            setShowProcessLogModal(false)
+            if (compName) sessionStorage.setItem('nara_focus_comp', compName)
+            setShowScreeningRoom(true)
+          }}
+        />
+      )}
       {showSettingsModal && (
         <StudioSettingsModal
           initialTab={settingsInitialTab}
@@ -1964,7 +1999,7 @@ const App: React.FC = () => {
         />
       )}
       <StudioStatusBar onOpenScreening={() => setShowScreeningRoom(true)} />
-      <StatusStrip office={officeRef} sessions={sessions} readOnly={readOnly} />
+      <StatusStrip office={officeRef} sessions={sessions} readOnly={readOnly} onOpenProcessLog={() => setShowProcessLogModal(true)} onOpenTerminalLog={() => setShowTerminalLogModal(true)} />
     </div>
   )
 }
